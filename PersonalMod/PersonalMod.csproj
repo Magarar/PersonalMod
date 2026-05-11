@@ -1,0 +1,69 @@
+﻿<Project Sdk="Godot.NET.Sdk/4.5.1">
+    <PropertyGroup>
+        <!-- 如果你安装了10.0并遇到问题，改下这里 -->
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>true</ImplicitUsings>
+        <LangVersion>12.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+        <!-- 改成你的杀戮尖塔2目录 -->
+        <Sts2Dir>F:\SteamLibrary\steamapps\common\Slay the Spire 2</Sts2Dir>
+        <Sts2DataDir>$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="0Harmony">
+        <HintPath>F:\SteamLibrary\steamapps\common\Slay the Spire 2\data_sts2_windows_x86_64\0Harmony.dll</HintPath>
+      </Reference>
+        
+      <Reference Include="sts2">
+        <HintPath>F:\SteamLibrary\steamapps\common\Slay the Spire 2\data_sts2_windows_x86_64\sts2.dll</HintPath>
+      </Reference>
+        
+      <Reference Include="STS2-RitsuLib">
+        <HintPath>F:\SteamLibrary\steamapps\common\Slay the Spire 2\mods\STS2-RitsuLib\STS2-RitsuLib.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="PersonalModCode\Cards\" />
+      <Folder Include="PersonalModCode\Extensions\" />
+      <Folder Include="PersonalModCode\Powers\" />
+      <Folder Include="PersonalModCode\Relics\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="PersonalMod.json" />
+      <Content Include="PersonalMod\images\card_portraits\big\card.png" />
+      <Content Include="PersonalMod\images\card_portraits\big\card.png.import" />
+      <Content Include="PersonalMod\images\card_portraits\card.png" />
+      <Content Include="PersonalMod\images\card_portraits\card.png.import" />
+      <Content Include="PersonalMod\images\powers\big\power.png" />
+      <Content Include="PersonalMod\images\powers\big\power.png.import" />
+      <Content Include="PersonalMod\images\powers\power.png" />
+      <Content Include="PersonalMod\images\powers\power.png.import" />
+      <Content Include="PersonalMod\images\relics\big\relic.png" />
+      <Content Include="PersonalMod\images\relics\big\relic.png.import" />
+      <Content Include="PersonalMod\images\relics\relic.png" />
+      <Content Include="PersonalMod\images\relics\relic.png.import" />
+      <Content Include="PersonalMod\images\relics\relic_outline.png" />
+      <Content Include="PersonalMod\images\relics\relic_outline.png.import" />
+      <Content Include="PersonalMod\localization\eng\ancients.json" />
+      <Content Include="PersonalMod\localization\eng\cards.json" />
+      <Content Include="PersonalMod\localization\eng\card_keywords.json" />
+      <Content Include="PersonalMod\localization\eng\powers.json" />
+      <Content Include="PersonalMod\localization\eng\relics.json" />
+      <Content Include="PersonalMod\localization\eng\static_hover_tips.json" />
+      <Content Include="PersonalMod\mod_image.png" />
+      <Content Include="PersonalMod\mod_image.png.import" />
+    </ItemGroup>
+
+    <!-- 自动复制dll和json -->
+    <Target Name="Copy Mod" AfterTargets="PostBuildEvent">
+        <Message Text="Copying mod to Slay the Spire 2 mods folder..." Importance="high" />
+        <MakeDir Directories="$(Sts2Dir)\mods\" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Sts2Dir)\mods\$(MSBuildProjectName)\" />
+        <Copy SourceFiles="$(MSBuildProjectName).json" DestinationFolder="$(Sts2Dir)/mods/$(MSBuildProjectName)/" />
+    </Target>
+</Project>
