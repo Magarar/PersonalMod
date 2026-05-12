@@ -30,7 +30,7 @@ trigger_priority: 1
 8. 配置解锁体系（Epoch + Story）
 9. 编写本地化 JSON（characters.json）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 ---
 
@@ -46,15 +46,15 @@ RitsuLib 注册的人物 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `MyCharacter` | `PERSONALMOD_CHARACTER_MY_CHARACTER` |
-| `Ironclad` | `PERSONALMOD_CHARACTER_IRONCLAD` |
+| `MyCharacter` | `{{MODID_UPPER}}_CHARACTER_MY_CHARACTER` |
+| `Ironclad` | `{{MODID_UPPER}}_CHARACTER_IRONCLAD` |
 
 本地化键使用此 ID + 游戏固定后缀：
 
 ```json
 {
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.title": "戈多",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.description": "一个等待者..."
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.title": "戈多",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.description": "一个等待者..."
 }
 ```
 
@@ -302,7 +302,7 @@ public class MyCharacter : ModCharacterTemplate<...>
 ### 9.3 内容包注册
 
 ```csharp
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .Character<MyCharacter>()
     .Apply();
 ```
@@ -322,16 +322,16 @@ PersonalMod/PersonalMod/localization/zhs/characters.json
 
 ```json
 {
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.title": "戈多",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.titleObject": "戈多",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.description": "一个等待者。",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.pronounSubject": "他",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.pronounObject": "他",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.pronounPossessive": "他的",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.possessiveAdjective": "他的",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.cardsModifierTitle": "戈多的卡牌",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.cardsModifierDescription": "属于戈多的卡牌。",
-  "PERSONALMOD_CHARACTER_MY_CHARACTER.eventDeathPrevention": "...拒绝..."
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.title": "戈多",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.titleObject": "戈多",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.description": "一个等待者。",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.pronounSubject": "他",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.pronounObject": "他",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.pronounPossessive": "他的",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.possessiveAdjective": "他的",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.cardsModifierTitle": "戈多的卡牌",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.cardsModifierDescription": "属于戈多的卡牌。",
+  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.eventDeathPrevention": "...拒绝..."
 }
 ```
 
@@ -366,7 +366,7 @@ using MegaCrit.Sts2.Core.Entities.Characters;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Characters;
+namespace {{MODID}}.{{MODID}}Code.Characters;
 
 [RegisterCharacter]
 [RequireEpoch(typeof(MyCharacterEpoch))]
@@ -401,12 +401,12 @@ public class MyCharacter : ModCharacterTemplate<MyCardPool, MyRelicPool, MyPotio
     // === 资源配置 ===
     public override CharacterAssetProfile AssetProfile => new(
         Scenes: new(
-            VisualsPath: "res://PersonalMod/scenes/character/my_character.tscn",
-            EnergyCounterPath: "res://PersonalMod/scenes/ui/energy/my_energy_counter.tscn"
+VisualsPath: "res://{{MODID}}/scenes/character/my_character.tscn",
+        EnergyCounterPath: "res://{{MODID}}/scenes/ui/energy/my_energy_counter.tscn"
         ),
         Ui: new(
-            IconTexturePath: "res://PersonalMod/images/ui/top_panel/my_character_icon.png",
-            MapMarkerPath: "res://PersonalMod/images/map/my_map_marker.png"
+            IconTexturePath: "res://{{MODID}}/images/ui/top_panel/my_character_icon.png",
+            MapMarkerPath: "res://{{MODID}}/images/map/my_map_marker.png"
         ),
         Audio: new(
             AttackSfx: "event:/sfx/characters/my_character/attack",
@@ -475,13 +475,13 @@ public class MyCharacter : ModCharacterTemplate<MyCardPool, MyRelicPool, MyPotio
 ## 12. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Characters/
+{{MODID}}/{{MODID}}Code/Characters/
 ├── MyCharacter.cs                         # 人物定义
 
-PersonalMod/PersonalModCode/CardPools/
+{{MODID}}/{{MODID}}Code/CardPools/
 ├── MyCardPool.cs                          # 卡池定义
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── scenes/
 │   ├── character/
 │   │   └── my_character.tscn              # 战斗视觉场景 (NCreatureVisuals)

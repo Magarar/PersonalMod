@@ -25,7 +25,7 @@ RitsuLib 提供了一整套属性注册与管理 API，覆盖以下四种类型�
 | **动态变量 (DynamicVar)** | 卡牌数值（伤害、格挡、自定义值），支持本地化 tooltip 和差值显示 | `CanonicalVars` / `ModCardVars.Int()` / `.WithSharedTooltip()` |
 | **提示文本 (HoverTip)** | 卡牌悬浮时显示的解释方框，与 [gold]BBCode[/gold] 染色配合 | `AdditionalHoverTips` / `HoverTipFactory` |
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-04-card-properties/
 
@@ -45,9 +45,9 @@ RitsuLib 提供了一整套属性注册与管理 API，覆盖以下四种类型�
 
 | C# 类型名（关键词） | Keyword ID |
 |--------------------|------------|
-| `Unique` | `PERSONALMOD_KEYWORD_UNIQUE` |
-| `Brew` | `PERSONALMOD_KEYWORD_BREW` |
-| `Ward` | `PERSONALMOD_KEYWORD_WARD` |
+| `Unique` | `{{MODID_UPPER}}_KEYWORD_UNIQUE` |
+| `Brew` | `{{MODID_UPPER}}_KEYWORD_BREW` |
+| `Ward` | `{{MODID_UPPER}}_KEYWORD_WARD` |
 
 ### 2.2 Tag ID
 
@@ -57,8 +57,8 @@ RitsuLib 提供了一整套属性注册与管理 API，覆盖以下四种类型�
 
 | C# 类型名（Tag） | Tag ID |
 |-----------------|--------|
-| `Heavy` | `PERSONALMOD_TAG_HEAVY` |
-| `Piercing` | `PERSONALMOD_TAG_PIERCING` |
+| `Heavy` | `{{MODID_UPPER}}_TAG_HEAVY` |
+| `Piercing` | `{{MODID_UPPER}}_TAG_PIERCING` |
 
 ### 2.3 动态变量名称
 
@@ -123,7 +123,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 [RegisterCard(typeof(TestCardPool))]
-public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.SingleEnemy)
+public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     protected override IEnumerable<string> RegisteredKeywordIds => [MyKeywords.Unique];
     // 多个关键词：=> [MyKeywords.Unique, MyKeywords.Brew];
@@ -184,7 +184,7 @@ public class MyTags
 }
 ```
 
-> 注意：`ModContentRegistry` 和 `Entry` 来自 RitsuLib 框架。`Entry.ModId` 指向 Mod 自身的 ID。
+> 注意：`ModContentRegistry` 和 `Entry` 来自 RitsuLib 框架。`"{{MODID}}"` 指向 Mod 自身的 ID。
 
 ### 4.2 在卡牌上添加 Tag
 
@@ -192,7 +192,7 @@ public class MyTags
 
 ```csharp
 [RegisterCard(typeof(TestCardPool))]
-public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.SingleEnemy)
+public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     protected override IEnumerable<string> RegisteredCardTagIds => [MyTags.Heavy];
     // 多个 Tag：=> [MyTags.Heavy, CardTag.Strike];
@@ -352,7 +352,7 @@ bool active = cardPlay.Card.DynamicVars.HasPositiveValue("Leech");
 using MegaCrit.Sts2.Core.Localization.HoverTips;
 
 [RegisterCard(typeof(TestCardPool))]
-public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.SingleEnemy)
+public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     // 通过 HoverTipFactory 添加各种提示文本
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
@@ -484,7 +484,7 @@ PersonalMod/PersonalMod/localization/
 ```csharp
 using STS2RitsuLib.Interop.AutoRegistration;
 
-namespace PersonalMod.PersonalModCode;
+namespace {{MODID}}.{{MODID}}Code;
 
 [RegisterOwnedCardKeyword(nameof(Unique), IconPath = "res://PersonalMod/images/keywords/unique.svg")]
 [RegisterOwnedCardKeyword(nameof(Brew), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.BeforeCardDescription)]
@@ -494,11 +494,11 @@ public static class MyCardProperties
 {
     // Keywords
     public static readonly string Unique = ModContentRegistry.GetQualifiedCardKeywordId(Entry.ModId, nameof(Unique));
-    public static readonly string Brew = ModContentRegistry.GetQualifiedCardKeywordId(Entry.ModId, nameof(Brew));
+    public static readonly string Brew = ModContentRegistry.GetQualifiedCardKeywordId("{{MODID}}", nameof(Brew));
 
     // Tags
     public static readonly string Heavy = ModContentRegistry.GetQualifiedCardTagId(Entry.ModId, nameof(Heavy));
-    public static readonly string Piercing = ModContentRegistry.GetQualifiedCardTagId(Entry.ModId, nameof(Piercing));
+    public static readonly string Piercing = ModContentRegistry.GetQualifiedCardTagId("{{MODID}}", nameof(Piercing));
 }
 ```
 
@@ -511,10 +511,10 @@ using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Cards;
+namespace {{MODID}}.{{MODID}}Code.Cards;
 
 [RegisterCard(typeof(SharedCardPool))]
-public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.SingleEnemy)
+public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     public override string Title => "Test Card";
     public override string Description => "[gold]汲取[/gold]{Leech:diff()}。\n造成{Damage:diff()}点伤害。";
@@ -557,7 +557,7 @@ public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, T
 
 ```csharp
 [RegisterCard(typeof(SharedCardPool))]
-public class AnotherCard : ModCardTemplate(2, CardType.Attack, CardRarity.Uncommon, TargetType.SingleEnemy)
+public class AnotherCard : ModCardTemplate(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     public override string Title => "Heavy Strike";
     public override string Description => "造成{Damage:diff()}点伤害。\n给予[gold]易伤[/gold]。";

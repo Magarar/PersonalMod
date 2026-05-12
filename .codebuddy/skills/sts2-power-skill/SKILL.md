@@ -24,7 +24,7 @@ trigger_priority: 1
 6. 按需重写能力生命周期方法（Hook 回调 / Modify 修改器等）
 7. 编写本地化 JSON（title + smartDescription）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-05-add-power/
 
@@ -42,17 +42,17 @@ RitsuLib 注册的能力 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `TestPower` | `PERSONALMOD_POWER_TEST_POWER` |
-| `StrengthPower` | `PERSONALMOD_POWER_STRENGTH_POWER` |
-| `VulnerablePower` | `PERSONALMOD_POWER_VULNERABLE_POWER` |
+| `TestPower` | `{{MODID_UPPER}}_POWER_TEST_POWER` |
+| `StrengthPower` | `{{MODID_UPPER}}_POWER_STRENGTH_POWER` |
+| `VulnerablePower` | `{{MODID_UPPER}}_POWER_VULNERABLE_POWER` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_POWER_TEST_POWER.title": "邪火",
-  "PERSONALMOD_POWER_TEST_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
-  "PERSONALMOD_POWER_TEST_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。"
+  "{{MODID_UPPER}}_POWER_TEST_POWER.title": "邪火",
+  "{{MODID_UPPER}}_POWER_TEST_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
+  "{{MODID_UPPER}}_POWER_TEST_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。"
 }
 ```
 
@@ -158,7 +158,7 @@ ModTypeDiscoveryHub.RegisterModAssembly(Assembly.GetExecutingAssembly());
 ### 6.2 内容包注册
 
 ```csharp
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .Power<TestPower>()
     .Apply();
 ```
@@ -487,7 +487,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Powers;
+namespace {{MODID}}.{{MODID}}Code.Powers;
 
 [RegisterPower]
 public class EndOfTurnPower : ModPowerTemplate
@@ -520,7 +520,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Powers;
+namespace {{MODID}}.{{MODID}}Code.Powers;
 
 [RegisterPower]
 public class TestPower : ModPowerTemplate
@@ -548,7 +548,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Powers;
+namespace {{MODID}}.{{MODID}}Code.Powers;
 
 /// <summary>
 /// 自定义力量能力 — 每层 +X 伤害
@@ -636,8 +636,8 @@ public class BufferPower : ModPowerTemplate
 public abstract class PersonalModPowerModel : ModPowerTemplate
 {
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/powers/{GetType().Name}.png",
-        BigIconPath: $"res://PersonalMod/images/powers/{GetType().Name}.png"
+    IconPath: $"res://{{MODID}}/images/powers/{GetType().Name}.png",
+    BigIconPath: $"res://{{MODID}}/images/powers/{GetType().Name}.png"
     );
 }
 
@@ -661,7 +661,7 @@ public class DrawStrengthPower : PersonalModPowerModel
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Powers;
+namespace {{MODID}}.{{MODID}}Code.Powers;
 
 [RegisterPower]
 public class MyPower : ModPowerTemplate
@@ -737,13 +737,13 @@ power PERSONALMOD_POWER_TEST_POWER 5 0
 ## 17. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Powers/
+{{MODID}}/{{MODID}}Code/Powers/
 ├── PersonalModPowerModel.cs        # 抽象基类（可选）
 ├── TestPower.cs                    # 抽牌触发力量
 ├── EndOfTurnPower.cs               # 回合结束格挡
 └── CustomStrengthPower.cs          # 自定义力量
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── images/
 │   └── powers/
 │       ├── test_power.png          # 图标

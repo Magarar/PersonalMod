@@ -29,7 +29,7 @@ trigger_priority: 1
 6. 重写 `CanEnchantCardType` 或 `CanEnchant` 限制可附魔的卡牌类型（可选）
 7. 编写本地化 JSON（enchantments.json）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 ---
 
@@ -45,16 +45,16 @@ RitsuLib 注册的附魔 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `AdroitEnchant` | `PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT` |
-| `SharpEnchant` | `PERSONALMOD_ENCHANTMENT_SHARP_ENCHANT` |
+| `AdroitEnchant` | `{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT` |
+| `SharpEnchant` | `{{MODID_UPPER}}_ENCHANTMENT_SHARP_ENCHANT` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
-  "PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
-  "PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
+  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
+  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
+  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
 }
 ```
 
@@ -293,7 +293,7 @@ ModTypeDiscoveryHub.RegisterModAssembly(Assembly.GetExecutingAssembly());
 ### 9.2 内容包注册
 
 ```csharp
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .Enchantment<SharpEnchant>()
     .Apply();
 ```
@@ -340,9 +340,9 @@ PersonalMod/PersonalMod/localization/zhs/enchantments.json
 
 ```json
 {
-  "PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
-  "PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
-  "PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
+  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
+  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
+  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
 }
 ```
 
@@ -381,7 +381,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Enchantments;
+namespace {{MODID}}.{{MODID}}Code.Enchantments;
 
 [RegisterEnchantment]
 public class AdroitEnchant : ModEnchantmentTemplate
@@ -528,7 +528,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Enchantments;
+namespace {{MODID}}.{{MODID}}Code.Enchantments;
 
 [RegisterEnchantment]
 public class MyEnchant : ModEnchantmentTemplate
@@ -546,12 +546,12 @@ public class MyEnchant : ModEnchantmentTemplate
 ## 13. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Enchantments/
+{{MODID}}/{{MODID}}Code/Enchantments/
 ├── AdroitEnchant.cs                  # 格挡附魔
 ├── InkyEnchant.cs                    # 伤害 + 减益附魔
 └── MyEnchant.cs                      # 自定义附魔
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── images/
 │   └── enchantments/
 │       └── adroit_enchant.png        # 附魔图标

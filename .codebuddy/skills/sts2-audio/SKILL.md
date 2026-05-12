@@ -15,6 +15,8 @@ trigger_priority: 1
 
 # STS2 音频系统 Skill
 
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
+
 ## 1. 概述
 
 杀戮尖塔2 使用 FMOD Studio 作为音频中间件。Mod 开发者有三种方式处理音频：

@@ -9,6 +9,8 @@ description: >-
 
 # STS2 游戏工程资源指引
 
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
+
 ## 1. 概述
 
 杀戮尖塔2 游戏工程的 Godot 项目资源目录，包含全部美术、音频、本地化、场景、动画、着色器等资源。
@@ -517,8 +519,8 @@ darv_placeholder, nonupeipe_placeholder, orobas_placeholder, pael_placeholder, t
 
 ### 11.1 创建新卡牌的资源需求
 
-1. **卡牌肖像 PNG**: 放入 `PersonalMod/PersonalMod/images/card_portraits/{pool_title}/{card_id}.png`
-2. **本地化 JSON**: 在 `PersonalMod/PersonalMod/localization/eng/cards.json` 添加:
+1. **卡牌肖像 PNG**: 放入 `{{MODID}}/{{MODID}}/images/card_portraits/{pool_title}/{card_id}.png`
+2. **本地化 JSON**: 在 `{{MODID}}/{{MODID}}/localization/eng/cards.json` 添加:
    ```json
    { "MYCARD.title": "My Card", "MYCARD.description": "Deal {DamageVar:val()} damage." }
    ```
@@ -527,13 +529,13 @@ darv_placeholder, nonupeipe_placeholder, orobas_placeholder, pael_placeholder, t
 
 ### 11.2 创建新能力的资源需求
 
-1. **能力图标 PNG**: 放入 `PersonalMod/PersonalMod/images/powers/{power_id}.png`
+1. **能力图标 PNG**: 放入 `{{MODID}}/{{MODID}}/images/powers/{power_id}.png`
 2. **本地化 JSON**: 在 `powers.json` 添加 `{ "MYPOWER.title": "...", "MYPOWER.description": "..." }`
 
 ### 11.3 创建新遗物的资源需求
 
-1. **遗物图标 PNG**: 放入 `PersonalMod/PersonalMod/images/relics/{relic_id}.png`
-2. **遗物轮廓 PNG**: 放入 `PersonalMod/PersonalMod/images/relics/{relic_id}_outline.png`
+1. **遗物图标 PNG**: 放入 `{{MODID}}/{{MODID}}/images/relics/{relic_id}.png`
+2. **遗物轮廓 PNG**: 放入 `{{MODID}}/{{MODID}}/images/relics/{relic_id}_outline.png`
 3. **本地化 JSON**: 在 `relics.json` 添加 title + description + flavor
 
 ### 11.4 资源命名规则总结

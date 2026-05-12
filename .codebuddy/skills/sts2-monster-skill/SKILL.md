@@ -32,7 +32,7 @@ trigger_priority: 1
 
 **遭遇系统**：要让怪物出现在游戏中，必须额外创建一个遭遇 (Encounter) 类，将其注册到指定幕的怪物池中。
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-11-add-monster/
 
@@ -50,7 +50,7 @@ RitsuLib 注册的怪物 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `TestMonster` | `PERSONALMOD_MONSTER_TEST_MONSTER` |
+| `TestMonster` | `{{MODID_UPPER}}_MONSTER_TEST_MONSTER` |
 | `Chomper` | `PERSONALMOD_MONSTER_CHOMPER` |
 | `StoneGolem` | `PERSONALMOD_MONSTER_STONE_GOLEM` |
 
@@ -335,7 +335,7 @@ TalkCmd.Play(
 
 ```csharp
 public override MonsterAssetProfile AssetProfile => new(
-    VisualsScenePath: "res://PersonalMod/scenes/monsters/test_monster.tscn"
+    VisualsScenePath: "res://{{MODID}}/scenes/monsters/test_monster.tscn"
 );
 
 // 或者使用 CustomVisualPath（替代 AssetProfile）
@@ -600,7 +600,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Monsters;
+namespace {{MODID}}.{{MODID}}Code.Monsters;
 
 [RegisterMonster]
 public class TestMonster : ModMonsterTemplate
@@ -620,7 +620,7 @@ public class TestMonster : ModMonsterTemplate
 
     // 视觉场景
     public override MonsterAssetProfile AssetProfile => new(
-        VisualsScenePath: "res://PersonalMod/scenes/monsters/test_monster.tscn"
+        VisualsScenePath: "res://{{MODID}}/scenes/monsters/test_monster.tscn"
     );
 
     // 开局 Buff
@@ -757,7 +757,7 @@ using MegaCrit.Sts2.Core.Rooms;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Encounters;
+namespace {{MODID}}.{{MODID}}Code.Encounters;
 
 [RegisterActEncounter(typeof(Glory))]
 public class TestEncounter : ModEncounterTemplate
@@ -812,14 +812,14 @@ public class TestMultiEncounter : ModEncounterTemplate
 ## 13. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Monsters/
+{{MODID}}/{{MODID}}Code/Monsters/
 ├── TestMonster.cs                    # 怪物类
 
-PersonalMod/PersonalModCode/Encounters/
+{{MODID}}/{{MODID}}Code/Encounters/
 ├── TestEncounter.cs                  # 遭遇类
 ├── TestMultiEncounter.cs             # 多怪遭遇
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── scenes/
 │   ├── monsters/
 │   │   └── test_monster.tscn         # 怪物视觉场景 (NCreatureVisuals)

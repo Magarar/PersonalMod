@@ -23,7 +23,7 @@ trigger_priority: 1
 5. 按需重写生命周期方法（Hook 回调 / Modify 修改器 / Should 守卫等）
 6. 编写本地化 JSON（title + description + flavor）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-03-add-relic/
 
@@ -41,17 +41,17 @@ RitsuLib 注册的遗物 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |---------|---------------|
-| `TestRelic` | `PERSONALMOD_RELIC_TEST_RELIC` |
-| `BurningBlood` | `PERSONALMOD_RELIC_BURNING_BLOOD` |
-| `MyCoolRelic` | `PERSONALMOD_RELIC_MY_COOL_RELIC` |
+| `TestRelic` | `{{MODID_UPPER}}_RELIC_TEST_RELIC` |
+| `BurningBlood` | `{{MODID_UPPER}}_RELIC_BURNING_BLOOD` |
+| `MyCoolRelic` | `{{MODID_UPPER}}_RELIC_MY_COOL_RELIC` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_RELIC_TEST_RELIC.title": "测试遗物",
-  "PERSONALMOD_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。",
-  "PERSONALMOD_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
+  "{{MODID_UPPER}}_RELIC_TEST_RELIC.title": "测试遗物",
+  "{{MODID_UPPER}}_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。",
+  "{{MODID_UPPER}}_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
 }
 ```
 
@@ -556,7 +556,7 @@ public class MyStarterRelic : ModRelicTemplate { ... }
 public class MyRelic : ModRelicTemplate { ... }
 
 // 方式2: 流式构建器
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .Relic<SharedRelicPool, MyRelic>()
     .Apply();
 
@@ -646,7 +646,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Relics;
+namespace {{MODID}}.{{MODID}}Code.Relics;
 
 [RegisterRelic(typeof(SharedRelicPool))]
 public class DrawEachTurnRelic : ModRelicTemplate
@@ -796,9 +796,9 @@ public class NoGoldRelic : ModRelicTemplate
 public abstract class PersonalModRelicModel : ModRelicTemplate
 {
     public override RelicAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png",
-        IconOutlinePath: $"res://PersonalMod/images/relics/{GetType().Name}_outline.png",
-        BigIconPath: $"res://PersonalMod/images/relics/big/{GetType().Name}.png"
+    IconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
+    IconOutlinePath: $"res://{{MODID}}/images/relics/{GetType().Name}_outline.png",
+    BigIconPath: $"res://{{MODID}}/images/relics/big/{GetType().Name}.png"
     );
 }
 
@@ -827,7 +827,7 @@ using MegaCrit.Sts2.Core.Models.RelicPools;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Relics;
+namespace {{MODID}}.{{MODID}}Code.Relics;
 
 [RegisterRelic(typeof(SharedRelicPool))]
 public class MyRelic : ModRelicTemplate
@@ -911,13 +911,13 @@ public override async Task AfterObtained()
 ## 17. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Relics/
+{{MODID}}/{{MODID}}Code/Relics/
 ├── PersonalModRelicModel.cs       # 抽象基类（可选）
 ├── DrawEachTurnRelic.cs           # 回合抽牌遗物
 ├── HealAfterCombatRelic.cs        # 战后回血遗物
 └── OnCardPlayRelic.cs             # 卡牌打出遗物
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── images/
 │   └── relics/
 │       ├── DrawEachTurnRelic.png       # 图标

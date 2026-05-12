@@ -1,0 +1,11 @@
+{
+  "id": "Debu999PersonalMod",
+  "name": "自用前置",
+  "author": "Debu",
+  "description": "Slay the Spire 2 character mod created from a template for use with BaseLib",
+  "version": "v0.0.0",
+  "has_pck": true,
+  "has_dll": true,
+  "dependencies": ["STS2-RitsuLib"],
+  "affects_gameplay": true
+}

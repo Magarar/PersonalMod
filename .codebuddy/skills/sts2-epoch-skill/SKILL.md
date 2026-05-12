@@ -31,7 +31,7 @@ trigger_priority: 1
 5. 在人物类上用 `[RequireEpoch]` / `[UnlockEpochAfter*]` 绑定解锁条件
 6. 编写本地化 JSON（epochs.json）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-09-add-timeline/
 
@@ -331,8 +331,8 @@ public class TestCharacter : ModCharacterTemplate<TestCardPool, TestRelicPool, T
 
 ```csharp
 public override EpochAssetProfile AssetProfile => new(
-    PackedPortraitPath: "res://PersonalMod/images/epochs/test_epoch.png",   // 小肖像
-    BigPortraitPath: "res://PersonalMod/images/epochs/test_epoch_big.png"   // 大肖像
+    PackedPortraitPath: "res://{{MODID}}/images/epochs/test_epoch.png",   // 小肖像
+    BigPortraitPath: "res://{{MODID}}/images/epochs/test_epoch_big.png"   // 大肖像
 );
 ```
 
@@ -442,7 +442,7 @@ using MegaCrit.Sts2.Core.Timeline;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Timeline.Scaffolding;
 
-namespace PersonalMod.PersonalModCode.Epochs;
+namespace {{MODID}}.{{MODID}}Code.Epochs;
 
 // ========== Story ==========
 [RegisterStory]
@@ -463,11 +463,11 @@ public class PersonalModStory : ModStoryTemplate
 [RequireAllCardsInPool(typeof(PersonalModCardPool))]
 public class PersonalModCharacterEpoch : CharacterUnlockEpochTemplate<PersonalModCharacter>
 {
-    public override string Id => "PERSONALMOD_CHARACTER_EPOCH";
+    public override string Id => "PERSONAL_MOD_CHARACTER_EPOCH";
 
     public override EpochAssetProfile AssetProfile => new(
-        PackedPortraitPath: "res://PersonalMod/images/epochs/character_epoch.png",
-        BigPortraitPath: "res://PersonalMod/images/epochs/character_epoch_big.png"
+        PackedPortraitPath: "res://{{MODID}}/images/epochs/character_epoch.png",
+        BigPortraitPath: "res://{{MODID}}/images/epochs/character_epoch_big.png"
     );
 
     protected override IEnumerable<Type> ExpansionEpochTypes =>
@@ -487,7 +487,7 @@ public class PersonalModCharacterEpoch : CharacterUnlockEpochTemplate<PersonalMo
 [RegisterEpochCards(typeof(TestCard1), typeof(TestCard2), typeof(TestCard3))]
 public class PersonalModCardEpoch : PackDeclaredCardUnlockEpochTemplate
 {
-    public override string Id => "PERSONALMOD_CARD_EPOCH";
+    public override string Id => "PERSONAL_MOD_CARD_EPOCH";
 
     public override EpochAssetProfile AssetProfile => new(
         PackedPortraitPath: "res://PersonalMod/images/epochs/card_epoch.png",
@@ -547,7 +547,7 @@ public sealed class PersonalModAct3Epoch : PackDeclaredCardUnlockEpochTemplate
 [RegisterEpochCards(typeof(TestCard8), typeof(TestCard9))]
 public sealed class PersonalModVictoryEpoch : PackDeclaredCardUnlockEpochTemplate
 {
-    public override string Id => "PERSONALMOD_VICTORY_EPOCH";
+    public override string Id => "PERSONAL_MOD_VICTORY_EPOCH";
 
     public override EpochAssetProfile AssetProfile => new(
         PackedPortraitPath: "res://PersonalMod/images/epochs/victory_epoch.png",
@@ -562,7 +562,7 @@ public sealed class PersonalModVictoryEpoch : PackDeclaredCardUnlockEpochTemplat
 [RegisterEpochCards(typeof(TestCard10))]
 public sealed class PersonalModEliteEpoch : PackDeclaredCardUnlockEpochTemplate
 {
-    public override string Id => "PERSONALMOD_ELITE_EPOCH";
+    public override string Id => "PERSONAL_MOD_ELITE_EPOCH";
     public override EpochAssetProfile AssetProfile => new(
         PackedPortraitPath: "res://PersonalMod/images/epochs/elite_epoch.png",
         BigPortraitPath: "res://PersonalMod/images/epochs/elite_epoch_big.png"
@@ -594,7 +594,7 @@ using MegaCrit.Sts2.Core.Timeline;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Timeline.Scaffolding;
 
-namespace PersonalMod.PersonalModCode.Epochs;
+namespace {{MODID}}.{{MODID}}Code.Epochs;
 
 [RegisterStory]
 public class MyStory : ModStoryTemplate
@@ -620,11 +620,11 @@ public class MyEpoch : PackDeclaredCardUnlockEpochTemplate
 ## 13. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Epochs/
+{{MODID}}/{{MODID}}Code/Epochs/
 ├── PersonalModStory.cs               # Story + 全部 Epoch 定义（推荐放一起）
 └── (或分多个文件管理)
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── images/
 │   └── epochs/
 │       ├── character_epoch.png       # 小肖像

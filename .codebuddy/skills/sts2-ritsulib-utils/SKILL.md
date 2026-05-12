@@ -25,7 +25,7 @@ trigger_priority: 5
 | 局内数据保存 | 保存卡牌/遗物等对象的持久化状态 | §5 |
 | ... (预留扩展) | ... | ... |
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 ---
 
@@ -54,7 +54,7 @@ using STS2RitsuLib.Combat.HandSize;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Powers;
+namespace {{MODID}}.{{MODID}}Code.Powers;
 
 [RegisterPower]
 public class TestPower : ModPowerTemplate, IMaxHandSizeModifier
@@ -63,8 +63,8 @@ public class TestPower : ModPowerTemplate, IMaxHandSizeModifier
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/powers/{GetType().Name}.png",
-        BigIconPath: $"res://PersonalMod/images/powers/{GetType().Name}.png"
+        IconPath: $"res://{{MODID}}/images/powers/{GetType().Name}.png",
+        BigIconPath: $"res://{{MODID}}/images/powers/{GetType().Name}.png"
     );
 
     // 实现 IMaxHandSizeModifier
@@ -136,7 +136,7 @@ using STS2RitsuLib;
 
 public static void Init()
 {
-    var ctx = RitsuLibFramework.CreateContentPack(ModId)
+    var ctx = RitsuLibFramework.CreateContentPack("{{MODID}}")
         .CardHandOutline<TestCard>(new ModCardHandOutlineRule(
             card => card.Owner.Creature.CurrentHp <= 10,  // 发光条件
             Colors.Purple,                                 // 发光颜色
@@ -195,7 +195,7 @@ using STS2RitsuLib.Combat.HealthBars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Powers;
+namespace {{MODID}}.{{MODID}}Code.Powers;
 
 [RegisterPower]
 public class TestPower2 : ModPowerTemplate, IHealthBarForecastSource
@@ -204,8 +204,8 @@ public class TestPower2 : ModPowerTemplate, IHealthBarForecastSource
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/powers/{GetType().Name}.png",
-        BigIconPath: $"res://PersonalMod/images/powers/{GetType().Name}.png"
+        IconPath: $"res://{{MODID}}/images/powers/{GetType().Name}.png",
+        BigIconPath: $"res://{{MODID}}/images/powers/{GetType().Name}.png"
     );
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
@@ -304,7 +304,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Utils;
 
-namespace PersonalMod.PersonalModCode.Relics;
+namespace {{MODID}}.{{MODID}}Code.Relics;
 
 [RegisterRelic(typeof(SharedRelicPool))]
 public class TestRelic : ModRelicTemplate
@@ -341,9 +341,9 @@ public class TestRelic : ModRelicTemplate
 
 ```json
 {
-  "PERSONALMOD_RELIC_TEST_RELIC.title": "测试遗物",
-  "PERSONALMOD_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。\n已经历过[blue]{GameTurns}[/blue]回合了。",
-  "PERSONALMOD_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
+  "{{MODID_UPPER}}_RELIC_TEST_RELIC.title": "测试遗物",
+  "PERSONAL_MOD_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。\n已经历过[blue]{GameTurns}[/blue]回合了。",
+  "PERSONAL_MOD_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
 }
 ```
 

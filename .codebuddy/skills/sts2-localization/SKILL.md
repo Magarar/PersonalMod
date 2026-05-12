@@ -21,7 +21,7 @@ STS2 的本地化基于 Godot 的 `RichTextLabel` + `SmartFormat` 库，使用 J
 
 **SmartFormat 文档**: https://github.com/axuno/SmartFormat/wiki
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 ---
 
@@ -36,7 +36,7 @@ STS2 的本地化基于 Godot 的 `RichTextLabel` + `SmartFormat` 库，使用 J
 示例：
 
 ```
-PersonalMod/PersonalMod/localization/
+{{MODID_UPPER}}/{{MODID_UPPER}}/localization/
 ├── eng/                    # 英文（源语言，必须提供）
 │   ├── cards.json          # 卡牌
 │   ├── powers.json         # 能力
@@ -124,19 +124,19 @@ PersonalMod/PersonalMod/localization/
 
 | 内容类型 | CATEGORY | 示例 |
 |---------|----------|------|
-| 卡牌 | `CARD` | `PERSONALMOD_CARD_TEST_CARD` |
-| 遗物 | `RELIC` | `PERSONALMOD_RELIC_TEST_RELIC` |
-| 能力 | `POWER` | `PERSONALMOD_POWER_TEST_POWER` |
-| 药水 | `POTION` | `PERSONALMOD_POTION_TEST_POTION` |
+| 卡牌 | `CARD` | `{{MODID_UPPER}}_CARD_TEST_CARD` |
+| 遗物 | `RELIC` | `{{MODID_UPPER}}_RELIC_TEST_RELIC` |
+| 能力 | `POWER` | `{{MODID_UPPER}}_POWER_TEST_POWER` |
+| 药水 | `POTION` | `{{MODID_UPPER}}_POTION_TEST_POTION` |
 
 **C# 类型名到 ID 的转换规则**: PascalCase → UPPER_SNAKE_CASE
 
 | C# 类型名 | Model ID |
 |---------|----------|
-| `TestCard` | `PERSONALMOD_CARD_TEST_CARD` |
-| `HeavySlash` | `PERSONALMOD_CARD_HEAVY_SLASH` |
-| `BurningBlood` | `PERSONALMOD_RELIC_BURNING_BLOOD` |
-| `MyCoolRelic` | `PERSONALMOD_RELIC_MY_COOL_RELIC` |
+| `TestCard` | `{{MODID_UPPER}}_CARD_TEST_CARD` |
+| `HeavySlash` | `{{MODID_UPPER}}_CARD_HEAVY_SLASH` |
+| `BurningBlood` | `{{MODID_UPPER}}_RELIC_BURNING_BLOOD` |
+| `MyCoolRelic` | `{{MODID_UPPER}}_RELIC_MY_COOL_RELIC` |
 
 ### 3.3 自定义变量 Tooltip
 
@@ -166,10 +166,21 @@ PersonalMod/PersonalMod/localization/
 
 ```json
 {
-    "PERSONALMOD_CARD_TEST_CARD.title": "Test Card",
-    "PERSONALMOD_CARD_TEST_CARD.description": "Deal {Damage:diff()} damage."
+    "{{MODID_UPPER}}_CARD_TEST_CARD.title": "Test Card",
+    "{{MODID_UPPER}}_CARD_TEST_CARD.description": "Deal {Damage:diff()} damage."
 }
 ```
+
+**含抽牌/格挡的多效果描述**（参照 PommelStrike 模式）：
+
+```json
+{
+    "{{MODID_UPPER}}_CARD_MY_CARD.title": "My Card",
+    "{{MODID_UPPER}}_CARD_MY_CARD.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} cards.\nGain {Block:diff()} Block."
+}
+```
+
+> **注意**: 变量占位符不要加多余空格，`{Damage:diff()}` 而非 `{Damage:diff()}`。多效果用 `\n` 分隔。
 
 ### 4.2 遗物 (relics.json)
 
@@ -182,10 +193,10 @@ PersonalMod/PersonalMod/localization/
 
 ```json
 {
-    "PERSONALMOD_RELIC_TEST_RELIC.title": "Test Relic",
-    "PERSONALMOD_RELIC_TEST_RELIC.description": "At the start of your turn, draw [blue]{Cards}[/blue] cards.",
-    "PERSONALMOD_RELIC_TEST_RELIC.flavor": "Looks familiar?",
-    "PERSONALMOD_RELIC_TEST_RELIC.eventDescription": "Draw [blue]{Cards}[/blue] cards at the start of each combat."
+    "{{MODID_UPPER}}_RELIC_TEST_RELIC.title": "Test Relic",
+    "{{MODID_UPPER}}_RELIC_TEST_RELIC.description": "At the start of your turn, draw [blue]{Cards}[/blue] cards.",
+    "{{MODID_UPPER}}_RELIC_TEST_RELIC.flavor": "Looks familiar?",
+    "{{MODID_UPPER}}_RELIC_TEST_RELIC.eventDescription": "Draw [blue]{Cards}[/blue] cards at the start of each combat."
 }
 ```
 
@@ -199,9 +210,9 @@ PersonalMod/PersonalMod/localization/
 
 ```json
 {
-    "PERSONALMOD_POWER_TEST_POWER.title": "Test Power",
-    "PERSONALMOD_POWER_TEST_POWER.description": "Gain Strength at the start of your turn.",
-    "PERSONALMOD_POWER_TEST_POWER.smartDescription": "At the start of your turn, gain [blue]{Amount}[/blue] [gold]Strength[/gold]."
+    "{{MODID_UPPER}}_POWER_TEST_POWER.title": "Test Power",
+    "{{MODID_UPPER}}_POWER_TEST_POWER.description": "Gain Strength at the start of your turn.",
+    "{{MODID_UPPER}}_POWER_TEST_POWER.smartDescription": "At the start of your turn, gain [blue]{Amount}[/blue] [gold]Strength[/gold]."
 }
 ```
 
@@ -360,7 +371,7 @@ protected override IEnumerable<DynamicVar> CanonicalVars => [
 
 ```json
 {
-    "PERSONALMOD_CARD_TEST_CARD.description": "[gold]Leech[/gold]{Leech:diff()}.\nDeal {Damage:diff()} damage."
+    "{{MODID_UPPER}}_CARD_TEST_CARD.description": "[gold]Leech[/gold]{Leech:diff()}.\nDeal {Damage:diff()} damage."
 }
 ```
 
@@ -438,8 +449,8 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 ```json
 {
-    "PERSONALMOD_CARD_HEAVY_SLASH.title": "Heavy Slash",
-    "PERSONALMOD_CARD_HEAVY_SLASH.description": "Deal {Damage:diff()} damage."
+    "{{MODID_UPPER}}_CARD_HEAVY_SLASH.title": "Heavy Slash",
+    "{{MODID_UPPER}}_CARD_HEAVY_SLASH.description": "Deal {Damage:diff()} damage."
 }
 ```
 
@@ -447,15 +458,15 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 ```json
 {
-    "PERSONALMOD_CARD_ADAPTIVE_STRIKE.title": "Adaptive Strike",
-    "PERSONALMOD_CARD_ADAPTIVE_STRIKE.description": "Deal {Damage:diff()} damage.\nAdd a 0{energyPrefix:energyIcons(1)} copy of this card into your [gold]Discard Pile[/gold]."
+    "{{MODID_UPPER}}_CARD_ADAPTIVE_STRIKE.title": "Adaptive Strike",
+    "{{MODID_UPPER}}_CARD_ADAPTIVE_STRIKE.description": "Deal {Damage:diff()} damage.\nAdd a 0{energyPrefix:energyIcons(1)} copy of this card into your [gold]Discard Pile[/gold]."
 }
 ```
 
 ```json
 {
-    "PERSONALMOD_CARD_ACROBATICS.title": "Acrobatics",
-    "PERSONALMOD_CARD_ACROBATICS.description": "Draw {Cards:diff()} cards.\nDiscard 1 card."
+    "{{MODID_UPPER}}_CARD_ACROBATICS.title": "Acrobatics",
+    "{{MODID_UPPER}}_CARD_ACROBATICS.description": "Draw {Cards:diff()} cards.\nDiscard 1 card."
 }
 ```
 
@@ -463,8 +474,8 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 ```json
 {
-    "PERSONALMOD_CARD_MULTI_STRIKE.title": "Multi Strike",
-    "PERSONALMOD_CARD_MULTI_STRIKE.description": "Deal {Damage:diff()} damage {Repeat:diff()} times."
+    "{{MODID_UPPER}}_CARD_MULTI_STRIKE.title": "Multi Strike",
+    "{{MODID_UPPER}}_CARD_MULTI_STRIKE.description": "Deal {Damage:diff()} damage {Repeat:diff()} times."
 }
 ```
 
@@ -472,8 +483,8 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 ```json
 {
-    "PERSONALMOD_CARD_FAN_OF_KNIVES.title": "Fan of Knives",
-    "PERSONALMOD_CARD_FAN_OF_KNIVES.description": "Deal {Damage:diff()} damage to ALL enemies.{FanOfKnivesAmount:cond:>0? Deals damage for each card in your [gold]Discard Pile[/gold].|}"
+    "{{MODID_UPPER}}_CARD_FAN_OF_KNIVES.title": "Fan of Knives",
+    "{{MODID_UPPER}}_CARD_FAN_OF_KNIVES.description": "Deal {Damage:diff()} damage to ALL enemies.{FanOfKnivesAmount:cond:>0? Deals damage for each card in your [gold]Discard Pile[/gold].|}"
 }
 ```
 
@@ -481,17 +492,17 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 ```json
 {
-    "PERSONALMOD_RELIC_DRAW_RELIC.title": "Ornamental Fan",
-    "PERSONALMOD_RELIC_DRAW_RELIC.description": "At the start of each combat, draw [blue]{Cards}[/blue] additional cards.",
-    "PERSONALMOD_RELIC_DRAW_RELIC.flavor": "A pretty fan that holds the breeze of battle."
+    "{{MODID_UPPER}}_RELIC_DRAW_RELIC.title": "Ornamental Fan",
+    "{{MODID_UPPER}}_RELIC_DRAW_RELIC.description": "At the start of each combat, draw [blue]{Cards}[/blue] additional cards.",
+    "{{MODID_UPPER}}_RELIC_DRAW_RELIC.flavor": "A pretty fan that holds the breeze of battle."
 }
 ```
 
 ```json
 {
-    "PERSONALMOD_RELIC_DOUBLE_DAMAGE.title": "Pen Nib",
-    "PERSONALMOD_RELIC_DOUBLE_DAMAGE.description": "Every [blue]{AttackCount}[/blue]th time you play an Attack card, deal double damage.",
-    "PERSONALMOD_RELIC_DOUBLE_DAMAGE.flavor": "The nib glows with intent."
+    "{{MODID_UPPER}}_RELIC_DOUBLE_DAMAGE.title": "Pen Nib",
+    "{{MODID_UPPER}}_RELIC_DOUBLE_DAMAGE.description": "Every [blue]{AttackCount}[/blue]th time you play an Attack card, deal double damage.",
+    "{{MODID_UPPER}}_RELIC_DOUBLE_DAMAGE.flavor": "The nib glows with intent."
 }
 ```
 
@@ -499,9 +510,9 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 ```json
 {
-    "PERSONALMOD_POWER_STRENGTH.title": "Strength",
-    "PERSONALMOD_POWER_STRENGTH.description": "Gain Strength.",
-    "PERSONALMOD_POWER_STRENGTH.smartDescription": "[gold]Strength[/gold] increases attack damage dealt by [blue]{Amount}[/blue]."
+    "{{MODID_UPPER}}_POWER_STRENGTH.title": "Strength",
+    "{{MODID_UPPER}}_POWER_STRENGTH.description": "Gain Strength.",
+    "{{MODID_UPPER}}_POWER_STRENGTH.smartDescription": "[gold]Strength[/gold] increases attack damage dealt by [blue]{Amount}[/blue]."
 }
 ```
 
@@ -580,7 +591,7 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 | 错误 | 原因 | 解决方案 |
 |------|------|---------|
-| 描述显示原始键名（如 `PERSONALMOD_CARD_TEST_CARD.title`） | 本地化 JSON 缺少对应条目 | 检查 JSON 文件中是否包含正确的键 |
+| 描述显示原始键名（如 `{{MODID_UPPER}}_CARD_TEST_CARD.title`） | 本地化 JSON 缺少对应条目 | 检查 JSON 文件中是否包含正确的键 |
 | 数值显示为 0 或空白 | `CanonicalVars` 中未定义对应变量 | 在 C# 的 `CanonicalVars` 中添加对应 Var |
 | 占位符不被替换 | 占位符名称与变量名大小写不一致 | 确保 `{Damage}` 与 `DamageVar` 的名称完全匹配 |
 | BBCode 标签显示为原始文本 | 标签未正确闭合 | 检查 `[gold]` 是否有对应的 `[/gold]` |

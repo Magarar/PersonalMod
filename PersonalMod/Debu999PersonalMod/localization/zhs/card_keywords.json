@@ -1,0 +1,14 @@
+{
+  "DEBU999_PERSONAL_MOD_KEYWORD_COMBO.title": "连携",
+  "DEBU999_PERSONAL_MOD_KEYWORD_COMBO.description": "本场战斗中打出的卡牌数。",
+  "DEBU999_PERSONAL_MOD_KEYWORD_RAPID.title": "连击",
+  "DEBU999_PERSONAL_MOD_KEYWORD_RAPID.description": "本回合打出的卡牌数。",
+  "DEBU999_PERSONAL_MOD_KEYWORD_BURST.title": "魔力增幅",
+  "DEBU999_PERSONAL_MOD_KEYWORD_BURST.description": "打出技能牌或通过其他方式发动。",
+  "DEBU999_PERSONAL_MOD_KEYWORD_OVERCHARGE.title": "爆能强化",
+  "DEBU999_PERSONAL_MOD_KEYWORD_OVERCHARGE.description": "当费用大于指定费用时发动并发动效果。",
+  "DEBU999_PERSONAL_MOD_KEYWORD_ACCELERATE.title": "激奏",
+  "DEBU999_PERSONAL_MOD_KEYWORD_ACCELERATE.description": "当费用低于指定费用时，当作技能牌打出并发动效果。",
+  "DEBU999_PERSONAL_MOD_KEYWORD_CRYSTALLIZE.title": "结晶",
+  "DEBU999_PERSONAL_MOD_KEYWORD_CRYSTALLIZE.description": "当费用低于指定费用时，当作能力牌打出并发动效果。"
+}

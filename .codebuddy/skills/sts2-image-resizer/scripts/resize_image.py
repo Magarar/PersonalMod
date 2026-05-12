@@ -25,7 +25,7 @@ STS2 Mod 图片缩放工具
                         fit    - 保持比例，居中放置在目标尺寸画布上（默认，透明填充）
                         fill   - 保持比例，裁剪填满目标尺寸
                         stretch- 拉伸到目标尺寸（不保持比例）
-    --output        输出根目录，默认为脚本所在项目目录
+    --output        输出根目录，默认自动检测 Mod ID
 
 示例:
     py resize_image.py my_art.png card --name StrikeIronclad
@@ -34,8 +34,10 @@ STS2 Mod 图片缩放工具
 """
 
 import argparse
+import json
 import os
 import sys
+
 
 # ── 尺寸与路径配置 ──────────────────────────────────────────────
 
@@ -43,7 +45,7 @@ import sys
 TYPE_CONFIG = {
     "card":           (250, 190, os.path.join("images", "card_portraits")),
     "card_ancient":   (250, 351, os.path.join("images", "card_portraits")),
-    "card_big":       (250, 190, os.path.join("images", "card_portraits", "big")),
+    "card_big":       (1000, 760, os.path.join("images", "card_portraits", "big")),
     "power":          ( 64,  64, os.path.join("images", "powers")),
     "power_big":      (256, 256, os.path.join("images", "powers", "big")),
     "relic":          ( 85,  85, os.path.join("images", "relics")),
@@ -53,6 +55,41 @@ TYPE_CONFIG = {
     "potion_outline": ( 64,  96, os.path.join("images", "potions")),
     "potion_big":     (256, 256, os.path.join("images", "potions", "big")),
 }
+
+# ── Mod ID 自动检测 ────────────────────────────────────────────
+
+# 排除的 JSON 文件名（非 Mod 元数据）
+_SKIP_JSON = {
+    "project.godot",
+    "export_presets.cfg",
+}
+
+
+def detect_mod_id(godot_root):
+    """扫描 Godot 项目根目录，从 Mod 元数据 JSON 中自动检测 Mod ID。
+
+    查找逻辑：遍历 godot_root 下的 *.json 文件，读取其中包含 "id" 字段的 JSON，
+    返回该 mod_id。如果找不到则返回 None。
+    """
+    if not os.path.isdir(godot_root):
+        return None
+    for fname in sorted(os.listdir(godot_root)):
+        if not fname.endswith(".json"):
+            continue
+        if fname in _SKIP_JSON:
+            continue
+        fpath = os.path.join(godot_root, fname)
+        if not os.path.isfile(fpath):
+            continue
+        try:
+            with open(fpath, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if isinstance(data, dict) and "id" in data and isinstance(data["id"], str):
+                return data["id"]
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError):
+            continue
+    return None
+
 
 # ── 缩放逻辑 ────────────────────────────────────────────────────
 
@@ -132,7 +169,7 @@ def main():
     parser.add_argument("--mode", choices=list(RESIZE_MODES.keys()), default="fit",
                         help="缩放模式: fit=保持比例居中(默认), fill=裁剪填满, stretch=拉伸")
     parser.add_argument("--output", default=None,
-                        help="输出根目录，默认为 PersonalMod/PersonalMod/")
+                        help="输出根目录（即 Mod 资源根目录），默认自动检测")
 
     args = parser.parse_args()
 
@@ -158,11 +195,22 @@ def main():
     if args.output:
         output_root = args.output
     else:
-        # 默认: 脚本所在项目目录的 PersonalMod/PersonalMod/
+        # 自动检测 Mod ID
+        # 脚本路径: .codebuddy/skills/sts2-image-resizer/scripts/resize_image.py
+        # 向上4级: scripts -> sts2-image-resizer -> skills -> .codebuddy -> 仓库根目录
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        # 向上3级: scripts/ -> sts2-image-resizer/ -> skills/ -> .codebuddy/
-        project_root = os.path.abspath(os.path.join(script_dir, "..", "..", "..", ".."))
-        output_root = os.path.join(project_root, "PersonalMod", "PersonalMod")
+        repo_root = os.path.abspath(os.path.join(script_dir, "..", "..", "..", ".."))
+        # Godot 项目根目录: 仓库根目录/PersonalMod/
+        godot_root = os.path.join(repo_root, "PersonalMod")
+
+        mod_id = detect_mod_id(godot_root)
+        if mod_id:
+            # Mod 资源根目录: Godot 项目根目录/{ModId}/
+            output_root = os.path.join(godot_root, mod_id)
+            print(f"自动检测 Mod ID: {mod_id}")
+        else:
+            print("警告: 未能自动检测 Mod ID，回退到默认路径 PersonalMod/PersonalMod/")
+            output_root = os.path.join(godot_root, "PersonalMod")
 
     # 构建输出路径
     output_dir = os.path.join(output_root, rel_dir)
@@ -177,7 +225,7 @@ def main():
         sys.exit(1)
 
     print(f"输入: {input_path} ({img.width}x{img.height})")
-    print(f"类型: {type_key} → 目标尺寸: {width}x{height}, 模式: {args.mode}")
+    print(f"类型: {type_key} -> 目标尺寸: {width}x{height}, 模式: {args.mode}")
 
     # 缩放
     resize_fn = RESIZE_MODES[args.mode]

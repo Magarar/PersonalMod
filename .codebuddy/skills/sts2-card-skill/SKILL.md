@@ -3,7 +3,7 @@ name: sts2-card-skill
 description: >-
   该 Skill 为使用 RitsuLib 框架编写杀戮尖塔2 (Slay the Spire 2) Mod 卡牌提供全面的参考与自动检查。
   涵盖卡牌定义 (ModCardTemplate)、动态变量 (DynamicVar)、卡牌打出逻辑 (OnPlay)、升级逻辑 (OnUpgrade)、
-  资源配置 (CardAssetProfile)、卡池注册 ([RegisterCard])、本地化文本、枚举速查、常用命令 (DamageCmd/BlockCmd)、
+  资源配置 (CardAssetProfile)、卡池注册 ([RegisterCard])、本地化文本、枚举速查、常用命令 (DamageCmd)、
   以及完整的代码模板与审查清单。
   当用户要求创建新卡牌、修改已有卡牌逻辑、或排查卡牌相关 Mod 问题时，自动触发此 Skill。
 auto_trigger: true
@@ -22,7 +22,7 @@ trigger_priority: 1
 5. 配置 `AssetProfile`（卡图路径）
 6. 编写本地化 JSON
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 ---
 
@@ -38,16 +38,16 @@ RitsuLib 注册的卡牌 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |---------|---------------|
-| `TestCard` | `PERSONALMOD_CARD_TEST_CARD` |
-| `StrikeIronclad` | `PERSONALMOD_CARD_STRIKE_IRONCLAD` |
-| `HeavySlash` | `PERSONALMOD_CARD_HEAVY_SLASH` |
+| `TestCard` | `{{MODID_UPPER}}_CARD_TEST_CARD` |
+| `StrikeIronclad` | `{{MODID_UPPER}}_CARD_STRIKE_IRONCLAD` |
+| `HeavySlash` | `{{MODID_UPPER}}_CARD_HEAVY_SLASH` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_CARD_TEST_CARD.title": "测试卡牌",
-  "PERSONALMOD_CARD_TEST_CARD.description": "造成 {Damage:diff()} 点伤害。"
+  "{{MODID_UPPER}}_CARD_TEST_CARD.title": "Test Card",
+  "{{MODID_UPPER}}_CARD_TEST_CARD.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} cards.\nGain {Block:diff()} Block."
 }
 ```
 
@@ -67,7 +67,7 @@ public ModCardTemplate(
     CardType type,
     CardRarity rarity,
     TargetType targetType,
-    bool shouldShowInCardLibrary = true)
+    bool showInCardLibrary = true)
 ```
 
 ### 3.1 必须实现
@@ -124,10 +124,16 @@ CardRarity.Ancient    // 先古
 ### 4.3 TargetType
 
 ```csharp
-TargetType.Self         // 自身
-TargetType.SingleEnemy  // 单个敌人
-TargetType.AllEnemies   // 所有敌人
-TargetType.SelfOrEnemy  // 自身或一个敌人
+TargetType.None                 // 无目标
+TargetType.Self                 // 自身
+TargetType.AnyEnemy             // 一个敌人（玩家选择）
+TargetType.AllEnemies           // 所有敌人
+TargetType.RandomEnemy          // 随机一个敌人
+TargetType.AnyPlayer            // 任意玩家（含自己）
+TargetType.AnyAlly              // 任意友方
+TargetType.AllAllies            // 所有友方
+TargetType.TargetedNoCreature   // 目标选择，非生物
+TargetType.Osty                 // 选择牺牲品（Osty）
 ```
 
 ### 4.4 CardTag
@@ -157,6 +163,7 @@ ValueProp.SkipHurtAnim   // 跳过受伤动画
 |---------|---------|------|-------------|
 | `DamageVar` | `STS2RitsuLib.Cards.DynamicVars` | 伤害 | `{Damage:diff()}` |
 | `BlockVar` | `STS2RitsuLib.Cards.DynamicVars` | 格挡 | `{Block:diff()}` |
+| `CardsVar` | `MegaCrit.Sts2.Core.Localization.DynamicVars` | 抽牌数 | `{Cards:diff()}` |
 | `MagicNumberVar` | `MegaCrit.Sts2.Core.Localization.DynamicVars` | 通用数值 | `{MagicNumber:diff()}` |
 | `HealVar` | — | 治疗 | `{Heal:diff()}` |
 | `EnergyVar` | — | 能量 | `{Energy:energyIcons()}` |
@@ -200,18 +207,35 @@ public override DynamicVarSet CreateDynamicVars() =>
 ```csharp
 protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
 {
-    // 1. 造成伤害
-    await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+    // 参照 PommelStrike 反编译模式
+    ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
+
+    // 1. 抽牌（用 CardsVar 定义数量，不写死）
+    _ = await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
+
+    // 2. 造成伤害（带 VFX 和音效）
+    _ = await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
         .FromCard(this)
-        .Targeting(cardPlay.Target!)
+        .Targeting(cardPlay.Target)
+        .WithHitFx("vfx/vfx_attack_blunt", tmpSfx: "blunt_attack.mp3")
         .Execute(choiceContext);
 
-    // 2. 获得格挡
-    await BlockCmd.GainBlock(DynamicVars.Block.BaseValue)
-        .FromCard(this)
-        .Execute(choiceContext);
+    // 3. 获得格挡（需显式调用 CreatureCmd.GainBlock）
+    _ = await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
 }
 ```
+
+| 关键点 | 说明 |
+|--------|------|
+| `CardsVar(n)` | 在 `CanonicalVars` 中定义抽牌数量，不要硬编码数字 |
+| `CardPileCmd.Draw` | 返回 `IEnumerable<CardModel>`，用 `_` 丢弃或变量接收 |
+| `GainsBlock` | 必须设为 `true`，用于 UI 预览显示格挡值 |
+| `CreatureCmd.GainBlock` | 在 `OnPlay` 中显式调用才能真正获得格挡 |
+| `Owner.Creature` | 目标生物（卡牌持有者的生物实体） |
+| `DynamicVars.Block` | 直接传入 `BlockVar` 实例（不是 `.BaseValue`） |
+| `DynamicVars.Cards.BaseValue` | 传入 `CardsVar` 的基础值（不应硬编码数字） |
+| `ArgumentNullException.ThrowIfNull` | 对有目标选择的卡牌做 null 检查（参照原版模式） |
+| `.WithHitFx(...)` | 攻击链附加特效路径和音效（参照 PommelStrike 模式） |
 
 ### 6.2 常用命令 (Commands)
 
@@ -220,25 +244,30 @@ protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay
 | 命令 | 说明 | 示例 |
 |------|------|------|
 | `DamageCmd.Attack(amount)` | 造成伤害 | `.Targeting(target).Execute(ctx)` |
-| `BlockCmd.GainBlock(amount)` | 获得格挡 | `.FromCard(this).Execute(ctx)` |
+| `CreatureCmd.GainBlock(creature, blockVar, cardPlay)` | 获得格挡 | 传 `Owner.Creature` + `DynamicVars.Block` + `cardPlay` |
 | `PowerCmd.ApplyPower(power, target)` | 施加能力 | `.Execute(ctx)` |
 | `CreatureCmd` | 生物相关命令 | — |
 | `VfxCmd` | 特效命令 | — |
-| `CardCmd` | 卡牌相关命令 | 抽牌/弃牌等 |
+| `CardCmd` / `CardPileCmd` | 卡牌相关命令 | 抽牌/弃牌等 |
 
 ### 6.3 完整命令链示例
 
 ```csharp
-// 造成伤害
-await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-    .FromCard(this)                    // 标记来源卡牌
-    .Targeting(cardPlay.Target!)       // 指定目标
-    .Execute(choiceContext);           // 执行
+// 目标 null 检查
+ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
 
-// 获得格挡（给玩家自身）
-await BlockCmd.GainBlock(DynamicVars.Block.BaseValue)
-    .FromCard(this)
-    .Execute(choiceContext);
+// 抽牌（用 CardsVar 管理数值）
+_ = await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
+
+// 造成伤害（带特效和音效）
+_ = await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+    .FromCard(this)                             // 标记来源卡牌
+    .Targeting(cardPlay.Target)                 // 指定目标
+    .WithHitFx("vfx/vfx_attack_blunt", tmpSfx: "blunt_attack.mp3")  // VFX 特效
+    .Execute(choiceContext);                    // 执行
+
+// 获得格挡（参照 DefendIronclad 的反编译代码）
+_ = await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
 ```
 
 ### 6.4 async/await 说明
@@ -255,7 +284,7 @@ await BlockCmd.GainBlock(DynamicVars.Block.BaseValue)
 
 ```csharp
 public override CardAssetProfile AssetProfile => new(
-    PortraitPath: $"res://PersonalMod/images/card_portraits/{GetType().Name}.png"
+    PortraitPath: $"res://{{MODID}}/images/card_portraits/{GetType().Name}.png"
 );
 ```
 
@@ -266,7 +295,7 @@ public override CardAssetProfile AssetProfile => new(
 
 ```csharp
 public override CardAssetProfile AssetProfile => new(
-    PortraitPath: $"res://PersonalMod/images/card_portraits/{GetType().Name}.png",
+    PortraitPath: $"res://{{MODID}}/images/card_portraits/{GetType().Name}.png",
     FramePath: "",                    // 卡牌背景
     PortraitBorderPath: "",           // 边框（如感染状态牌）
     BannerTexturePath: ""             // 横幅（稀有度等）
@@ -336,7 +365,7 @@ public class StarterCard : ModCardTemplate { ... }
 public class MyCard : ModCardTemplate { ... }
 
 // 方式2: 流式构建器
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .Card<MyCardPool, MyCard>()
     .Apply();
 
@@ -359,8 +388,8 @@ PersonalMod/PersonalMod/localization/zhs/cards.json
 
 ```json
 {
-    "PERSONALMOD_CARD_TEST_CARD.title": "测试卡牌",
-    "PERSONALMOD_CARD_TEST_CARD.description": "造成{Damage:diff()}点伤害。"
+    "PERSONALMOD_CARD_TEST_CARD.title": "Test Card",
+    "PERSONALMOD_CARD_TEST_CARD.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} cards.\nGain {Block:diff()} Block."
 }
 ```
 
@@ -370,6 +399,7 @@ PersonalMod/PersonalMod/localization/zhs/cards.json
 |--------|------|------|
 | `{Damage:diff()}` | `DamageVar` | 伤害数值（含升级差异） |
 | `{Block:diff()}` | `BlockVar` | 格挡数值 |
+| `{Cards:diff()}` | `CardsVar` | 抽牌/卡牌数量 |
 | `{MagicNumber:diff()}` | `MagicNumberVar` | 通用数值 |
 | `{Energy:energyIcons()}` | 能量 | 渲染能量图标 |
 
@@ -404,7 +434,7 @@ using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Cards;
+namespace {{MODID}}.{{MODID}}Code.Cards;
 
 [RegisterCard(typeof(ColorlessCardPool))]
 public class MyAttackCard : ModCardTemplate
@@ -415,12 +445,12 @@ public class MyAttackCard : ModCardTemplate
     private const TargetType Target = TargetType.AnyEnemy;
 
     public MyAttackCard()
-        : base(EnergyCost, Type, Rarity, Target, shouldShowInCardLibrary: true)
+        : base(EnergyCost, Type, Rarity, Target, showInCardLibrary: true)
     {
     }
 
     public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"res://PersonalMod/images/card_portraits/{GetType().Name}.png"
+        PortraitPath: $"res://{{MODID}}/images/card_portraits/{GetType().Name}.png"
     );
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
@@ -445,13 +475,25 @@ public class MyAttackCard : ModCardTemplate
 ### 10.2 防御卡模板
 
 ```csharp
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.CardPools;
+using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Cards.DynamicVars;
+using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
+
+namespace {{MODID}}.{{MODID}}Code.Cards;
+
 [RegisterCard(typeof(ColorlessCardPool))]
 public class MyDefendCard : ModCardTemplate
 {
     private const int EnergyCost = 1;
 
     public MyDefendCard()
-        : base(EnergyCost, CardType.Skill, CardRarity.Common, TargetType.Self, true)
+        : base(EnergyCost, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 
@@ -465,9 +507,7 @@ public class MyDefendCard : ModCardTemplate
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await BlockCmd.GainBlock(DynamicVars.Block.BaseValue)
-            .FromCard(this)
-            .Execute(choiceContext);
+        await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
     }
 
     protected override void OnUpgrade()
@@ -480,29 +520,40 @@ public class MyDefendCard : ModCardTemplate
 ### 10.3 技能卡（抽牌+格挡）模板
 
 ```csharp
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.CardPools;
+using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Cards.DynamicVars;
+using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
+
+namespace {{MODID}}.{{MODID}}Code.Cards;
+
 [RegisterCard(typeof(ColorlessCardPool))]
 public class MySkillCard : ModCardTemplate
 {
     private const int EnergyCost = 1;
 
     public MySkillCard()
-        : base(EnergyCost, CardType.Skill, CardRarity.Uncommon, TargetType.Self, true)
+        : base(EnergyCost, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
+    public override bool GainsBlock => true;
+
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(8, ValueProp.Move)
+        new BlockVar(8, ValueProp.Move),
+        new CardsVar(2),
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        // 先获得格挡
-        await BlockCmd.GainBlock(DynamicVars.Block.BaseValue)
-            .FromCard(this)
-            .Execute(choiceContext);
+        _ = await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
 
-        // 再抽牌（需要通过 CardCmd 实现）
-        // 参考 DrawCmd 或 Player.Draw 方法
+        _ = await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
     }
 
     protected override void OnUpgrade()
@@ -549,13 +600,13 @@ public class MyPowerCard : ModCardTemplate
 public abstract class PersonalModCardModel : ModCardTemplate
 {
     public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"res://PersonalMod/images/card_portraits/{GetType().Name}.png"
+        PortraitPath: $"res://{{MODID}}/images/card_portraits/{GetType().Name}.png"
     );
 
     protected PersonalModCardModel(
         int energyCost, CardType type, CardRarity rarity, TargetType targetType,
-        bool shouldShowInCardLibrary = true)
-        : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary)
+        bool showInCardLibrary = true)
+        : base(energyCost, type, rarity, targetType, showInCardLibrary)
     {
     }
 }
@@ -590,13 +641,13 @@ public class MyCard : PersonalModCardModel
 ## 11. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Cards/
+{{MODID}}/{{MODID}}Code/Cards/
 ├── PersonalModCardModel.cs       # 抽象基类（可选）
 ├── MyAttackCard.cs               # 攻击卡
 ├── MyDefendCard.cs               # 防御卡
 └── MyPowerCard.cs                # 能力卡
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── images/
 │   └── card_portraits/
 │       ├── MyAttackCard.png      # 卡图
@@ -679,7 +730,7 @@ PersonalMod/PersonalMod/
 | 错误 | 原因 | 解决方案 |
 |------|------|---------|
 | 卡牌在左上角显示为空白 | 卡图路径错误或缺失 | 检查 `AssetProfile.PortraitPath` 和文件是否存在 |
-| 描述显示原始键名 | 本地化 JSON 中缺少对应条目 | 检查 cards.json 中键名是否为 `{MODID}_CARD_{CLASSNAME}.xxx` |
+| 描述显示原始键名 | 本地化 JSON 中缺少对应条目 | 检查 cards.json 中键名是否为 `{MODID_UPPER}_CARD_{CLASSNAME}.xxx` |
 | 打出卡牌没有效果 | `OnPlay` 中命令未正确执行 | 检查命令链是否完整，`cardPlay.Target` 是否为 null |
 | 升级后数值没变 | `OnUpgrade` 中修改了错误的变量 | 确认 `DynamicVars.Damage` 等名称与 CanonicalVars 中一致 |
 | 注册失败 | `[RegisterCard]` 的卡池类型不匹配 | 确认卡池类名和命名空间正确 |

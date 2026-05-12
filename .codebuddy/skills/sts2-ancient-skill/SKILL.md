@@ -28,7 +28,7 @@ trigger_priority: 1
 7. 编写本地化 JSON (ancients.json) — title + epithet + 对话 + 选项
 8. （可选）创建自定义 Godot 场景作为 Ancient 背景
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-07-add-ancient/
 
@@ -46,16 +46,16 @@ RitsuLib 注册的 Ancient ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `TestAncient` | `PERSONALMOD_ANCIENT_TEST_ANCIENT` |
-| `Neow` | `PERSONALMOD_ANCIENT_NEOW` |
-| `Darv` | `PERSONALMOD_ANCIENT_DARV` |
+| `TestAncient` | `{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT` |
+| `Neow` | `{{MODID_UPPER}}_ANCIENT_NEOW` |
+| `Darv` | `{{MODID_UPPER}}_ANCIENT_DARV` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.title": "戈多",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.epithet": "等待者"
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.title": "戈多",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.epithet": "等待者"
 }
 ```
 
@@ -166,7 +166,7 @@ RitsuLib 提供辅助构建带命名空间选项键的方法：
 
 // 使用辅助方法
 string key = InitialOptionKey("ACCEPT");
-// 生成: "PERSONALMOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT"
+// 生成: "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT"
 
 // 指定页面
 string key2 = ModOptionKey("SECOND_PAGE", "LEAVE");
@@ -234,7 +234,7 @@ RitsuLib 的 `ModAncientEventTemplate` 提供了 `DefineDialogues()` 的默认�
 
 | 部分 | 说明 | 示例 |
 |------|------|------|
-| `Entry` | Ancient 的完整 ID | `PERSONALMOD_ANCIENT_TEST_ANCIENT` |
+| `Entry` | Ancient 的完整 ID | `PERSONAL_MOD_ANCIENT_TEST_ANCIENT` |
 | `CHAR_ENTRY` | 角色 ID 或 `ANY`/`firstVisitEver` | `IRONCLAD`, `SILENT`, `ANY` |
 | `DIALOGUE_INDEX` | 对话序号（每次访问递增） | `0`, `1`, `2` |
 | `LINE_INDEX` | 行号（多行对话依次递增） | `0`, `1`, `2` |
@@ -264,19 +264,19 @@ RitsuLib 的 `ModAncientEventTemplate` 提供了 `DefineDialogues()` 的默认�
 
 ```json
 {
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……第一次来？坐。",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-1.ancient": "等一会儿你就习惯了。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……第一次来？坐。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-1.ancient": "等一会儿你就习惯了。",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，你的火太亮。",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续说",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……我有要事。",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "一切都得等。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，你的火太亮。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续说",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……我有要事。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "一切都得等。",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.SILENT.0-0.ancient": "猎手，坐。",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.SILENT.1-0r.ancient": "……还在。"
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.SILENT.0-0.ancient": "猎手，坐。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.SILENT.1-0r.ancient": "……还在。"
 }
 ```
 
@@ -299,7 +299,7 @@ RitsuLib 的 `ModAncientEventTemplate` 提供了 `DefineDialogues()` 的默认�
 
 ```csharp
 public override EventAssetProfile AssetProfile => new(
-    BackgroundScenePath: "res://PersonalMod/scenes/ancient/test_ancient.tscn"
+    BackgroundScenePath: "res://{{MODID}}/scenes/ancient/test_ancient.tscn"
 );
 ```
 
@@ -386,7 +386,7 @@ public class ConditionalAncient : ModAncientEventTemplate
 ### 8.4 内容包注册
 
 ```csharp
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .SharedAncient<TestAncient>()               // 注册为共享 Ancient
     .ActAncient<Glory, TestAncient>()            // 注册到指定幕
     .Apply();
@@ -475,8 +475,8 @@ private async Task OnHealChosen()
 
 ```json
 {
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.title": "接受治疗",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.description": "恢复 10 点生命"
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.title": "接受治疗",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.description": "恢复 10 点生命"
 }
 ```
 
@@ -549,24 +549,24 @@ PersonalMod/PersonalMod/localization/zhs/ancients.json
 
 ```json
 {
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.title": "戈多",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.epithet": "等待者",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.title": "戈多",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.epithet": "等待者",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.description": "你推开了一扇门……",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.INITIAL.description": "你推开了一扇门……",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.title": "接受",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.description": "获得一件遗物。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.title": "接受",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.description": "获得一件遗物。",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.pages.DONE.description": "你离开了这里。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.DONE.description": "你离开了这里。",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……有人推开了这扇门。",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……有人推开了这扇门。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
 
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，坐。",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……好。",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
-  "PERSONALMOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "很好。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，坐。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……好。",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
+  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "很好。",
 }
 ```
 
@@ -614,7 +614,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Utils;
 
-namespace PersonalMod.PersonalModCode.Ancients;
+namespace {{MODID}}.{{MODID}}Code.Ancients;
 
 [RegisterActAncient(typeof(Glory))]
 public class TestAncient : ModAncientEventTemplate
@@ -625,7 +625,7 @@ public class TestAncient : ModAncientEventTemplate
 
     // 背景场景
     public override EventAssetProfile AssetProfile => new(
-        BackgroundScenePath: "res://PersonalMod/scenes/ancient/test_ancient.tscn"
+        BackgroundScenePath: "res://{{MODID}}/scenes/ancient/test_ancient.tscn"
     );
 
     // 地图图标
@@ -682,7 +682,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Ancients;
+namespace {{MODID}}.{{MODID}}Code.Ancients;
 
 [RegisterSharedAncient]
 public class HealingAncient : ModAncientEventTemplate
@@ -726,7 +726,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Utils;
 
-namespace PersonalMod.PersonalModCode.Ancients;
+namespace {{MODID}}.{{MODID}}Code.Ancients;
 
 [RegisterActAncient(typeof(Glory))]
 public class MyAncient : ModAncientEventTemplate
@@ -768,7 +768,7 @@ using MegaCrit.Sts2.Core.Models.Relics;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Ancients;
+namespace {{MODID}}.{{MODID}}Code.Ancients;
 
 [RegisterActAncient(typeof(Glory))]
 public class MyAncient : ModAncientEventTemplate
@@ -797,12 +797,12 @@ public class MyAncient : ModAncientEventTemplate
 ## 14. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Ancients/
+{{MODID}}/{{MODID}}Code/Ancients/
 ├── TestAncient.cs                     # Ancient 事件类
 ├── HealingAncient.cs                  # 治疗 Ancient
 └── MyAncient.cs                       # 自定义 Ancient
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── scenes/
 │   └── ancient/
 │       ├── test_ancient.tscn          # Ancient 背景场景
@@ -829,7 +829,7 @@ PersonalMod/PersonalMod/
 在游戏中按 `~` 打开控制台：
 
 ```
-ancient PERSONALMOD_ANCIENT_TEST_ANCIENT
+ancient PERSONAL_MOD_ANCIENT_TEST_ANCIENT
 ```
 
 强制触发指定 Ancient 事件。

@@ -63,18 +63,34 @@ trigger_priority: 0
 
 1. **识别内容类型** — 判断你要创建/修改什么（卡牌、能力、遗物、药水等）
 2. **创建文件和文件夹** — 按项目规范创建 C# 脚本文件和资源文件夹
-3. **处理资源图片** — 如有图片，调用 `sts2-image-resizer` 缩放裁切后放入规范目录
+3. **处理资源图片** — 如有图片，调用 `sts2-image-resizer` 缩放裁切后放入规范目录，并提示 `.import` 文件
 4. **调度子 Skill** — 调用对应的子 Skill 完成具体编写工作
 5. **参考资源** — 需要参考源工程资源时，查 `sts2-resources`；需要 API 参考时，查 `sts2-core-ref`；需要 Harmony 补丁时，查 `harmony`
-6. **自检** — 完成后按审查清单逐项检查
-7. **中断报告** — 如果某一步无法继续，会明确告知卡在哪一步，由你决定如何处理
+6. **编译验证** — 执行 `read_lints` 或 `dotnet build` 检查语法错误，**编译不通过则不会继续**
+7. **自检** — 完成后按审查清单逐项检查
+8. **纳入版本控制** — 将新建/修改的文件加入 Git 跟踪
+9. **中断报告** — 如果某一步无法继续，会明确告知卡在哪一步，由你决定如何处理
 
-**当前项目 ModId**: `PersonalMod`
+**{{MODID}}** = `Debu999PersonalMod`（PascalCase，用于命名空间、路径、代码中）
+**{{MODID_UPPER}}** = `DEBU999_PERSONAL_MOD`（UPPER_SNAKE_CASE，用于 ModelId.Entry 和本地化键,不要去除字符串的下划线）
 **项目根目录**: `d:\杀戮尖塔2Mod\PersonalMod\`
 
 ---
 
-## 二、命令系统与内容类型路由
+## 二、全局配置与 ModId 约定
+
+本 Skill 定义以下模板变量，所有子 Skill 统一使用：
+
+| 变量 | 当前值 | 用途 |
+|------|--------|------|
+| `{{MODID}}` | `PersonalMod` | C# 命名空间前缀、Godot 资源路径 (`res://{{MODID}}/`)、物理目录名 |
+| `{{MODID_UPPER}}` | `PERSONALMOD` | ModelId.Entry 前缀（UPPER_SNAKE_CASE）、本地化键前缀 |
+
+> **移植到其他项目时**只需在此处修改这两个变量的值，所有子 Skill 自动适配。
+
+---
+
+## 三、命令系统与内容类型路由
 
 ### 2.1 命令速查表
 
@@ -174,18 +190,24 @@ trigger_priority: 0
 │ (详见 §4)                                           │
 └─────────────────────────┬──────────────────────────┘
                           ▼
-┌─ Step 4: 处理资源图片 ─────────────────────────────┐
+┌─ Step 4: 更新 .csproj 索引 ───────────────────────┐
+│ 将新建的文件加入项目，确保 IDE 解决方案能看见       │
+│ (详见 §4.5)                                         │
+└─────────────────────────┬──────────────────────────┘
+                          ▼
+┌─ Step 5: 处理资源图片 ─────────────────────────────┐
 │ 如有用户提供的图片路径:                               │
 │ 1. 确认图片存在                                      │
 │ 2. 调用 sts2-image-resizer (resize_image.py) 缩放    │
 │ 3. 输出到规范目录（如 images/card_portraits/）       │
 │ 4. 命名与类名一致 (TestCard.png)                    │
+│ 5. 检查/生成 Godot .import 文件（§4.4）             │
 │ 如果没有图片：                                       │
 │ └→ 参考 sts2-resources 源工程中的类似资源            │
 │    创建占位文件或临时引用源工程的资源                 │
 └─────────────────────────┬──────────────────────────┘
                           ▼
-┌─ Step 5: 调度子 Skill ────────────────────────────┐
+┌─ Step 6: 调度子 Skill ────────────────────────────┐
 │ 调用对应的子 Skill 编写核心逻辑                      │
 │ (如 card → sts2-card-skill)                        │
 │ 子 Skill 会负责:                                    │
@@ -194,12 +216,23 @@ trigger_priority: 0
 │ └─ 代码审查清单                                     │
 └─────────────────────────┬──────────────────────────┘
                           ▼
-┌─ Step 6: 子 Skill 完成后自检 ────────────────────┐
-│ 遵循子 Skill 中的审查清单进行逐项检查               │
-│ 并执行本 Skill 的 §5 通用自检                      │
+┌─ Step 7: 编译验证 ────────────────────────────────┐
+│ 调用 dotnet build 或 read_lints 检查语法错误        │
+│ ❌ 有编译错误 → 修复后重新验证                      │
+│ ✅ 编译通过 → 继续                                 │
 └─────────────────────────┬──────────────────────────┘
                           ▼
-┌─ Step 7: 报告完成 ──────────────────────────────┐
+┌─ Step 8: 自检清单 ────────────────────────────────┐
+│ 逐项执行 §5 的通用自检清单                          │
+│ 同时执行子 Skill 中的审查清单                       │
+└─────────────────────────┬──────────────────────────┘
+                          ▼
+┌─ Step 9: 纳入版本控制 ────────────────────────────┐
+│ 将创建/修改的所有文件加入 Git                       │
+│ git add <所有新文件/修改文件>                       │
+└─────────────────────────┬──────────────────────────┘
+                          ▼
+┌─ Step 10: 报告完成 ─────────────────────────────┐
 │ 列出所有创建/修改的文件、资源路径、关键决策点       │
 │ 以及控制台调试命令                                 │
 └─────────────────────────────────────────────────┘
@@ -228,88 +261,88 @@ trigger_priority: 0
 #### 卡牌 (card)
 ```
 # C# 文件
-PersonalModCode/Cards/<ClassName>.cs
+{{MODID}}Code/Cards/<ClassName>.cs
 
 # 资源文件
-PersonalMod/images/card_portraits/<ClassName>.png
+{{MODID}}/images/card_portraits/<ClassName>.png
 
 # 本地化
-PersonalMod/localization/eng/cards.json  (添加条目)
-PersonalMod/localization/zhs/cards.json  (添加条目)
+{{MODID}}/localization/eng/cards.json  (添加条目)
+{{MODID}}/localization/zhs/cards.json  (添加条目)
 ```
 
 #### 能力 (power)
 ```
 # C# 文件
-PersonalModCode/Powers/<ClassName>.cs
+{{MODID}}Code/Powers/<ClassName>.cs
 
 # 资源文件
-PersonalMod/images/powers/<ClassName>.png        (64x64)
-PersonalMod/images/powers/big/<ClassName>.png     (256x256, 可选)
+{{MODID}}/images/powers/<ClassName>.png        (64x64)
+{{MODID}}/images/powers/big/<ClassName>.png     (256x256, 可选)
 
 # 本地化
-PersonalMod/localization/eng/powers.json
-PersonalMod/localization/zhs/powers.json
+{{MODID}}/localization/eng/powers.json
+{{MODID}}/localization/zhs/powers.json
 ```
 
 #### 遗物 (relic)
 ```
 # C# 文件
-PersonalModCode/Relics/<ClassName>.cs
+{{MODID}}Code/Relics/<ClassName>.cs
 
 # 资源文件
-PersonalMod/images/relics/<ClassName>.png              (85x85)
-PersonalMod/images/relics/<ClassName>_outline.png       (85x85)
-PersonalMod/images/relics/big/<ClassName>.png           (256x256, 可选)
+{{MODID}}/images/relics/<ClassName>.png              (85x85)
+{{MODID}}/images/relics/<ClassName>_outline.png       (85x85)
+{{MODID}}/images/relics/big/<ClassName>.png           (256x256, 可选)
 
 # 本地化
-PersonalMod/localization/eng/relics.json
-PersonalMod/localization/zhs/relics.json
+{{MODID}}/localization/eng/relics.json
+{{MODID}}/localization/zhs/relics.json
 ```
 
 #### 药水 (potion)
 ```
 # C# 文件
-PersonalModCode/Potions/<ClassName>.cs
+{{MODID}}Code/Potions/<ClassName>.cs
 
 # 资源文件
-PersonalMod/images/potions/<ClassName>.png              (64x96)
-PersonalMod/images/potions/<ClassName>_outline.png       (64x96)
+{{MODID}}/images/potions/<ClassName>.png              (64x96)
+{{MODID}}/images/potions/<ClassName>_outline.png       (64x96)
 
 # 本地化
-PersonalMod/localization/eng/potions.json
-PersonalMod/localization/zhs/potions.json
+{{MODID}}/localization/eng/potions.json
+{{MODID}}/localization/zhs/potions.json
 ```
 
 #### 事件 (event)
 ```
 # C# 文件
-PersonalModCode/Events/<ClassName>.cs
+{{MODID}}Code/Events/<ClassName>.cs
 
 # 资源文件
-PersonalMod/images/events/<ClassName>.png
+{{MODID}}/images/events/<ClassName>.png
 
 # 本地化
-PersonalMod/localization/eng/events.json
-PersonalMod/localization/zhs/events.json
+{{MODID}}/localization/eng/events.json
+{{MODID}}/localization/zhs/events.json
 ```
 
 #### 怪物 (monster)
 ```
 # C# 文件
-PersonalModCode/Monsters/<ClassName>.cs
+{{MODID}}Code/Monsters/<ClassName>.cs
 
 # 遭遇文件
-PersonalModCode/Encounters/<EncounterClass>.cs
+{{MODID}}Code/Encounters/<EncounterClass>.cs
 
 # 场景
-PersonalMod/scenes/monsters/<ClassName>.tscn
+{{MODID}}/scenes/monsters/<ClassName>.tscn
 
 # 本地化
-PersonalMod/localization/eng/monsters.json
-PersonalMod/localization/eng/encounters.json
-PersonalMod/localization/zhs/monsters.json
-PersonalMod/localization/zhs/encounters.json
+{{MODID}}/localization/eng/monsters.json
+{{MODID}}/localization/eng/encounters.json
+{{MODID}}/localization/zhs/monsters.json
+{{MODID}}/localization/zhs/encounters.json
 ```
 
 ### 4.2 图片处理规则
@@ -332,6 +365,7 @@ PersonalMod/localization/zhs/encounters.json
 | 先古卡牌 | `card_ancient` | — |
 
 4. **验证输出** — 确认输出目录中存在对应的 `<ClassName>.png` 文件
+5. **检查 Godot .import 文件** — 详见 §4.4
 
 ### 4.3 无图片时的资源参考
 
@@ -341,29 +375,167 @@ PersonalMod/localization/zhs/encounters.json
 2. 在 C# 代码的 `AssetProfile` 中填写占位路径
 3. 告知用户需要提供图片后才能正常运行
 
----
+### 4.4 Godot 资源导入索引（.import 文件）
+
+Godot 首次导入图片后会生成 `.import` 元数据文件，**没有 `.import` 文件游戏将无法识别资源**。有两种处理方式：
+
+#### 方式 A：在 Godot 编辑器中打开（推荐）
+
+首次在 Godot 编辑器打开项目后，Godot 会自动为 `PersonalMod/` 目录下的所有图片生成 `.import` 文件。这是最终需要的状态。
+
+**因此在创建资源后，应告知用户**：
+> "新图片已放置到目录，请在 Godot 编辑器中打开项目，Godot 会自动生成 `.import` 文件。"
+
+#### 方式 B：手动创建 .import 文件
+
+如果不方便打开 Godot，可以复制同目录下已有图片的 `.import` 文件并修改映射路径。
+
+**查找参考**：参考 `sts2-resources` 中源工程的 `.import` 文件或项目中原有图片的 `.import` 文件。
+
+```bash
+# 例如：从已存在的 card.png 复制 .import
+copy PersonalMod\images\card_portraits\card.png.import PersonalMod\images\card_portraits\NewCard.png.import
+```
+
+#### 在代码中引用资源的路径格式
+
+C# 代码中的资源路径使用 `res://` 前缀指向 Godot 项目资源目录：
+
+```csharp
+// 卡牌
+public override CardAssetProfile AssetProfile => new(
+    PortraitPath: "res://{{MODID}}/images/card_portraits/TestCard.png"
+);
+```
+
+> **重要**：`res://` 对应的物理路径是 `{{MODID}}/{{MODID}}/`（Godot 项目根下的 `{{MODID}}/` 目录）。
+
+### 4.5 .csproj 项目文件索引
+
+新建的 C# 脚本和资源文件必须加入 `.csproj` 项目文件，否则 IDE（Visual Studio / Rider）的解决方案资源管理器中看不到它们。
+
+#### 方式 A：使用通配符模式（推荐，一劳永逸）
+
+`Godot.NET.Sdk` 会自动包含项目目录下所有 `.cs` 文件，**不需要**手动添加 `Compile` 条目。只需要为资源文件添加通配符即可：
+
+```xml
+<!-- 自动包含所有 Mod 资源（图片/本地化/配置等） -->
+<ItemGroup>
+  <Content Include="PersonalMod\**\*" />
+</ItemGroup>
+```
+
+> **注意**：不要添加 `<Compile Include=".../*.cs" />`，SDK 已默认包含所有 `.cs` 文件，加显式 Compile 会导致 `NETSDK1022` 重复项错误。
+
+#### 方式 B：显式添加每个文件
+
+如果不使用通配符，每次新建文件后需手动在 `.csproj` 中添加对应 `<Compile>` 或 `<Content>` 条目：
+
+```xml
+<!-- C# 文件 -->
+<Compile Include="PersonalModCode\Cards\TestCard.cs" />
+
+<!-- 图片文件 -->
+<Content Include="PersonalMod\images\card_portraits\TestCard.png" />
+
+<!-- 本地化文件 -->
+<Content Include="PersonalMod\localization\eng\cards.json" />
+```
+
+项目文件位置：`PersonalMod/PersonalMod.csproj`
+
+### 4.6 代码注释规范
+
+生成的所有 C# 代码必须包含清晰的注释，参照原版反编译代码的注释风格：
+
+#### 注释层级要求
+
+| 层级 | 必须 | 说明 |
+|------|------|------|
+| **类注释** | ✓ | 简要说明类的用途，如 `// TestCard - 抽牌+伤害+格挡` |
+| **CanonicalVars 行尾注释** | ✓ | 每个变量行尾标注含义，如 `new DamageVar(1, ValueProp.Move),  // 1点伤害` |
+| **OnPlay 段落注释** | ✓ | 每个效果前一段注释，如 `// 抽牌`、`// 获得格挡`、`// 造成伤害` |
+| **OnUpgrade 注释** | ✓ | 说明升级变化，如 `// 升级：伤害+2，格挡+2，抽牌+1` |
+| **API 来源注释** | ✓ | 关键 API 调用注明参照来源，如 `// 参照 PommelStrike 反编译的抽牌模式` |
+
+#### 注释检查点
+
+```
+□ 每个效果步骤前都有注释说明段
+□ CanonicalVars 每个变量都有行尾注释
+□ 关键 API 调用有注释注明参照来源
+□ 升级方法说明了数值变化
+□ 类上方有简要用途说明
+□ 注释语言统一（全部中文或全部英文，不混用）
+```
 
 ## 五、通用自检清单
 
-在子 Skill 完成各自的审查清单后，还需额外检查以下全局项：
+在子 Skill 完成各自的审查清单后，还需额外检查以下全局项。
 
-### 5.1 文件完整性
+### 5.1 编译验证（必须通过才能继续）
+
+> **这是最重要的一步！未通过编译的自检视为失败，必须修复后重试。**
+
+自检工具：
+- 使用 `read_lints` 工具检查 IDE 诊断信息
+- 或执行 `dotnet build` 检查编译错误
+
+```
+dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
+```
+
+| 检查项 | 工具 | 通过条件 |
+|--------|------|---------|
+| 语法/类型错误 | `read_lints(文件路径)` | 返回 0 个错误 |
+| 缺少 using | `read_lints(文件路径)` | 返回 0 个错误 |
+| 类型不存在/方法签名不匹配 | `read_lints(文件路径)` | 返回 0 个错误 |
+
+**如果没有 linting 工具可用，至少人工检查**：
+- [ ] 所有引用的类名拼写是否正确（`CreatureCmd` / `BlockCmd` / `DamageCmd` 等）
+- [ ] 所有方法参数数量、类型是否与文档一致
+- [ ] `using` 语句是否覆盖了所有使用的命名空间
+- [ ] 所有花括号是否成对闭合
+
+> 如果编译失败，**不得继续**。必须修复错误后再重新运行自检。
+
+### 5.2 注释完整性检查
+
+每处生成的代码必须按 §4.6 注释规范逐项检查：
+
+- [ ] 类上方是否有用途注释？
+- [ ] `CanonicalVars` 每个变量是否有行尾注释？
+- [ ] `OnPlay` 中每个效果前是否有段落注释？
+- [ ] `OnUpgrade` 是否说明了升级变化？
+- [ ] 关键 API 调用是否注明了参照来源？
+- [ ] 注释语言是否统一？
+
+> 缺少注释的自检视为**不完整**，必须补充注释后再继续。
+
+### 5.3 文件完整性
 - [ ] C# 脚本文件是否已创建在正确的目录下？
 - [ ] 文件名是否与类名完全一致（PascalCase）？
 - [ ] 图片文件是否已存在于资源目录中？
+- [ ] 图片是否有对应的 `.import` 文件？（如果没有，告知用户需在 Godot 编辑器中打开项目生成）
 - [ ] 本地化 JSON 文件中是否添加了对应的条目？
+- [ ] 新文件是否已在 `.csproj` 中索引？（检查 `PersonalMod.csproj` 是否有对应条目，或使用了通配符模式）
 
-### 5.2 注册检查
+### 5.3 IDE 解决方案可见性检查
+- [ ] 在 IDE 中刷新解决方案（**重新加载项目**），确认新文件出现在解决方案资源管理器中
+- [ ] 如果文件不可见，检查 `.csproj` 是否遗漏了该文件的 `<Compile>` 或 `<Content>` 条目
+- [ ] 确认 `.csproj` 的路径是相对路径且正确（相对于 `.csproj` 文件所在目录）
+
+### 5.3 注册检查
 - [ ] 类上是否添加了正确的注册属性（`[RegisterCard]` / `[RegisterPower]` / 等）？
 - [ ] 注册属性中的池类型参数是否正确？
 - [ ] `Entry.Init()` 中是否确保调用了 `RegisterModAssembly` 和 `EnsureGodotScriptsRegistered`？
 
-### 5.3 资源路径检查
+### 5.4 资源路径检查
 - [ ] `AssetProfile` 中的资源路径是否为 `res://PersonalMod/...` 格式？
 - [ ] 资源路径的文件名是否与类名和实际文件名一致（区分大小写）？
 - [ ] 如果有引用源工程的资源，路径是否确认正确？
 
-### 5.4 本地化检查
+### 5.5 本地化检查
 - [ ] 本地化键是否为 `{MODID}_{CATEGORY}_{CLASSNAME}.field` 格式？
 - [ ] 卡牌/遗物/药水是否有 `title` + `description`？
 - [ ] 能力是否有 `title` + `description` + `smartDescription`？
@@ -371,12 +543,21 @@ PersonalMod/localization/zhs/encounters.json
 - [ ] 描述中的 BBCode 标签是否正确闭合？
 - [ ] 描述中的动态变量占位符是否与 C# 中定义的 `CanonicalVars` 匹配？
 
-### 5.5 数值平衡检查
+### 5.6 数值平衡检查
 - [ ] 伤害/格挡/治疗数值是否合理？
 - [ ] 能量消耗是否合理？
 - [ ] 稀有度与效果是否匹配？
 
-### 5.6 控制台调试
+### 5.7 版本控制检查
+- [ ] 所有新增/修改的文件是否已 `git add`？
+- [ ] 检查 git 状态确认没有遗漏的文件：
+  ```bash
+  git status
+  ```
+- [ ] 二进制文件（PNG 图片）是否也包含在内？
+- [ ] `.import` 文件是否已添加（如果已生成）？
+
+### 5.8 控制台调试
 - [ ] 确认了该内容的控制台调试命令并告知用户：
   - 卡牌: `card {ID}`
   - 能力: `power {ID} <层数> <目标>`
@@ -384,6 +565,30 @@ PersonalMod/localization/zhs/encounters.json
   - 药水: `potion {ID}`
   - 事件: `event {ID}`
   - 怪物: `spawn {ID}`
+
+### 5.9 自检不通过的处理流程
+
+```
+自检清单逐项检查
+    │
+    ▼
+┌─ 全部通过？ ──── 是 ──→ 继续下一步
+    │ 否
+    ▼
+┌─ 判断错误类型 ──────────────────────────────────┐
+│                                                    │
+│  编译错误（5.1）：                                  │
+│  → 修复代码后重新执行 Step 6 编译验证               │
+│  → 直到编译通过才能继续                             │
+│                                                    │
+│  资源/本地化错误（5.2~5.6）：                       │
+│  → 修复文件后继续自检                               │
+│                                                    │
+│  Git 遗漏（5.7）：                                  │
+│  → 执行 git add 补充遗漏文件                        │
+│  → 继续下一步                                      │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -397,6 +602,10 @@ PersonalMod/localization/zhs/encounters.json
 |------|---------|---------|
 | 用户未提供图片路径 | 无法创建资源文件 | **暂停**，询问用户是否有图片 |
 | 图片处理脚本失败 | 图片格式或路径问题 | **暂停**，告知错误信息，让用户处理图片 |
+| 图片缺少 `.import` 文件 | Godot 无法索引资源 | **提示**，告知用户需在 Godot 编辑器中打开项目自动生成 |
+| 新建文件不在 `.csproj` 中 | IDE 解决方案中不可见 | **暂停**，添加文件索引到 `.csproj` 后重新加载项目 |
+| 编译验证失败 | 代码有语法/类型错误 | **暂停**，列出错误信息，修复后重新编译验证 |
+| Git 操作失败 | 文件冲突或路径问题 | **暂停**，告知错误信息，让用户手动处理 |
 | 需要参考源工程但不确定具体路径 | 无法确定正确引用 | **暂停**，列出可选项，让用户选择 |
 | 需要 Harmony 补丁但目标方法不确定 | 无法确定 patch 目标 | **暂停**，让用户确认要修改哪个方法 |
 | 功能需要 ritsulib-utils 中的方案 | 需确认是否适用 | **暂停**，展示方案让用户确认 |
@@ -428,62 +637,85 @@ PersonalMod/localization/zhs/encounters.json
 
 1. 询问/提取：类名、能量消耗、卡牌类型(Attack/Skill/Power)、稀有度、目标类型、效果描述、图片路径、卡池名
 2. 创建 C# 文件 `PersonalModCode/Cards/<ClassName>.cs`
-3. 如有图片 → 调用 `sts2-image-resizer` 处理 `card` 类型
-4. 调度 `sts2-card-skill` 生成卡牌代码
-5. 在 `PersonalMod/localization/eng/cards.json` 添加本地化
-6. 执行自检清单
-7. 报告完成，给出 `card {ID}` 调试命令
+3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+4. 如有图片 → 调用 `sts2-image-resizer` 处理 `card` 类型
+5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
+6. 调度 `sts2-card-skill` 生成卡牌代码
+7. 在 `PersonalMod/localization/eng/cards.json` 添加本地化
+8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
+9. 执行自检清单
+10. **Git 提交** → `git add` 所有新增/修改的文件
+11. 报告完成，给出 `card {ID}` 调试命令
 
 ### 7.2 完整的能力创建流程
 
 1. 询问/提取：类名、PowerType(Buff/Debuff)、StackType(Counter/Intensity/Duration)、效果描述、图片路径
 2. 创建 C# 文件 `PersonalModCode/Powers/<ClassName>.cs`
-3. 如有图片 → 调用 `sts2-image-resizer` 处理 `power` + `power_big`
-4. 调度 `sts2-power-skill` 生成能力代码
-5. 在 `PersonalMod/localization/eng/powers.json` 添加本地化
-6. 执行自检清单
-7. 报告完成，给出 `power {ID} <层数> <目标>` 调试命令
+3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+4. 如有图片 → 调用 `sts2-image-resizer` 处理 `power` + `power_big`
+5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
+6. 调度 `sts2-power-skill` 生成能力代码
+7. 在 `PersonalMod/localization/eng/powers.json` 添加本地化
+8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
+9. 执行自检清单
+10. **Git 提交** → `git add` 所有新增/修改的文件
+11. 报告完成，给出 `power {ID} <层数> <目标>` 调试命令
 
 ### 7.3 完整的遗物创建流程
 
 1. 询问/提取：类名、稀有度、效果描述、图片路径、遗物池
 2. 创建 C# 文件 `PersonalModCode/Relics/<ClassName>.cs`
-3. 如有图片 → 调用 `sts2-image-resizer` 处理 `relic` + `relic_outline` + `relic_big`
-4. 调度 `sts2-relic-skill` 生成遗物代码
-5. 在 `PersonalMod/localization/eng/relics.json` 添加本地化
-6. 执行自检清单
-7. 报告完成，给出 `relic {ID}` 调试命令
+3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+4. 如有图片 → 调用 `sts2-image-resizer` 处理 `relic` + `relic_outline` + `relic_big`
+5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
+6. 调度 `sts2-relic-skill` 生成遗物代码
+7. 在 `PersonalMod/localization/eng/relics.json` 添加本地化
+8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
+9. 执行自检清单
+10. **Git 提交** → `git add` 所有新增/修改的文件
+11. 报告完成，给出 `relic {ID}` 调试命令
 
 ### 7.4 完整的药水创建流程
 
 1. 询问/提取：类名、稀有度、使用时机(CombatOnly/AnyTime/Automatic)、目标类型、效果描述、图片路径
 2. 创建 C# 文件 `PersonalModCode/Potions/<ClassName>.cs`
-3. 如有图片 → 调用 `sts2-image-resizer` 处理 `potion` + `potion_outline`
-4. 调度 `sts2-potion-skill` 生成药水代码
-5. 在 `PersonalMod/localization/eng/potions.json` 添加本地化
-6. 执行自检清单
-7. 报告完成，给出 `potion {ID}` 调试命令
+3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+4. 如有图片 → 调用 `sts2-image-resizer` 处理 `potion` + `potion_outline`
+5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
+6. 调度 `sts2-potion-skill` 生成药水代码
+7. 在 `PersonalMod/localization/eng/potions.json` 添加本地化
+8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
+9. 执行自检清单
+10. **Git 提交** → `git add` 所有新增/修改的文件
+11. 报告完成，给出 `potion {ID}` 调试命令
 
 ### 7.5 完整的事件创建流程
 
 1. 询问/提取：类名、所属幕、事件描述、选项列表、图片路径、出现条件
 2. 创建 C# 文件 `PersonalModCode/Events/<ClassName>.cs`
-3. 如有图片 → PNG 放置到 `images/events/<ClassName>.png`（事件插图不经过 image-resizer）
-4. 调度 `sts2-event-skill` 生成事件代码
-5. 在 `PersonalMod/localization/eng/events.json` 添加本地化
-6. 执行自检清单
-7. 报告完成，给出 `event {ID}` 调试命令
+3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+4. 如有图片 → PNG 放置到 `images/events/<ClassName>.png`（事件插图不经过 image-resizer）
+5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
+6. 调度 `sts2-event-skill` 生成事件代码
+7. 在 `PersonalMod/localization/eng/events.json` 添加本地化
+8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
+9. 执行自检清单
+10. **Git 提交** → `git add` 所有新增/修改的文件
+11. 报告完成，给出 `event {ID}` 调试命令
 
 ### 7.6 完整的怪物创建流程
 
 1. 询问/提取：类名、HP范围、AI行为描述、所属幕、视觉参考
 2. 创建 C# 文件 `PersonalModCode/Monsters/<ClassName>.cs`
 3. 创建遭遇文件 `PersonalModCode/Encounters/<Encounter>.cs`
-4. 创建视觉场景 `PersonalMod/scenes/monsters/<ClassName>.tscn`
-5. 调度 `sts2-monster-skill` 生成怪物代码
-6. 在本地化文件中添加 monsters.json + encounters.json 条目
-7. 执行自检清单
-8. 报告完成，给出 `spawn {ID}` 调试命令
+4. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+5. 创建视觉场景 `PersonalMod/scenes/monsters/<ClassName>.tscn`
+6. 调度 `sts2-monster-skill` 生成怪物代码
+7. 在本地化文件中添加 monsters.json + encounters.json 条目
+8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
+9. 执行自检清单
+10. **Git 提交** → `git add` 所有新增/修改的文件
+11. 报告完成，给出 `spawn {ID}` 调试命令
 
 ---
 
@@ -541,25 +773,25 @@ PersonalMod/localization/zhs/encounters.json
 创建任何内容时，ModelId.Entry 格式必须严格遵守：
 
 ```
-<MODID>_<CATEGORY>_<TYPENAME>
+<{{MODID_UPPER}}>_<CATEGORY>_<TYPENAME>
 ```
 
-其中 `MODID = PERSONALMOD`，`TYPENAME` 为类名转 UPPER_SNAKE_CASE。
+其中 `{{MODID_UPPER}} = PERSONALMOD`，`TYPENAME` 为类名转 UPPER_SNAKE_CASE。
 
 | 内容类型 | CATEGORY | ModelId.Entry 示例 |
 |---------|----------|-------------------|
-| 卡牌 | `CARD` | `PERSONALMOD_CARD_TEST_CARD` |
-| 能力 | `POWER` | `PERSONALMOD_POWER_TEST_POWER` |
-| 遗物 | `RELIC` | `PERSONALMOD_RELIC_TEST_RELIC` |
-| 药水 | `POTION` | `PERSONALMOD_POTION_TEST_POTION` |
-| 事件 | `EVENT` | `PERSONALMOD_EVENT_TEST_EVENT` |
-| 怪物 | `MONSTER` | `PERSONALMOD_MONSTER_TEST_MONSTER` |
-| 人物 | `CHARACTER` | `PERSONALMOD_CHARACTER_MY_CHARACTER` |
-| 充能球 | `ORB` | `PERSONALMOD_ORB_TEST_ORB` |
-| 附魔 | `ENCHANTMENT` | `PERSONALMOD_ENCHANTMENT_ADROIT_ENCHANT` |
-| 先古之民 | `ANCIENT` | `PERSONALMOD_ANCIENT_TEST_ANCIENT` |
-| 关键词 | `KEYWORD` | `PERSONALMOD_KEYWORD_UNIQUE` |
-| Tag | `TAG` | `PERSONALMOD_TAG_HEAVY` |
+| 卡牌 | `CARD` | `{{MODID_UPPER}}_CARD_TEST_CARD` |
+| 能力 | `POWER` | `{{MODID_UPPER}}_POWER_TEST_POWER` |
+| 遗物 | `RELIC` | `{{MODID_UPPER}}_RELIC_TEST_RELIC` |
+| 药水 | `POTION` | `{{MODID_UPPER}}_POTION_TEST_POTION` |
+| 事件 | `EVENT` | `{{MODID_UPPER}}_EVENT_TEST_EVENT` |
+| 怪物 | `MONSTER` | `{{MODID_UPPER}}_MONSTER_TEST_MONSTER` |
+| 人物 | `CHARACTER` | `{{MODID_UPPER}}_CHARACTER_MY_CHARACTER` |
+| 充能球 | `ORB` | `{{MODID_UPPER}}_ORB_TEST_ORB` |
+| 附魔 | `ENCHANTMENT` | `{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT` |
+| 先古之民 | `ANCIENT` | `{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT` |
+| 关键词 | `KEYWORD` | `{{MODID_UPPER}}_KEYWORD_UNIQUE` |
+| Tag | `TAG` | `{{MODID_UPPER}}_TAG_HEAVY` |
 
 ---
 
@@ -580,12 +812,16 @@ PersonalMod/localization/zhs/encounters.json
   Step 2: 检查 ritsulib-utils → 不涉及
   Step 3: 创建文件 Cards/FireSlash.cs
   Step 4: 调用 image-resizer → resize_image.py C:\art\fire_slash.png card --name FireSlash
-  Step 5: 调度 sts2-card-skill 编写卡牌逻辑
+  Step 5: 检查图片 → 提示"新图片需在 Godot 编辑器中打开生成 .import 文件"
+  Step 6: 调度 sts2-card-skill 编写卡牌逻辑
           ├─ 生成 FireSlash.cs（继承 ModCardTemplate，DamageVar，OnPlay）
           ├─ 添加本地化 cards.json 条目
           └─ 执行 card-skill 的自检
-  Step 6: 执行本 Skill 的通用自检
-  Step 7: 报告完成，给出调试指令
+  Step 7: 编译验证 → read_lints(FireSlash.cs)
+          ✅ 无错误 → 继续
+  Step 8: 执行本 Skill 的通用自检清单
+  Step 9: Git 纳入 → git add Cards/FireSlash.cs localization/eng/cards.json
+  Step 10: 报告完成，给出 card PERSONALMOD_CARD_FIRE_SLASH 调试指令
 ```
 
 ### 示例 2: 快捷命令创建能力（带小工具功能）
@@ -604,9 +840,12 @@ PersonalMod/localization/zhs/encounters.json
           告知用户将使用此方案
   Step 3: 创建文件 Powers/ExtraDrawPower.cs
   Step 4: 调用 image-resizer → power + power_big
-  Step 5: 调度 sts2-power-skill（告知需要实现 IMaxHandSizeModifier）
-  Step 6: 自检
-  Step 7: 报告完成
+  Step 5: 提示 .import 文件
+  Step 6: 调度 sts2-power-skill（告知需要实现 IMaxHandSizeModifier）
+  Step 7: 编译验证 → 检查语法
+  Step 8: 自检清单
+  Step 9: git add 所有文件
+  Step 10: 报告完成
 ```
 
 ### 示例 3: 自然语言创建遗物

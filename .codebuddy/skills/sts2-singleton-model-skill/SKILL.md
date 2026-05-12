@@ -26,7 +26,7 @@ trigger_priority: 3
 - 需要一个全局中间件在跑酷和战斗生命周期中监听事件
 - 原版例子：`MultiplayerScalingModel`（多人模式格挡缩放）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 ---
 
@@ -146,8 +146,8 @@ ModTypeDiscoveryHub.RegisterModAssembly(Assembly.GetExecutingAssembly());
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `MySingleton` | `PERSONALMOD_SINGLETON_MY_SINGLETON` |
-| `MultiplayerScalingModel` | `PERSONALMOD_SINGLETON_MULTIPLAYER_SCALING_MODEL` |
+| `MySingleton` | `{{MODID_UPPER}}_SINGLETON_MY_SINGLETON` |
+| `MultiplayerScalingModel` | `PERSONAL_MOD_SINGLETON_MULTIPLAYER_SCALING_MODEL` |
 
 ---
 
@@ -218,7 +218,7 @@ using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Models;
 
-namespace PersonalMod.PersonalModCode.Singletons;
+namespace {{MODID}}.{{MODID}}Code.Singletons;
 
 [RegisterSingleton]
 public class MySingleton : HookedSingletonModel
@@ -254,7 +254,7 @@ using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Models;
 
-namespace PersonalMod.PersonalModCode.Singletons;
+namespace {{MODID}}.{{MODID}}Code.Singletons;
 
 /// <summary>
 /// 全局计数器示例：记录玩家击杀的怪物数量并向其他系统广播。
@@ -315,7 +315,7 @@ public class KillCounterSingleton : HookedSingletonModel
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Interop.AutoRegistration;
 
-namespace PersonalMod.PersonalModCode.Singletons;
+namespace {{MODID}}.{{MODID}}Code.Singletons;
 
 /// <summary>
 /// 纯数据单例：用于存储全局配置数据。
@@ -338,7 +338,7 @@ using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Models;
 
-namespace PersonalMod.PersonalModCode.Singletons;
+namespace {{MODID}}.{{MODID}}Code.Singletons;
 
 // 子模块：战斗生命周期监听
 public class CombatSubModule : AbstractModel
@@ -390,7 +390,7 @@ public class CompositeSingleton : HookedSingletonModel
 ## 9. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Singletons/
+{{MODID}}/{{MODID}}Code/Singletons/
 ├── MySingleton.cs                     # 全局功能单例
 ├── KillCounterSingleton.cs            # 全局计数器
 ├── ConfigSingleton.cs                 # 纯数据单例

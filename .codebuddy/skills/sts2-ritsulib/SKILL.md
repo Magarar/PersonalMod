@@ -10,6 +10,8 @@ description: >-
 
 # RitsuLib - 杀戮尖塔2 Mod 开发框架 Skill
 
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。示例中使用 `MyMod` 作为通用占位符。
+
 ## 1. 概述
 
 RitsuLib 是杀戮尖塔2的 Mod 开发框架，围绕以下核心设计目标构建：
@@ -162,7 +164,7 @@ public class MyCard : ModCardTemplate(
     baseCost: 1,
     type: CardType.Attack,
     rarity: CardRarity.Common,
-    target: TargetType.SingleEnemy)
+    target: TargetType.AnyEnemy)
 {
     public override string Title => "Strike";
     public override string Description => "Deal {Damage} damage.";
@@ -187,7 +189,7 @@ public class MyCard : ModCardTemplate(
 ### 5.3 卡牌动态变量
 
 ```csharp
-public class MyCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.SingleEnemy)
+public class MyCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     private static readonly DynamicVar _charges =
         ModCardVars.Int("charges", amount: 3)

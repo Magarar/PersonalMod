@@ -29,7 +29,7 @@ trigger_priority: 1
 7. 在选项回调中实现多阶段流转（`SetEventState` → 新选项 → `SetEventFinished`）
 8. 编写本地化 JSON（events.json）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-12-add-event/
 
@@ -47,7 +47,7 @@ RitsuLib 注册的事件 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `TestEvent` | `PERSONALMOD_EVENT_TEST_EVENT` |
+| `TestEvent` | `{{MODID_UPPER}}_EVENT_TEST_EVENT` |
 | `AbyssalBaths` | `PERSONALMOD_EVENT_ABYSSAL_BATHS` |
 | `MysteriousSpring` | `PERSONALMOD_EVENT_MYSTERIOUS_SPRING` |
 
@@ -270,7 +270,7 @@ decimal goldCost = DynamicVars.Gold.BaseValue;
 
 ```csharp
 public override EventAssetProfile AssetProfile => new(
-    InitialPortraitPath: "res://PersonalMod/images/events/test_event.png"  // 事件背景图
+    InitialPortraitPath: "res://{{MODID}}/images/events/test_event.png"  // 事件背景图
 );
 ```
 
@@ -357,7 +357,7 @@ public class TestEvent : ModEventTemplate { ... }
 ### 10.3 内容包注册
 
 ```csharp
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .SharedEvent<TestEvent>()
     .ActEvent<Glory, TestEvent>()
     .Apply();
@@ -499,14 +499,14 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Events;
+namespace {{MODID}}.{{MODID}}Code.Events;
 
 [RegisterActEvent(typeof(Glory))]
 public sealed class TestEvent : ModEventTemplate
 {
     // 背景图
     public override EventAssetProfile AssetProfile => new(
-        InitialPortraitPath: "res://PersonalMod/images/events/test_event.png"
+        InitialPortraitPath: "res://{{MODID}}/images/events/test_event.png"
     );
 
     // 数值变量
@@ -606,7 +606,7 @@ using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Events;
+namespace {{MODID}}.{{MODID}}Code.Events;
 
 [RegisterActEvent(typeof(Glory))]
 public sealed class SimpleEvent : ModEventTemplate
@@ -672,12 +672,12 @@ public sealed class MyEvent : PersonalModEventModel
 ## 15. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Events/
+{{MODID}}/{{MODID}}Code/Events/
 ├── PersonalModEventModel.cs           # 抽象基类（可选）
 ├── TestEvent.cs                       # 多阶段事件
 └── SimpleEvent.cs                     # 单阶段事件
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── images/
 │   └── events/
 │       ├── test_event.png             # 事件背景插画

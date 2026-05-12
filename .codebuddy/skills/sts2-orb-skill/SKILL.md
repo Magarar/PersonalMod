@@ -29,7 +29,7 @@ trigger_priority: 1
 9. 创建 Orb 视觉场景 (Node2D)
 10. 编写本地化 JSON（title + description + smartDescription）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-08-add-orb/
 
@@ -47,7 +47,7 @@ RitsuLib 注册的 Orb ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `TestOrb` | `PERSONALMOD_ORB_TEST_ORB` |
+| `TestOrb` | `{{MODID_UPPER}}_ORB_TEST_ORB` |
 | `LightningOrb` | `PERSONALMOD_ORB_LIGHTNING_ORB` |
 | `DrawOrb` | `PERSONALMOD_ORB_DRAW_ORB` |
 
@@ -312,7 +312,7 @@ ModTypeDiscoveryHub.RegisterModAssembly(Assembly.GetExecutingAssembly());
 ### 9.2 内容包注册
 
 ```csharp
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .Orb<TestOrb>()
     .Apply();
 ```
@@ -412,7 +412,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Orbs;
+namespace {{MODID}}.{{MODID}}Code.Orbs;
 
 [RegisterOrb]
 public class TestOrb : ModOrbTemplate
@@ -427,8 +427,8 @@ public class TestOrb : ModOrbTemplate
     public override Color DarkenedColor => new(0.1f, 0.2f, 0.5f);
 
     public override OrbAssetProfile AssetProfile => new(
-        IconPath: "res://PersonalMod/images/orbs/test_orb.png",
-        VisualsScenePath: "res://PersonalMod/scenes/orbs/test_orb.tscn"
+        IconPath: "res://{{MODID}}/images/orbs/test_orb.png",
+        VisualsScenePath: "res://{{MODID}}/scenes/orbs/test_orb.tscn"
     );
 
     // 创建视觉精灵（无需手动挂脚本）
@@ -635,7 +635,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Orbs;
+namespace {{MODID}}.{{MODID}}Code.Orbs;
 
 [RegisterOrb]
 public class MyOrb : ModOrbTemplate
@@ -653,13 +653,13 @@ public class MyOrb : ModOrbTemplate
 ## 14. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Orbs/
+{{MODID}}/{{MODID}}Code/Orbs/
 ├── PersonalModOrbModel.cs           # 抽象基类（可选）
 ├── TestOrb.cs                       # 抽牌球
 ├── LightningOrb.cs                  # 闪电球
 └── FrostOrb.cs                      # 冰霜球
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── scenes/
 │   └── orbs/
 │       ├── test_orb.tscn            # 球体视觉场景

@@ -25,7 +25,7 @@ trigger_priority: 1
 7. 重写 `OnUse` 方法编写使用逻辑
 8. 编写本地化 JSON（title + description）
 
-**当前项目 ModId**: `PersonalMod`
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
 
 **参考教程**: https://glitchedreme.github.io/SlayTheSpire2ModdingTutorials/docs/04-ritsulib/04-06-add-potion/
 
@@ -43,7 +43,7 @@ RitsuLib 注册的药水 ID 格式：
 
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
-| `TestPotion` | `PERSONALMOD_POTION_TEST_POTION` |
+| `TestPotion` | `{{MODID_UPPER}}_POTION_TEST_POTION` |
 | `StrengthPotion` | `PERSONALMOD_POTION_STRENGTH_POTION` |
 | `HealingPotion` | `PERSONALMOD_POTION_HEALING_POTION` |
 
@@ -151,10 +151,10 @@ PotionUsage.Automatic    // 自动触发使用（如 FairyInABottle 自动救命
 
 ```csharp
 TargetType.Self          // 自身
-TargetType.SingleEnemy   // 单一敌人
+TargetType.AnyEnemy      // 一个敌人（玩家选择）
 TargetType.AllEnemies    // 全体敌人
-TargetType.SelfOrEnemy   // 自身或敌人
 TargetType.AnyPlayer     // 任意玩家（含自己，可用于多玩家模式投掷药水）
+TargetType.AnyAlly       // 任意友方
 ```
 
 ---
@@ -274,7 +274,7 @@ ModTypeDiscoveryHub.RegisterModAssembly(Assembly.GetExecutingAssembly());
 ### 7.2 内容包注册
 
 ```csharp
-RitsuLibFramework.CreateContentPack("PersonalMod")
+RitsuLibFramework.CreateContentPack("{{MODID}}")
     .Potion<SharedPotionPool, TestPotion>()  // 注册到共享池
     .Potion<MyCharacterPotionPool, MyPotion>()  // 注册到角色专属池
     .Apply();
@@ -441,7 +441,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Potions;
+namespace {{MODID}}.{{MODID}}Code.Potions;
 
 [RegisterPotion(typeof(SharedPotionPool))]
 public class BlockPotion : ModPotionTemplate
@@ -455,8 +455,8 @@ public class BlockPotion : ModPotionTemplate
     ];
 
     public override PotionAssetProfile AssetProfile => new(
-        ImagePath: $"res://PersonalMod/images/potions/{GetType().Name}.png",
-        OutlinePath: $"res://PersonalMod/images/potions/{GetType().Name}.png"
+        ImagePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png",
+        OutlinePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png"
     );
 
     protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature? target)
@@ -486,8 +486,8 @@ public class StrengthPotion : ModPotionTemplate
         [HoverTipFactory.FromPower<StrengthPower>()];
 
     public override PotionAssetProfile AssetProfile => new(
-        ImagePath: $"res://PersonalMod/images/potions/{GetType().Name}.png",
-        OutlinePath: $"res://PersonalMod/images/potions/{GetType().Name}.png"
+        ImagePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png",
+        OutlinePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png"
     );
 
     protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature? target)
@@ -514,8 +514,8 @@ public class HealingPotion : ModPotionTemplate
     ];
 
     public override PotionAssetProfile AssetProfile => new(
-        ImagePath: $"res://PersonalMod/images/potions/{GetType().Name}.png",
-        OutlinePath: $"res://PersonalMod/images/potions/{GetType().Name}.png"
+        ImagePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png",
+        OutlinePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png"
     );
 
     protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature? target)
@@ -534,15 +534,15 @@ public class FirePotion : ModPotionTemplate
 {
     public override PotionRarity Rarity => PotionRarity.Common;
     public override PotionUsage Usage => PotionUsage.CombatOnly;
-    public override TargetType TargetType => TargetType.SingleEnemy;
+    public override TargetType TargetType => TargetType.AnyEnemy;
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(15)
     ];
 
     public override PotionAssetProfile AssetProfile => new(
-        ImagePath: $"res://PersonalMod/images/potions/{GetType().Name}.png",
-        OutlinePath: $"res://PersonalMod/images/potions/{GetType().Name}.png"
+        ImagePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png",
+        OutlinePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png"
     );
 
     protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature? target)
@@ -603,8 +603,8 @@ public class SoulPotion : ModPotionTemplate
         [HoverTipFactory.FromCard<Soul>()];
 
     public override PotionAssetProfile AssetProfile => new(
-        ImagePath: $"res://PersonalMod/images/potions/{GetType().Name}.png",
-        OutlinePath: $"res://PersonalMod/images/potions/{GetType().Name}.png"
+        ImagePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png",
+        OutlinePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png"
     );
 
     protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature? target)
@@ -621,8 +621,8 @@ public class SoulPotion : ModPotionTemplate
 public abstract class PersonalModPotionModel : ModPotionTemplate
 {
     public override PotionAssetProfile AssetProfile => new(
-        ImagePath: $"res://PersonalMod/images/potions/{GetType().Name}.png",
-        OutlinePath: $"res://PersonalMod/images/potions/{GetType().Name}.png"
+        ImagePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png",
+        OutlinePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png"
     );
 }
 
@@ -656,7 +656,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace PersonalMod.PersonalModCode.Potions;
+namespace {{MODID}}.{{MODID}}Code.Potions;
 
 [RegisterPotion(typeof(SharedPotionPool))]
 public class MyPotion : ModPotionTemplate
@@ -692,7 +692,7 @@ protected override async Task OnUse(PlayerChoiceContext ctx, Creature? target)
 | TargetType | target 参数 | 示例 |
 |-----------|------------|------|
 | `TargetType.Self` | null | 增益自身效果 |
-| `TargetType.SingleEnemy` | 敌人 | 对敌人造成伤害 |
+| `TargetType.AnyEnemy` | 敌人 | 对敌人造成伤害 |
 | `TargetType.AnyPlayer` | 玩家或 null | 可对自己或队友使用 |
 | `TargetType.AllEnemies` | null | 全体伤害（无需选择目标） |
 
@@ -737,13 +737,13 @@ potion PERSONALMOD_POTION_TEST_POTION
 ## 14. 文件组织
 
 ```
-PersonalMod/PersonalModCode/Potions/
+{{MODID}}/{{MODID}}Code/Potions/
 ├── PersonalModPotionModel.cs        # 抽象基类（可选）
 ├── BlockPotion.cs                   # 格挡药水
 ├── HealingPotion.cs                 # 治疗药水
 └── StrengthPotion.cs                # 力量药水
 
-PersonalMod/PersonalMod/
+{{MODID}}/{{MODID}}/
 ├── images/
 │   └── potions/
 │       ├── BlockPotion.png          # 药水本体图片
@@ -843,7 +843,7 @@ PersonalMod/PersonalMod/
 - [ ] 是否重写了 `OnUse` 方法且使用了 `async Task`？
 - [ ] 方法签名是否与基类完全一致？
 - [ ] `TargetType.Self` 时是否正确处理了 `target` 为 null 的情况？
-- [ ] `TargetType.SingleEnemy` 时是否调用了 `AssertValidForTargetedPotion`？
+- [ ] `TargetType.AnyEnemy` 时是否调用了 `AssertValidForTargetedPotion`？
 - [ ] 是否使用了正确的命令（`BlockCmd` / `PowerCmd` / `DamageCmd` / `CreatureCmd` 等）？
 - [ ] Hook 回调中是否检查了 `Owner`？
 
