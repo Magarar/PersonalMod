@@ -1,0 +1,561 @@
+---
+description: 
+alwaysApply: true
+enabled: true
+updatedAt: 2026-05-12T02:21:42.475Z
+provider: 
+---
+
+# STS2 游戏工程资源指引
+
+## 1. 概述
+
+杀戮尖塔2 游戏工程的 Godot 项目资源目录，包含全部美术、音频、本地化、场景、动画、着色器等资源。
+
+**资源根目录**: `D:\杀戮尖塔2Mod\sts2\steam\`
+
+**项目基本配置**:
+| 属性 | 值 |
+|------|---|
+| 引擎 | Godot 4.5 (Mobile 支持) |
+| 渲染后端 | D3D12 (Windows) |
+| 主场景 | `res://scenes/game.tscn` |
+| 分辨率 | 1920x1080 (Canvas Items 拉伸) |
+| 音频系统 | FMOD (`res://banks/desktop`) |
+| 物理引擎 | Dummy (禁用) |
+| .NET SDK | 9.0.303 |
+
+**代码说明**: `src/Core/` 下全部 `.cs` 文件为 1B 空占位（实际逻辑编译在 DLL 中）。查阅 API 请使用 `sts2-core-ref` Skill。
+
+---
+
+## 2. 顶层目录速查
+
+```
+D:\杀戮尖塔2Mod\sts2\steam\
+├── project.godot              # Godot 项目配置 (15.46 KB)
+├── global.json                # .NET SDK 版本
+├── addons/                    # 编辑器插件 (7个)
+├── animations/                # Spine 骨骼动画 (角色/怪物/背景/VFX)
+├── banks/                     # FMOD 音频 bank (~300 MB)
+├── debug_audio/               # 调试音频 (mp3/wav, ~50个)
+├── fonts/                     # 字体 (多语言, 含中日韩)
+├── images/                    # ★ 最核心: 图集/肖像/事件/附魔/修改器
+│   ├── atlases/               #   TexturePacker 精灵表 (14张, 2665精灵)
+│   ├── packed/                #   ★ Mod 参考资源 (肖像/模板/UI/特效等)
+│   ├── events/                #   事件插画 (~60张)
+│   ├── enchantments/          #   附魔图标 (24个)
+│   ├── ancients/              #   远古角色占位图
+│   └── card_overlays/         #   卡牌覆盖效果
+├── localization/              # ★ 本地化 JSON (13语言 x 48文件)
+├── materials/                 # 材质 .tres (~170个)
+├── models/                    # 3D 模型 (仅1个 VFX 网格)
+├── scenes/                    # Godot 场景 (~700+)
+│   ├── cards/                 #   卡牌场景
+│   ├── combat/                #   战斗 UI
+│   ├── creature_visuals/      #   怪物视觉 (~150个)
+│   ├── screens/               #   完整 UI 画面 (~137个)
+│   ├── vfx/                   #   VFX 特效 (~327个)
+│   ├── ui/                    #   通用 UI 组件 (58个)
+│   └── rooms/                 #   房间场景 (6个)
+├── shaders/                   # 着色器 .gdshader (~100+)
+├── src/                       # 代码 (全空占位)
+│   ├── Core/                  #   C# 桩代码 (46子目录, 全 1B)
+│   └── gdscript/              #   GDScript 代理 (音频/VFX)
+├── steam/                     # Steamworks SDK
+└── themes/                    # Godot 主题/字体配置
+```
+
+---
+
+## 3. 图集资源 (images/atlases/) — Mod 核心
+
+所有游戏精灵打包在 TexturePacker 图集中，每个 `.tpsheet` 是标准 JSON 格式的精灵表定义。
+
+### 3.1 图集总览
+
+| 图集 | 精灵数 | PNG 文件 | 尺寸 | 用途 |
+|------|--------|----------|------|------|
+| **card_atlas** | 875 | card_atlas_0/1/2.png | ~4032x4070 | ★ 卡牌肖像 |
+| **relic_atlas** | 341 | relic_atlas.png | 4096x680 | ★ 遗物图标 |
+| **relic_outline_atlas** | 341 | relic_outline_atlas.png | — | 遗物轮廓 |
+| **intent_atlas** | 310 | intent_atlas.png | — | 怪物意图 |
+| **power_atlas** | 263 | power_atlas.png | 4092x325 | ★ 能力图标 |
+| **controller_atlas** | 112 | controller_atlas.png | — | 手柄 UI |
+| **ui_atlas** | 102 | ui_atlas_0/1.png | — | 通用 UI |
+| **compressed_atlas** | 55 | compressed_atlas.png | — | 压缩图集 |
+| **potion_atlas** | 63 | potion_atlas.png | 570x981 | ★ 药水图标 |
+| **potion_outline_atlas** | 63 | potion_outline_atlas.png | — | 药水轮廓 |
+| **epoch_atlas** | 57 | epoch_atlas.png | 1370x2040 | 纪元图标 |
+| **compressed** | 45 | compressed_0.png | — | 压缩 |
+| **era_atlas** | 27 | era_atlas.png | — | 时代图标 |
+| **stats_screen_atlas** | 16 | stats_screen_atlas.png | — | 统计画面 |
+
+### 3.2 tpsheet 格式
+
+```json
+{
+  "textures": [{
+    "image": "card_atlas_0.png",
+    "format": "RGBA8888",
+    "size": { "w": 4032, "h": 4070 },
+    "scale": 1,
+    "sprites": [{
+      "filename": "ancient_beta.png",
+      "region": { "x": 1, "y": 1, "w": 250, "h": 351 },
+      "rotated": false,
+      "margin": { "x": 0, "y": 0, "w": 0, "h": 0 }
+    }]
+  }]
+}
+```
+
+- `filename` 即精灵的 ID 名称 (如 `ancient_beta.png`)
+- Mod 的卡牌/遗物/能力图标也需按此格式加入对应图集
+
+### 3.3 卡牌肖像子目录 (images/packed/card_portraits/)
+
+```
+card_portraits/
+├── ancient_beta.png, beta.png              # 远古/测试
+├── ironclad/                               # 铁甲战士卡牌
+├── silent/                                 # 静默猎手卡牌
+├── defect/                                 # 缺陷卡牌
+├── necrobinder/                            # 死灵法师卡牌
+├── regent/                                 # 摄政王卡牌
+├── colorless/                              # 无色卡牌
+├── curse/                                  # 诅咒卡
+├── event/                                  # 事件卡
+├── status/                                 # 状态卡
+├── token/                                  # 衍生物卡
+└── quest/                                  # 任务卡
+```
+
+**命名规则**: 卡牌 ID 转小写作为文件名，如 `StrikeIronclad` → `ironclad/strike_ironclad.png`
+
+---
+
+## 4. 资源路径约定 — Mod 必读
+
+编写 Mod 时，各类资源需遵循以下路径约定：
+
+### 4.1 卡牌 (CardModel)
+
+| 资源 | 图集路径 (.tres) | PNG 路径 | 说明 |
+|------|-------------------|----------|------|
+| 肖像 | `atlases/card_atlas.sprites/{pool_title}/{entry}.tres` | `packed/card_portraits/{pool_title}/{entry}.png` | pool_title 为卡池名 |
+
+### 4.2 能力 (PowerModel)
+
+| 资源 | 图集路径 (.tres) | PNG 路径 | 说明 |
+|------|-------------------|----------|------|
+| 图标 | `atlases/power_atlas.sprites/{entry}.tres` | — | entry 为能力 ID 小写 |
+
+### 4.3 遗物 (RelicModel)
+
+| 资源 | 图集路径 (.tres) | PNG 路径 | 说明 |
+|------|-------------------|----------|------|
+| 图标 | `atlases/relic_atlas.sprites/{iconbasename}.tres` | — | iconbasename = Entry.ToLowerInvariant() |
+| 大图标 | — | `relics/{iconbasename}.png` | — |
+| 轮廓 | — | `relics/{iconbasename}_outline.png` | — |
+
+### 4.4 药水 (PotionModel)
+
+| 资源 | 图集路径 (.tres) | PNG 路径 |
+|------|-------------------|----------|
+| 图标 | `atlases/potion_atlas.sprites/{entry}.tres` | — |
+| 轮廓 | `atlases/potion_outline_atlas.sprites/{entry}.tres` | — |
+
+### 4.5 卡牌模板 (materials/cards/)
+
+```
+materials/cards/
+├── banners/           # 卡牌稀有度横幅
+│   ├── card_banner_common.tres
+│   ├── card_banner_uncommon.tres
+│   ├── card_banner_rare.tres
+│   ├── card_banner_curse.tres
+│   ├── card_banner_event.tres
+│   ├── card_banner_status.tres
+│   ├── card_banner_ancient.tres
+│   └── card_banner_quest_mat.tres
+├── frames/            # 卡牌边框颜色
+│   ├── card_frame_red.tres      # 铁甲战士
+│   ├── card_frame_blue.tres     # 静默猎手
+│   ├── card_frame_green.tres    # 缺陷
+│   ├── card_frame_orange.tres   # 死灵法师
+│   ├── card_frame_pink.tres     # 摄政王
+│   ├── card_frame_colorless.tres
+│   ├── card_frame_curse.tres
+│   └── card_frame_quest_mat.tres
+```
+
+---
+
+## 5. 本地化资源 (localization/)
+
+### 5.1 支持语言
+
+| 代码 | 语言 | 状态 |
+|------|------|------|
+| `eng` | English | 源语言 (6893 键) |
+| `zhs` | 简体中文 | 完成 (6805 键) |
+| `jpn` | 日语 | 完成 |
+| `kor` | 韩语 | 完成 |
+| `rus` | 俄语 | 完成 |
+| `fra` | 法语 | 完成 |
+| `spa` | 西班牙语(拉美) | 完成 |
+| `esp` | 西班牙语(西班牙) | 完成 |
+| `tur` | 土耳其语 | 完成 |
+| `ita` | 意大利语 | 完成 |
+| `ptb` | 葡萄牙语(巴西) | 完成 |
+| `pol` | 波兰语 | 完成 |
+| `deu` | 德语 | 完成 |
+| `tha` | 泰语 | 未完成 (4730 键) |
+
+### 5.2 JSON 文件清单 (每语言 48 个)
+
+| 文件 | 内容 | eng 大小 |
+|------|------|---------|
+| `cards.json` | 卡牌标题与描述 | 94.6 KB |
+| `events.json` | 事件文本 | 111.69 KB |
+| `ancients.json` | 远古角色对话 | 33.31 KB |
+| `relics.json` | 遗物文本 | 88.15 KB |
+| `powers.json` | 能力/力量文本 | 78.53 KB |
+| `monsters.json` | 怪物名称和技能 | 24.24 KB |
+| `epochs.json` | 纪元描述 | 33.68 KB |
+| `encounters.json` | 遭遇战描述 | 12.71 KB |
+| `potions.json` | 药水文本 | 10.26 KB |
+| `characters.json` | 角色描述 | 5.28 KB |
+| `enchantments.json` | 附魔文本 | 3.78 KB |
+| `main_menu_ui.json` | 主菜单 UI 文本 | 15.33 KB |
+| `settings_ui.json` | 设置界面 | 10.52 KB |
+| `game_over_screen.json` | 游戏结束画面 | 3.1 KB |
+| `card_keywords.json` | 卡牌关键词 | — |
+| `static_hover_tips.json` | 悬停提示 | — |
+| `intents.json` | 意图文本 | — |
+| `map.json` | 地图文本 | — |
+| `modifiers.json` | 修改器文本 | — |
+| `badges.json` | 徽章文本 | — |
+| `orbs.json` | 灵魂球文本 | — |
+| `afflictions.json` | 痛苦文本 | — |
+| `acts.json` | 幕文本 | — |
+| `eras.json` | 时代文本 | — |
+| `bestiary.json` | 图鉴文本 | — |
+| `card_library.json` | 卡牌图鉴 | — |
+| `card_reward_ui.json` | 卡牌奖励 UI | — |
+| `card_selection.json` | 卡牌选择 | — |
+| `combat_messages.json` | 战斗消息 | — |
+| `credits.json` | 制作名单 | — |
+| `extensions.json` | 扩展 | — |
+| `ftues.json` | 新手引导 | — |
+| `game_modes.json` | 游戏模式 | — |
+| `gameplay_ui.json` | 游戏 UI | — |
+| `inspect_relic_screen.json` | 遗物检查 | — |
+| `merchant_room.json` | 商店 | — |
+| `potion_lab.json` | 药水实验室 | — |
+| `relic_collection.json` | 遗物收藏 | — |
+| `rest_site_ui.json` | 休息点 UI | — |
+| `rich_presence.json` | Steam 状态 | — |
+| `run_history.json` | 战绩历史 | — |
+| `stats_screen.json` | 统计画面 | — |
+| `timeline.json` | 时间线 | — |
+| `vfx.json` | VFX 文本 | — |
+| `achievements.json` | 成就 | — |
+
+### 5.3 JSON 格式
+
+**键格式**: `{CATEGORY}/{ENTRY}.{FIELD}`
+
+```json
+{
+  "ABRASIVE.description": "Gain {DexterityPower:diff()} [gold]Dexterity[/gold].\nGain {ThornsPower:diff()} [gold]Thorns[/gold].",
+  "ABRASIVE.title": "Abrasive",
+  "ADRENALINE.description": "Gain {Energy:energyIcons()}.\nDraw 2 cards.",
+  "ADRENALINE.title": "Adrenaline"
+}
+```
+
+**Mod 本地化**时，在自己的 `localization/eng/` 下创建同结构 JSON 文件即可。
+
+### 5.4 特殊语法
+
+- **动态变量**: `{VariableName:diff()}` — 显示能力带来的数值变化
+- **能量图标**: `{Energy:energyIcons()}` — 渲染能量图标
+- **BBCode 标签**:
+  - `[gold]文字[/gold]` — 金色高亮
+  - `[b]文字[/b]` — 加粗
+  - `[purple]文字[/purple]` — 紫色
+  - `[jitter]文字[/jitter]` — 抖动效果
+  - `[sine]文字[/sine]` — 正弦波动
+
+---
+
+## 6. 场景资源 (scenes/)
+
+### 6.1 核心 UI 画面 (scenes/screens/)
+
+| 场景 | 说明 | 大小 |
+|------|------|------|
+| `main_menu.tscn` | 主菜单 | — |
+| `settings_screen.tscn` | 设置画面 | 88.77 KB |
+| `credits_screen.tscn` | 制作名单 | 63.47 KB |
+| `character_select_screen.tscn` | 角色选择 | — |
+| `game_over_screen.tscn` | 游戏结束 | — |
+| `deck_view_screen.tscn` | 牌组查看 | — |
+| `rewards_screen.tscn` | 奖励画面 | — |
+| `bestiary/` | 怪物图鉴 | — |
+| `card_library/` | 卡牌图鉴 | — |
+| `card_selection/` | 卡牌选择 | — |
+| `inspect_relic_screen/` | 遗物检查 | — |
+| `potion_lab/` | 药水实验室 | — |
+| `modding/` | Mod 管理 | — |
+| `run_history_screen/` | 战绩历史 | — |
+| `stats_screen/` | 统计画面 | — |
+
+### 6.2 卡牌场景 (scenes/cards/)
+
+| 场景 | 说明 |
+|------|------|
+| `card.tscn` (20.84 KB) | 卡牌主场景 |
+| `tiny_card.tscn` | 小卡牌 |
+| `card_bundle.tscn` | 卡牌组 |
+| `card_grid.tscn` | 卡牌网格 |
+| `enchant_preview.tscn` | 附魔预览 |
+| `upgrade_preview.tscn` | 升级预览 |
+
+### 6.3 战斗 UI (scenes/combat/)
+
+| 场景 | 说明 |
+|------|------|
+| `combat_ui.tscn` | 战斗主 UI |
+| `combat_piles_container.tscn` | 牌堆容器 |
+| `creature.tscn` | 生物显示 |
+| `creature_state_display.tscn` | 生物状态 |
+| `draw_pile.tscn` | 抽牌堆 |
+| `discard_pile.tscn` | 弃牌堆 |
+| `exhaust_pile.tscn` | 消耗堆 |
+| `health_bar.tscn` | 血条 |
+| `intent.tscn` | 怪物意图 |
+| `power.tscn` | 能力图标 |
+| `end_turn_button.tscn` | 结束回合按钮 |
+| `player_hand.tscn` | 玩家手牌 |
+
+### 6.4 房间场景 (scenes/rooms/)
+
+| 场景 | 说明 |
+|------|------|
+| `combat_room.tscn` | 战斗房间 |
+| `event_room.tscn` | 事件房间 |
+| `map_room.tscn` | 地图房间 |
+| `merchant_room.tscn` (23.76 KB) | 商店 |
+| `rest_site_room.tscn` | 休息点 |
+| `treasure_room.tscn` (12.74 KB) | 宝箱 |
+
+### 6.5 事件场景 (scenes/events/)
+
+| 场景 | 说明 |
+|------|------|
+| `ancient_event_layout.tscn` | 远古角色事件布局 |
+| `ancient_dialogue_line.tscn` | 对话行 |
+| `combat_event_layout.tscn` | 战斗事件布局 |
+| `default_event_layout.tscn` | 默认事件布局 |
+| `event_option_button.tscn` | 事件选项按钮 |
+
+---
+
+## 7. Spine 动画资源 (animations/)
+
+游戏使用 Spine 2D 骨骼动画，每个动画目录通常包含: `.atlas`, `.png`, `.skel`, `*_skel_data.tres`。
+
+### 7.1 动画分类
+
+| 目录 | 数量 | 说明 |
+|------|------|------|
+| `monsters/` | ~97 | 怪物战斗动画 (最大分类) |
+| `characters/` | 5 | 玩家角色战斗动画 (ironclad/silent/defect/necrobinder/regent) |
+| `character_select/` | 5 | 角色选择动画 |
+| `merchant/` | 5 | 商人动画 (每角色一版) |
+| `backgrounds/` | ~8 | 场景背景动画 (主菜单/商人/宝箱/涅奥/仪式之兽等) |
+| `map/` | 3 | Boss 节点动画 |
+| `rest_site/` | 1 | 休息点动画 |
+| `vfx/` | ~14 | VFX 动画 (肾上腺素/咬/链/激光等) |
+| `ui/` | — | UI 动画 |
+
+### 7.2 怪物动画子目录 (部分)
+
+`animations/monsters/` 下包含所有怪物的 Spine 动画，命名与怪物 ID 对应：
+architect, assassin_ruby_raider, axe_ruby_raider, battleworn_dummy, bygone_effigy, ceremonial_beast, chomper, corpse_slug, cultists, decimillipede, devoted_sculptor, entomancer, fabricator, fogmog, fossil_stalker, frog_knight, fuzzy_wurm_crawler, globe_head, gremlin_merc, haunted_ship, inklet, kaiser_crab, knowledge_demon, lagavulin_matriarch, magi_knight, mawler, mecha_knight, owl_magistrate, queen, sludge_spinner, slumbering_beetle, sneaky_gremlin, soul_fysh, soul_nexus, spectral_knight, test_subject, the_insatiable, the_lost, vine_shambler, waterfall_giant 等 ~97 个。
+
+---
+
+## 8. 音频资源
+
+### 8.1 FMOD Bank (banks/desktop/)
+
+| Bank 文件 | 大小 | 说明 |
+|----------|------|------|
+| Master.bank | 2.01 MB | 主 bank |
+| Master.strings.bank | 29.75 KB | 字符串映射 |
+| **sfx.bank** | 39.38 MB | 音效 (最大) |
+| act1_a1/a2.bank | ~67 MB | 第一幕音乐 (双版本) |
+| act2_a1/a2.bank | ~80 MB | 第二幕音乐 |
+| act3_a1/a2.bank | ~58 MB | 第三幕音乐 |
+| ambience.bank | 14.6 MB | 环境音 |
+| temp_sfx.bank | 1.74 MB | 临时音效 |
+
+**音频总线布局**: `res://default_bus_layout.tres`
+**FMOD 集成**: 通过 `addons/fmod/` 插件，代理层在 `src/gdscript/audio_manager_proxy.gd`
+
+### 8.2 调试音频 (debug_audio/)
+
+约 50 个独立音频文件，分类：
+- **战斗**: battle_start, enemy_turn, player_turn, victory, attack 类型
+- **卡牌**: card_deal, card_select, card_exhaust, card_smith
+- **能量球**: dark/frost/glass/lightning/plasma_orb 的 channel/evoke/passive
+- **UI**: map_hover, map_open, map_ping, ui_click, hey, deny
+- **药水**: gain_potion, potion_slosh
+- **特殊**: doom_apply, dagger_throw, relic_get, character_unlock
+
+---
+
+## 9. 着色器与材质
+
+### 9.1 着色器 (shaders/)
+
+```
+shaders/
+├── 通用着色器 (根目录)
+│   ├── boss_map_point.gdshader       # Boss 地图节点
+│   ├── button_pulse.gdshader         # 按钮脉冲
+│   ├── card_ripple.gdshader          # 卡牌波纹
+│   ├── dark_blur.gdshader            # 暗化模糊
+│   ├── dissolve.gdshader             # 溶解效果
+│   ├── doom_overlay.gdshader         # 毁灭叠加
+│   ├── hsv.gdshader                  # HSV 调色
+│   ├── power.gdshader                # 能力图标效果
+│   ├── relic.gdshader                # 遗物效果
+│   ├── wiggle.gdshader               # 摇摆
+│   └── radial_blur.gdshader          # 径向模糊
+├── blur/                             # 模糊着色器 + ShaderGenerator.gd
+├── map_drawing/                      # 地图绘制 (line_draw/line_erase)
+├── vfx/                              # VFX 着色器 (最丰富)
+│   ├── _util/                        #   工具库 (.gdshaderinc): bloat, erosion, flipbook, hue_shift 等
+│   ├── common/                       #   通用粒子: poof, ray, ring_polar, round_smoke 等
+│   ├── cards/                        #   卡牌变换
+│   ├── dagger/, fire/, grand_finale/, hyperbeam/, heavy_blunt/
+│   ├── missile/, monsters/, poison/, scream/, sweeping_beam/
+│   └── ui/                           #   UI 着色器
+├── afflictions/                      # 异常状态着色器
+└── .tres 材质文件 (colorize_addblend, overlay_blend 等)
+```
+
+### 9.2 关键材质 (materials/)
+
+| 目录 | 内容 | 数量 |
+|------|------|------|
+| `cards/banners/` | 稀有度横幅 (common/uncommon/rare/curse/event/status/ancient/quest) | 8 |
+| `cards/frames/` | 角色边框 (red/blue/green/orange/pink/colorless/curse/quest) | 8 |
+| `transitions/` | 角色转场 (ironclad/silent/defect/necrobinder/regent/fight/game_over/fade) | 8 |
+| `ui/` | UI 材质 (能量球, 悬停提示, 遗物) | ~5 |
+| `vfx/` | VFX 材质 (最大分类, 含 common/dagger/fire/grand_finale/heavy_blunt/hyperbeam 等) | ~120+ |
+
+---
+
+## 10. 其他资源
+
+### 10.1 事件插画 (images/events/)
+
+约 60 张事件插画 PNG，命名与事件 ID 对应：
+abyssal_baths, amalgamator, aroma_of_chaos 等。
+
+### 10.2 附魔图标 (images/enchantments/)
+
+24 个附魔效果图标 PNG：
+adroit, clone, corrupted, favored, glam, goopy, imbued, inky, instinct, missing_enchantment, momentum, nimble, perfect_fit, royally_approved, sharp, slither, slumbering_essence, souls_power, sown, spiral, steady, swift, tezcataras_ember, vigorous。
+
+### 10.3 修改器图标 (images/packed/modifiers/)
+
+16 个跑酷修改器图标 PNG：midas, cursed_run 等。
+
+### 10.4 感染覆盖图 (images/card_overlays/infection/)
+
+25 张感染效果覆盖动画帧：infection_00.png ~ infection_24.png。
+
+### 10.5 远古角色占位 (images/ancients/)
+
+7 个远古角色的占位图：
+darv_placeholder, nonupeipe_placeholder, orobas_placeholder, pael_placeholder, tanx_placeholder, vakuu_placeholder, under_construction。
+
+### 10.6 字体 (fonts/)
+
+| 类别 | 字体 | 用途 |
+|------|------|------|
+| 通用 | kreon_bold/regular, spectral_bold, bitter_medium_italic | UI 文本 |
+| 代码 | source_code_pro_medium/semibold | 调试/代码 |
+| 日语 | NotoSansCJKjp-Bold/Medium/Regular.otf | ~16MB 每个 |
+| 韩语 | GyeonggiCheonnyeonBatangBold.ttf | 10.82 MB |
+| 俄语 | FiraSansExtraCondensed-Bold/Italic/Regular.ttf | ~445 KB |
+| 简中 | NotoSansMonoCJKsc-Regular.otf, SourceHanSerifSC-Bold/Medium.otf | ~15-24 MB |
+
+### 10.7 插件 (addons/)
+
+| 插件 | 功能 | 类型 |
+|------|------|------|
+| `atlas_generator` | 图集生成 | GDScript |
+| `dev_tools` | 开发工具 | GDScript |
+| `fmod` | FMOD 音频 | GDExtension |
+| `mega_text` | 大文本渲染 | C# |
+| `megacontentcreator` | 内容创建器 | GDScript |
+| `sentry` | 错误追踪 | GDExtension |
+| `spine` | Spine 骨骼动画 | GDExtension |
+
+---
+
+## 11. Mod 资源开发指引
+
+### 11.1 创建新卡牌的资源需求
+
+1. **卡牌肖像 PNG**: 放入 `PersonalMod/PersonalMod/images/card_portraits/{pool_title}/{card_id}.png`
+2. **本地化 JSON**: 在 `PersonalMod/PersonalMod/localization/eng/cards.json` 添加:
+   ```json
+   { "MYCARD.title": "My Card", "MYCARD.description": "Deal {DamageVar:val()} damage." }
+   ```
+3. **关键词** (可选): 在 `card_keywords.json` 添加关键词解释
+4. **悬停提示** (可选): 在 `static_hover_tips.json` 添加
+
+### 11.2 创建新能力的资源需求
+
+1. **能力图标 PNG**: 放入 `PersonalMod/PersonalMod/images/powers/{power_id}.png`
+2. **本地化 JSON**: 在 `powers.json` 添加 `{ "MYPOWER.title": "...", "MYPOWER.description": "..." }`
+
+### 11.3 创建新遗物的资源需求
+
+1. **遗物图标 PNG**: 放入 `PersonalMod/PersonalMod/images/relics/{relic_id}.png`
+2. **遗物轮廓 PNG**: 放入 `PersonalMod/PersonalMod/images/relics/{relic_id}_outline.png`
+3. **本地化 JSON**: 在 `relics.json` 添加 title + description + flavor
+
+### 11.4 资源命名规则总结
+
+| 资源类型 | 命名规则 | 示例 |
+|---------|---------|------|
+| 卡牌 ID | PascalCase 类名 | `StrikeIronclad` |
+| 卡牌 PNG | 小写下划线 | `strike_ironclad.png` |
+| 能力 ID | PascalCase 类名 | `StrengthPower` |
+| 能力 PNG | 小写下划线 | `strength.png` |
+| 遗物 ID | PascalCase 类名 | `BurningBlood` |
+| 遗物 PNG | 小写下划线 | `burning_blood.png` |
+| 遗物轮廓 | 小写下划线 + `_outline` 后缀 | `burning_blood_outline.png` |
+| 本地化键 | 大类/ID.字段 | `cards/STRIKE_IRONCLAD.title` |
+
+### 11.5 参考已有资源的快速路径
+
+- **查找卡牌图片**: `D:\杀戮尖塔2Mod\sts2\steam\images\packed\card_portraits\{角色}\`
+- **查找能力图标**: `D:\杀戮尖塔2Mod\sts2\steam\images\atlases\power_atlas.tpsheet` (搜索 filename)
+- **查找遗物图标**: `D:\杀戮尖塔2Mod\sts2\steam\images\atlases\relic_atlas.tpsheet` (搜索 filename)
+- **查找本地化文本**: `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\{category}.json`
+- **查找怪物动画**: `D:\杀戮尖塔2Mod\sts2\steam\animations\monsters\{monster_id}\`
+- **查找事件插画**: `D:\杀戮尖塔2Mod\sts2\steam\images\events\{event_id}.png`
+- **查找 VFX 特效**: `D:\杀戮尖塔2Mod\sts2\steam\scenes\vfx\vfx_{effect_name}.tscn`
+- **查找着色器**: `D:\杀戮尖塔2Mod\sts2\steam\shaders\`
+- **查找材质**: `D:\杀戮尖塔2Mod\sts2\steam\materials\`
