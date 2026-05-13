@@ -10,5 +10,9 @@
   "DEBU999_PERSONAL_MOD_KEYWORD_ACCELERATE.title": "激奏",
   "DEBU999_PERSONAL_MOD_KEYWORD_ACCELERATE.description": "当费用低于指定费用时，当作技能牌打出并发动效果。",
   "DEBU999_PERSONAL_MOD_KEYWORD_CRYSTALLIZE.title": "结晶",
-  "DEBU999_PERSONAL_MOD_KEYWORD_CRYSTALLIZE.description": "当费用低于指定费用时，当作能力牌打出并发动效果。"
+  "DEBU999_PERSONAL_MOD_KEYWORD_CRYSTALLIZE.description": "当费用低于指定费用时，当作能力牌打出并发动效果。",
+  "DEBU999_PERSONAL_MOD_KEYWORD_CHANT.title": "吟唱",
+  "DEBU999_PERSONAL_MOD_KEYWORD_CHANT.description": "回合开始时，计数-1，并触发相应效果。",
+  "DEBU999_PERSONAL_MOD_KEYWORD_CURTAIN_CALL.title": "谢幕曲",
+  "DEBU999_PERSONAL_MOD_KEYWORD_CURTAIN_CALL.description": "能力被移除时触发相应效果"
 }

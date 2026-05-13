@@ -21,11 +21,17 @@
   "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_TRIGGER.description": "对手牌中所有增幅卡牌触发[blue]{AmplifyCount}[/blue]次[gold]魔力增幅[/gold] 。\n抽{Cards:diff()}张牌。",
 
   "DEBU999_PERSONAL_MOD_CARD_TEST_OVERCHARGE_CARD.title": "爆能打击",
-  "DEBU999_PERSONAL_MOD_CARD_TEST_OVERCHARGE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]爆能强化{PlusedCost}[/gold] ：改为造成[blue]{PlusedDamage}[/blue]点伤害。",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_OVERCHARGE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]爆能强化{PlusedCost}[/gold]:改为造成[blue]{PlusedDamage}[/blue]点伤害。",
 
   "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.title": "激奏重击",
-  "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]激奏{AccelCost}[/gold] ：改为获得[blue]{AccelBlock}[/blue]点格挡（当作技能牌）。",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]激奏{AccelCost}[/gold] :改为获得[blue]{AccelBlock}[/blue]点格挡（当作技能牌）。",
 
   "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.title": "结晶打击",
-  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]结晶{CrystallizeCost}[/gold] ：改为获得[blue]{CrystallizeStrength}[/blue]点力量（当作能力牌）。"
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]结晶{CrystallizeCost}[/gold] :改为获得[blue]{CrystallizeStrength}[/blue]点力量（当作能力牌）。",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.title": "吟唱打击",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.description": "[gold]吟唱{ChantCount:diff()}[/gold]:\n对所有敌人造成{ChantDamage:diff()}点伤害。",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.title": "吟唱爆破",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.description": "[gold]吟唱1[/gold]。\n[gold]谢幕曲[/gold]:对所有敌人造成20点伤害。"
 }

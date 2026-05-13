@@ -377,8 +377,8 @@ protected override IEnumerable<Type> ExpansionEpochTypes =>
 ### 11.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/epochs.json
-PersonalMod/PersonalMod/localization/zhs/epochs.json
+{{MODID}}/{{MODID}}/localization/eng/epochs.json
+{{MODID}}/{{MODID}}/localization/zhs/epochs.json
 ```
 
 ### 11.2 格式
@@ -446,13 +446,13 @@ namespace {{MODID}}.{{MODID}}Code.Epochs;
 
 // ========== Story ==========
 [RegisterStory]
-public class PersonalModStory : ModStoryTemplate
+public class {{MODID}}Story : ModStoryTemplate
 {
-    protected override string StoryKey => "personal_mod";
+    protected override string StoryKey => "{{MODID}}";
 
     // 辅助方法：生成通过第 N 幕的 Epoch ID
     internal static string ActEpochKey(int actNum) =>
-        ModContentRegistry.GetFixedPublicEntry(Entry.ModId, typeof(PersonalModCharacter))
+        ModContentRegistry.GetFixedPublicEntry(Entry.ModId, typeof({{MODID}}Character))
         + $"_{actNum + 1}_EPOCH";
 }
 
@@ -463,7 +463,7 @@ public class PersonalModStory : ModStoryTemplate
 [RequireAllCardsInPool(typeof(PersonalModCardPool))]
 public class PersonalModCharacterEpoch : CharacterUnlockEpochTemplate<PersonalModCharacter>
 {
-    public override string Id => "PERSONAL_MOD_CHARACTER_EPOCH";
+    public override string Id => "{{MODID_UPPER}}_CHARACTER_EPOCH";
 
     public override EpochAssetProfile AssetProfile => new(
         PackedPortraitPath: "res://{{MODID}}/images/epochs/character_epoch.png",
@@ -487,11 +487,11 @@ public class PersonalModCharacterEpoch : CharacterUnlockEpochTemplate<PersonalMo
 [RegisterEpochCards(typeof(TestCard1), typeof(TestCard2), typeof(TestCard3))]
 public class PersonalModCardEpoch : PackDeclaredCardUnlockEpochTemplate
 {
-    public override string Id => "PERSONAL_MOD_CARD_EPOCH";
+    public override string Id => "{{MODID_UPPER}}_CARD_EPOCH";
 
     public override EpochAssetProfile AssetProfile => new(
-        PackedPortraitPath: "res://PersonalMod/images/epochs/card_epoch.png",
-        BigPortraitPath: "res://PersonalMod/images/epochs/card_epoch_big.png"
+        PackedPortraitPath: "res://{{MODID}}/images/epochs/card_epoch.png",
+        BigPortraitPath: "res://{{MODID}}/images/epochs/card_epoch_big.png"
     );
 }
 
@@ -505,8 +505,8 @@ public sealed class PersonalModAct1Epoch : PackDeclaredCardUnlockEpochTemplate
     public override string Id => PersonalModStory.ActEpochKey(1);
 
     public override EpochAssetProfile AssetProfile => new(
-        PackedPortraitPath: "res://PersonalMod/images/epochs/act1_epoch.png",
-        BigPortraitPath: "res://PersonalMod/images/epochs/act1_epoch_big.png"
+        PackedPortraitPath: "res://{{MODID}}/images/epochs/act1_epoch.png",
+        BigPortraitPath: "res://{{MODID}}/images/epochs/act1_epoch_big.png"
     );
 }
 
@@ -520,8 +520,8 @@ public sealed class PersonalModAct2Epoch : PackDeclaredRelicUnlockEpochTemplate
     public override string Id => PersonalModStory.ActEpochKey(2);
 
     public override EpochAssetProfile AssetProfile => new(
-        PackedPortraitPath: "res://PersonalMod/images/epochs/act2_epoch.png",
-        BigPortraitPath: "res://PersonalMod/images/epochs/act2_epoch_big.png"
+        PackedPortraitPath: "res://{{MODID}}/images/epochs/act2_epoch.png",
+        BigPortraitPath: "res://{{MODID}}/images/epochs/act2_epoch_big.png"
     );
 }
 
@@ -535,8 +535,8 @@ public sealed class PersonalModAct3Epoch : PackDeclaredCardUnlockEpochTemplate
     public override string Id => PersonalModStory.ActEpochKey(3);
 
     public override EpochAssetProfile AssetProfile => new(
-        PackedPortraitPath: "res://PersonalMod/images/epochs/act3_epoch.png",
-        BigPortraitPath: "res://PersonalMod/images/epochs/act3_epoch_big.png"
+        PackedPortraitPath: "res://{{MODID}}/images/epochs/act3_epoch.png",
+        BigPortraitPath: "res://{{MODID}}/images/epochs/act3_epoch_big.png"
     );
 }
 
@@ -547,11 +547,11 @@ public sealed class PersonalModAct3Epoch : PackDeclaredCardUnlockEpochTemplate
 [RegisterEpochCards(typeof(TestCard8), typeof(TestCard9))]
 public sealed class PersonalModVictoryEpoch : PackDeclaredCardUnlockEpochTemplate
 {
-    public override string Id => "PERSONAL_MOD_VICTORY_EPOCH";
+    public override string Id => "{{MODID_UPPER}}_VICTORY_EPOCH";
 
     public override EpochAssetProfile AssetProfile => new(
-        PackedPortraitPath: "res://PersonalMod/images/epochs/victory_epoch.png",
-        BigPortraitPath: "res://PersonalMod/images/epochs/victory_epoch_big.png"
+        PackedPortraitPath: "res://{{MODID}}/images/epochs/victory_epoch.png",
+        BigPortraitPath: "res://{{MODID}}/images/epochs/victory_epoch_big.png"
     );
 }
 
@@ -562,10 +562,10 @@ public sealed class PersonalModVictoryEpoch : PackDeclaredCardUnlockEpochTemplat
 [RegisterEpochCards(typeof(TestCard10))]
 public sealed class PersonalModEliteEpoch : PackDeclaredCardUnlockEpochTemplate
 {
-    public override string Id => "PERSONAL_MOD_ELITE_EPOCH";
+    public override string Id => "{{MODID_UPPER}}_ELITE_EPOCH";
     public override EpochAssetProfile AssetProfile => new(
-        PackedPortraitPath: "res://PersonalMod/images/epochs/elite_epoch.png",
-        BigPortraitPath: "res://PersonalMod/images/epochs/elite_epoch_big.png"
+        PackedPortraitPath: "res://{{MODID}}/images/epochs/elite_epoch.png",
+        BigPortraitPath: "res://{{MODID}}/images/epochs/elite_epoch_big.png"
     );
 }
 ```
@@ -653,9 +653,9 @@ public class MyEpoch : PackDeclaredCardUnlockEpochTemplate
 | 角色 Story | `Timeline/Stories/` | (角色 Story 文件) |
 
 源码位置:
-- 基类: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Timeline\EpochModel.cs`
-- Story: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Timeline\StoryModel.cs`
-- 原版 Epoch 实现: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Timeline\Epochs\`
+- 基类: `{{STS2_SOURCE_ROOT}}Timeline\EpochModel.cs`
+- Story: `{{STS2_SOURCE_ROOT}}Timeline\StoryModel.cs`
+- 原版 Epoch 实现: `{{STS2_SOURCE_ROOT}}Timeline\Epochs\`
 
 ---
 

@@ -166,7 +166,7 @@ RitsuLib 提供辅助构建带命名空间选项键的方法：
 
 // 使用辅助方法
 string key = InitialOptionKey("ACCEPT");
-// 生成: "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT"
+// 生成: "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT"
 
 // 指定页面
 string key2 = ModOptionKey("SECOND_PAGE", "LEAVE");
@@ -234,7 +234,7 @@ RitsuLib 的 `ModAncientEventTemplate` 提供了 `DefineDialogues()` 的默认�
 
 | 部分 | 说明 | 示例 |
 |------|------|------|
-| `Entry` | Ancient 的完整 ID | `PERSONAL_MOD_ANCIENT_TEST_ANCIENT` |
+| `Entry` | Ancient 的完整 ID | `{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT` |
 | `CHAR_ENTRY` | 角色 ID 或 `ANY`/`firstVisitEver` | `IRONCLAD`, `SILENT`, `ANY` |
 | `DIALOGUE_INDEX` | 对话序号（每次访问递增） | `0`, `1`, `2` |
 | `LINE_INDEX` | 行号（多行对话依次递增） | `0`, `1`, `2` |
@@ -264,19 +264,19 @@ RitsuLib 的 `ModAncientEventTemplate` 提供了 `DefineDialogues()` 的默认�
 
 ```json
 {
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……第一次来？坐。",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-1.ancient": "等一会儿你就习惯了。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……第一次来？坐。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-1.ancient": "等一会儿你就习惯了。",
 
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
 
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，你的火太亮。",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续说",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……我有要事。",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "一切都得等。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，你的火太亮。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续说",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……我有要事。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "一切都得等。",
 
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.SILENT.0-0.ancient": "猎手，坐。",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.SILENT.1-0r.ancient": "……还在。"
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.SILENT.0-0.ancient": "猎手，坐。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.SILENT.1-0r.ancient": "……还在。"
 }
 ```
 
@@ -475,8 +475,8 @@ private async Task OnHealChosen()
 
 ```json
 {
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.title": "接受治疗",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.description": "恢复 10 点生命"
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.title": "接受治疗",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.HEAL.description": "恢复 10 点生命"
 }
 ```
 
@@ -493,7 +493,7 @@ Ancient 背景场景必须以 `Control` 类型为根节点。
 ```gdscript
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Texture2D" path="res://PersonalMod/images/ancients/test_ancient_bg.png" id="1"]
+[ext_resource type="Texture2D" path="res://{{MODID}}/images/ancients/test_ancient_bg.png" id="1"]
 
 [sub_resource type="Shader" id="Shader_8eo3w"]
 code = "shader_type canvas_item;
@@ -532,7 +532,7 @@ texture = ExtResource("1")
 1. 创建新场景，根节点为 `Control`
 2. 添加背景元素（`ColorRect`、`TextureRect`、`CPUParticles2D` 等）
 3. 应用着色器材质实现动态效果
-4. 保存到 `PersonalMod/scenes/ancient/` 目录
+4. 保存到 `{{MODID}}/scenes/ancient/` 目录
 
 ---
 
@@ -541,8 +541,8 @@ texture = ExtResource("1")
 ### 12.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/ancients.json
-PersonalMod/PersonalMod/localization/zhs/ancients.json
+{{MODID}}/{{MODID}}/localization/eng/ancients.json
+{{MODID}}/{{MODID}}/localization/zhs/ancients.json
 ```
 
 ### 12.2 格式概览
@@ -554,19 +554,19 @@ PersonalMod/PersonalMod/localization/zhs/ancients.json
 
   "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.INITIAL.description": "你推开了一扇门……",
 
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.title": "接受",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.description": "获得一件遗物。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.title": "接受",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.INITIAL.options.ACCEPT.description": "获得一件遗物。",
 
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.pages.DONE.description": "你离开了这里。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.pages.DONE.description": "你离开了这里。",
 
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……有人推开了这扇门。",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.firstVisitEver.0-0.ancient": "……有人推开了这扇门。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.ANY.0-0r.ancient": "你又来了？",
 
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，坐。",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……好。",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
-  "PERSONAL_MOD_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "很好。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.ancient": "战士，坐。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-0.next": "继续",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.char": "……好。",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-1.next": "继续",
+  "{{MODID_UPPER}}_ANCIENT_TEST_ANCIENT.talk.IRONCLAD.0-2.ancient": "很好。",
 }
 ```
 
@@ -630,10 +630,10 @@ public class TestAncient : ModAncientEventTemplate
 
     // 地图图标
     public override AncientEventPresentationAssetProfile AncientPresentationAssetProfile => new(
-        MapIconPath: "res://PersonalMod/images/ancients/test_ancient_map.png",
-        MapIconOutlinePath: "res://PersonalMod/images/ancients/test_ancient_map_outline.png",
-        RunHistoryIconPath: "res://PersonalMod/images/ancients/test_ancient_history.png",
-        RunHistoryIconOutlinePath: "res://PersonalMod/images/ancients/test_ancient_history_outline.png"
+        MapIconPath: "res://{{MODID}}/images/ancients/test_ancient_map.png",
+        MapIconOutlinePath: "res://{{MODID}}/images/ancients/test_ancient_map_outline.png",
+        RunHistoryIconPath: "res://{{MODID}}/images/ancients/test_ancient_history.png",
+        RunHistoryIconOutlinePath: "res://{{MODID}}/images/ancients/test_ancient_history_outline.png"
     );
 
     // 选项池
@@ -735,14 +735,14 @@ public class MyAncient : ModAncientEventTemplate
     public override Color DialogueColor => new(0.12f, 0.2f, 0.8f);
 
     public override EventAssetProfile AssetProfile => new(
-        BackgroundScenePath: "res://PersonalMod/scenes/ancient/my_ancient.tscn"
+        BackgroundScenePath: "res://{{MODID}}/scenes/ancient/my_ancient.tscn"
     );
 
     public override AncientEventPresentationAssetProfile AncientPresentationAssetProfile => new(
-        MapIconPath: "res://PersonalMod/images/ancients/my_ancient_map.png",
-        MapIconOutlinePath: "res://PersonalMod/images/ancients/my_ancient_map_outline.png",
-        RunHistoryIconPath: "res://PersonalMod/images/ancients/my_ancient_history.png",
-        RunHistoryIconOutlinePath: "res://PersonalMod/images/ancients/my_ancient_history_outline.png"
+        MapIconPath: "res://{{MODID}}/images/ancients/my_ancient_map.png",
+        MapIconOutlinePath: "res://{{MODID}}/images/ancients/my_ancient_map_outline.png",
+        RunHistoryIconPath: "res://{{MODID}}/images/ancients/my_ancient_history.png",
+        RunHistoryIconOutlinePath: "res://{{MODID}}/images/ancients/my_ancient_history_outline.png"
     );
 
     private IReadOnlyList<EventOption> RelicOptions => [
@@ -829,7 +829,7 @@ public class MyAncient : ModAncientEventTemplate
 在游戏中按 `~` 打开控制台：
 
 ```
-ancient PERSONAL_MOD_ANCIENT_TEST_ANCIENT
+ancient {{MODID_UPPER}}_ANCIENT_TEST_ANCIENT
 ```
 
 强制触发指定 Ancient 事件。
@@ -857,9 +857,9 @@ ancient PERSONAL_MOD_ANCIENT_TEST_ANCIENT
 | 地图图标 | `Models/` | `MapIconPath` |
 
 源码位置:
-- `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Events\` (Ancient 实现)
-- `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\AncientEventModel.cs` (基类)
-- `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Entities\Ancients\` (对话实体)
+- `{{STS2_SOURCE_ROOT}}Models\Events\` (Ancient 实现)
+- `{{STS2_SOURCE_ROOT}}Models\AncientEventModel.cs` (基类)
+- `{{STS2_SOURCE_ROOT}}Entities\Ancients\` (对话实体)
 
 ---
 

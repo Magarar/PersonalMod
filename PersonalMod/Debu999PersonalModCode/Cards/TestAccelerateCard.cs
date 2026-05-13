@@ -17,7 +17,6 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
 public class TestAccelerateCard : ModCardTemplate, IAccelerateCard
 {
     // ===== 激奏配置 =====

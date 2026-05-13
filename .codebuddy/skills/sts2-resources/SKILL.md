@@ -4,7 +4,7 @@ description: >-
   该 Skill 提供杀戮尖塔2 (Slay the Spire 2) 游戏工程资源目录的完整导航与 Mod 资源命名指引。
   当编写 STS2 Mod 需要了解游戏资源的目录结构、图集命名约定、本地化 JSON 格式、
   场景文件组织方式、Spine 动画资源路径、音频 bank 结构或着色器/材质资源时，使用此 Skill。
-  游戏资源位于 D:\杀戮尖塔2Mod\sts2\steam\。
+  游戏资源位于 {{STS2_GAME_ROOT}}\。
 ---
 
 # STS2 游戏工程资源指引
@@ -15,7 +15,7 @@ description: >-
 
 杀戮尖塔2 游戏工程的 Godot 项目资源目录，包含全部美术、音频、本地化、场景、动画、着色器等资源。
 
-**资源根目录**: `D:\杀戮尖塔2Mod\sts2\steam\`
+**资源根目录**: `{{STS2_GAME_ROOT}}`
 
 **项目基本配置**:
 | 属性 | 值 |
@@ -35,7 +35,7 @@ description: >-
 ## 2. 顶层目录速查
 
 ```
-D:\杀戮尖塔2Mod\sts2\steam\
+{{STS2_GAME_ROOT}}\
 ├── project.godot              # Godot 项目配置 (15.46 KB)
 ├── global.json                # .NET SDK 版本
 ├── addons/                    # 编辑器插件 (7个)
@@ -553,12 +553,12 @@ darv_placeholder, nonupeipe_placeholder, orobas_placeholder, pael_placeholder, t
 
 ### 11.5 参考已有资源的快速路径
 
-- **查找卡牌图片**: `D:\杀戮尖塔2Mod\sts2\steam\images\packed\card_portraits\{角色}\`
-- **查找能力图标**: `D:\杀戮尖塔2Mod\sts2\steam\images\atlases\power_atlas.tpsheet` (搜索 filename)
-- **查找遗物图标**: `D:\杀戮尖塔2Mod\sts2\steam\images\atlases\relic_atlas.tpsheet` (搜索 filename)
-- **查找本地化文本**: `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\{category}.json`
-- **查找怪物动画**: `D:\杀戮尖塔2Mod\sts2\steam\animations\monsters\{monster_id}\`
-- **查找事件插画**: `D:\杀戮尖塔2Mod\sts2\steam\images\events\{event_id}.png`
-- **查找 VFX 特效**: `D:\杀戮尖塔2Mod\sts2\steam\scenes\vfx\vfx_{effect_name}.tscn`
-- **查找着色器**: `D:\杀戮尖塔2Mod\sts2\steam\shaders\`
-- **查找材质**: `D:\杀戮尖塔2Mod\sts2\steam\materials\`
+- **查找卡牌图片**: `{{STS2_GAME_ROOT}}\images\packed\card_portraits\{角色}\`
+- **查找能力图标**: `{{STS2_GAME_ROOT}}\images\atlases\power_atlas.tpsheet` (搜索 filename)
+- **查找遗物图标**: `{{STS2_GAME_ROOT}}\images\atlases\relic_atlas.tpsheet` (搜索 filename)
+- **查找本地化文本**: `{{STS2_GAME_ROOT}}\localization\eng\{category}.json`
+- **查找怪物动画**: `{{STS2_GAME_ROOT}}\animations\monsters\{monster_id}\`
+- **查找事件插画**: `{{STS2_GAME_ROOT}}\images\events\{event_id}.png`
+- **查找 VFX 特效**: `{{STS2_GAME_ROOT}}\scenes\vfx\vfx_{effect_name}.tscn`
+- **查找着色器**: `{{STS2_GAME_ROOT}}\shaders\`
+- **查找材质**: `{{STS2_GAME_ROOT}}\materials\`

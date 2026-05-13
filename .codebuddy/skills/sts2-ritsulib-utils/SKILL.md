@@ -321,9 +321,9 @@ public class TestRelic : ModRelicTemplate
     ];
 
     public override RelicAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png",
-        IconOutlinePath: $"res://PersonalMod/images/relics/{GetType().Name}.png",
-        BigIconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png"
+        IconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
+        IconOutlinePath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
+        BigIconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png"
     );
 
     public override async Task AfterPlayerTurnStart(
@@ -342,8 +342,8 @@ public class TestRelic : ModRelicTemplate
 ```json
 {
   "{{MODID_UPPER}}_RELIC_TEST_RELIC.title": "测试遗物",
-  "PERSONAL_MOD_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。\n已经历过[blue]{GameTurns}[/blue]回合了。",
-  "PERSONAL_MOD_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
+  "{{MODID_UPPER}}_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。\n已经历过[blue]{GameTurns}[/blue]回合了。",
+  "{{MODID_UPPER}}_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
 }
 ```
 

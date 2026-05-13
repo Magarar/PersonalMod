@@ -52,9 +52,9 @@ RitsuLib 注册的附魔 ID 格式：
 
 ```json
 {
-  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
-  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
-  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
+  "{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
+  "{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
+  "{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
 }
 ```
 
@@ -262,7 +262,7 @@ enchantments/missing_enchantment.png  # 缺失图标（最终回退）
 Mod 附魔的图标应放入：
 
 ```
-PersonalMod/PersonalMod/images/enchantments/{entry}.png
+{{MODID}}/{{MODID}}/images/enchantments/{entry}.png
 ```
 
 ### 8.2 原版附魔图标参考
@@ -332,17 +332,17 @@ public override void RecalculateValues()
 ### 11.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/enchantments.json
-PersonalMod/PersonalMod/localization/zhs/enchantments.json
+{{MODID}}/{{MODID}}/localization/eng/enchantments.json
+{{MODID}}/{{MODID}}/localization/zhs/enchantments.json
 ```
 
 ### 11.2 格式
 
 ```json
 {
-  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
-  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
-  "PERSONAL_MOD_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
+  "{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT.title": "灵巧",
+  "{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT.description": "获得 {Block} 点格挡。",
+  "{{MODID_UPPER}}_ENCHANTMENT_ADROIT_ENCHANT.extraCardText": "获得 {Amount} 点格挡。"
 }
 ```
 
@@ -577,7 +577,7 @@ public class MyEnchant : ModEnchantmentTemplate
 | 附魔后修改卡牌 | `Models/Enchantments/` | `Imbued`、`Momentum` |
 | 附魔后每回合效果 | `Models/Enchantments/` | `Instinct` |
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Enchantments\` (约 30 个附魔文件)
+源码位置: `{{STS2_SOURCE_ROOT}}Models\Enchantments\` (约 30 个附魔文件)
 
 ---
 

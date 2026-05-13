@@ -12,6 +12,24 @@ trigger_priority: 0
 
 # STS2 Mod 开发总调度 Skill
 
+## 零、全局模板变量定义
+
+本 Skill 定义以下模板变量，所有子 Skill 统一使用。移植到其他项目时，只需在此处修改这些变量的值。
+
+| 变量 | 说明                                                               | 示例值 |
+|------|------------------------------------------------------------------|---------|
+| `{{MODID}}` | Mod ID (PascalCase)，用于命名空间、Godot 资源路径 (`res://{{MODID}}/`)、物理目录名 | `Debu999PersonalMod` |
+| `{{MODID_UPPER}}` | Mod ID (UPPER_SNAKE_CASE)，用于 ModelId.Entry 和本地化键前缀（不要去除下划线）      | `DEBU999_PERSONAL_MOD` |
+| `{{PROJECT_ROOT}}` | 项目根目录 (Godot 项目路径)                                               | `{{PROJECT_ROOT}}` |
+| `{{STS2_GAME_ROOT}}` | 源项目资源文件                                                          | `D:\杀戮尖塔2Mod\sts2\steam\` |
+| `{{STS2_SOURCE_ROOT}}` | 源项目代码文件                                                          | `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core \ |
+
+> **移植指南**：将本 Mod 移植到其他项目时，只需修改本章节中的示例值为实际项目的值，所有子 Skill 自动适配。
+> 
+> **注意**：本章节中的示例值只是示例，实际使用时会被模板变量替换。请勿直接复制这些示例值到你的代码中。
+
+---
+
 ## 一、概述
 
 本 Skill 是 STS2 Mod 开发的**总入口**。支持**两种调用方式**：
@@ -71,9 +89,9 @@ trigger_priority: 0
 8. **纳入版本控制** — 将新建/修改的文件加入 Git 跟踪
 9. **中断报告** — 如果某一步无法继续，会明确告知卡在哪一步，由你决定如何处理
 
-**{{MODID}}** = `Debu999PersonalMod`（PascalCase，用于命名空间、路径、代码中）
-**{{MODID_UPPER}}** = `DEBU999_PERSONAL_MOD`（UPPER_SNAKE_CASE，用于 ModelId.Entry 和本地化键,不要去除字符串的下划线）
-**项目根目录**: `d:\杀戮尖塔2Mod\PersonalMod\`
+**{{MODID}}** = `{{MODID}}`（PascalCase，用于命名空间、路径、代码中）
+**{{MODID_UPPER}}** = `{{MODID_UPPER}}`（UPPER_SNAKE_CASE，用于 ModelId.Entry 和本地化键,不要去除字符串的下划线）
+**项目根目录**: `{{PROJECT_ROOT}}\`
 
 ---
 
@@ -83,8 +101,8 @@ trigger_priority: 0
 
 | 变量 | 当前值 | 用途 |
 |------|--------|------|
-| `{{MODID}}` | `PersonalMod` | C# 命名空间前缀、Godot 资源路径 (`res://{{MODID}}/`)、物理目录名 |
-| `{{MODID_UPPER}}` | `PERSONALMOD` | ModelId.Entry 前缀（UPPER_SNAKE_CASE）、本地化键前缀 |
+| `{{MODID}}` | `{{MODID}}` | C# 命名空间前缀、Godot 资源路径 (`res://{{MODID}}/`)、物理目录名 |
+| `{{MODID_UPPER}}` | `{{MODID_UPPER}}` | ModelId.Entry 前缀（UPPER_SNAKE_CASE）、本地化键前缀 |
 
 > **移植到其他项目时**只需在此处修改这两个变量的值，所有子 Skill 自动适配。
 
@@ -381,7 +399,7 @@ Godot 首次导入图片后会生成 `.import` 元数据文件，**没有 `.impo
 
 #### 方式 A：在 Godot 编辑器中打开（推荐）
 
-首次在 Godot 编辑器打开项目后，Godot 会自动为 `PersonalMod/` 目录下的所有图片生成 `.import` 文件。这是最终需要的状态。
+首次在 Godot 编辑器打开项目后，Godot 会自动为 `{{MODID}}/` 目录下的所有图片生成 `.import` 文件。这是最终需要的状态。
 
 **因此在创建资源后，应告知用户**：
 > "新图片已放置到目录，请在 Godot 编辑器中打开项目，Godot 会自动生成 `.import` 文件。"
@@ -394,7 +412,7 @@ Godot 首次导入图片后会生成 `.import` 元数据文件，**没有 `.impo
 
 ```bash
 # 例如：从已存在的 card.png 复制 .import
-copy PersonalMod\images\card_portraits\card.png.import PersonalMod\images\card_portraits\NewCard.png.import
+copy {{MODID}}\images\card_portraits\card.png.import {{MODID}}\images\card_portraits\NewCard.png.import
 ```
 
 #### 在代码中引用资源的路径格式
@@ -421,7 +439,7 @@ public override CardAssetProfile AssetProfile => new(
 ```xml
 <!-- 自动包含所有 Mod 资源（图片/本地化/配置等） -->
 <ItemGroup>
-  <Content Include="PersonalMod\**\*" />
+  <Content Include="{{MODID}}\**\*" />
 </ItemGroup>
 ```
 
@@ -433,16 +451,16 @@ public override CardAssetProfile AssetProfile => new(
 
 ```xml
 <!-- C# 文件 -->
-<Compile Include="PersonalModCode\Cards\TestCard.cs" />
+<Compile Include="{{MODID}}Code\Cards\TestCard.cs" />
 
 <!-- 图片文件 -->
-<Content Include="PersonalMod\images\card_portraits\TestCard.png" />
+<Content Include="{{MODID}}\images\card_portraits\TestCard.png" />
 
 <!-- 本地化文件 -->
-<Content Include="PersonalMod\localization\eng\cards.json" />
+<Content Include="{{MODID}}\localization\eng\cards.json" />
 ```
 
-项目文件位置：`PersonalMod/PersonalMod.csproj`
+项目文件位置：`{{MODID}}/{{MODID}}.csproj`
 
 ### 4.6 代码注释规范
 
@@ -482,7 +500,7 @@ public override CardAssetProfile AssetProfile => new(
 - 或执行 `dotnet build` 检查编译错误
 
 ```
-dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
+dotnet build {{PROJECT_ROOT}}\{{MODID}}.csproj
 ```
 
 | 检查项 | 工具 | 通过条件 |
@@ -518,7 +536,7 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 - [ ] 图片文件是否已存在于资源目录中？
 - [ ] 图片是否有对应的 `.import` 文件？（如果没有，告知用户需在 Godot 编辑器中打开项目生成）
 - [ ] 本地化 JSON 文件中是否添加了对应的条目？
-- [ ] 新文件是否已在 `.csproj` 中索引？（检查 `PersonalMod.csproj` 是否有对应条目，或使用了通配符模式）
+- [ ] 新文件是否已在 `.csproj` 中索引？（检查 `{{MODID}}.csproj` 是否有对应条目，或使用了通配符模式）
 
 ### 5.3 IDE 解决方案可见性检查
 - [ ] 在 IDE 中刷新解决方案（**重新加载项目**），确认新文件出现在解决方案资源管理器中
@@ -531,7 +549,7 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 - [ ] `Entry.Init()` 中是否确保调用了 `RegisterModAssembly` 和 `EnsureGodotScriptsRegistered`？
 
 ### 5.4 资源路径检查
-- [ ] `AssetProfile` 中的资源路径是否为 `res://PersonalMod/...` 格式？
+- [ ] `AssetProfile` 中的资源路径是否为 `res://{{MODID}}/...` 格式？
 - [ ] 资源路径的文件名是否与类名和实际文件名一致（区分大小写）？
 - [ ] 如果有引用源工程的资源，路径是否确认正确？
 
@@ -636,12 +654,12 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 ### 7.1 完整的卡牌创建流程
 
 1. 询问/提取：类名、能量消耗、卡牌类型(Attack/Skill/Power)、稀有度、目标类型、效果描述、图片路径、卡池名
-2. 创建 C# 文件 `PersonalModCode/Cards/<ClassName>.cs`
-3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+2. 创建 C# 文件 `{{MODID}}Code/Cards/<ClassName>.cs`
+3. **更新 `.csproj`** → 确认 `{{MODID}}.csproj` 包含新建文件的索引（§4.5）
 4. 如有图片 → 调用 `sts2-image-resizer` 处理 `card` 类型
 5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
 6. 调度 `sts2-card-skill` 生成卡牌代码
-7. 在 `PersonalMod/localization/eng/cards.json` 添加本地化
+7. 在 `{{MODID}}/localization/eng/cards.json` 添加本地化
 8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
 9. 执行自检清单
 10. **Git 提交** → `git add` 所有新增/修改的文件
@@ -650,12 +668,12 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 ### 7.2 完整的能力创建流程
 
 1. 询问/提取：类名、PowerType(Buff/Debuff)、StackType(Counter/Intensity/Duration)、效果描述、图片路径
-2. 创建 C# 文件 `PersonalModCode/Powers/<ClassName>.cs`
-3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+2. 创建 C# 文件 `{{MODID}}Code/Powers/<ClassName>.cs`
+3. **更新 `.csproj`** → 确认 `{{MODID}}.csproj` 包含新建文件的索引（§4.5）
 4. 如有图片 → 调用 `sts2-image-resizer` 处理 `power` + `power_big`
 5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
 6. 调度 `sts2-power-skill` 生成能力代码
-7. 在 `PersonalMod/localization/eng/powers.json` 添加本地化
+7. 在 `{{MODID}}/localization/eng/powers.json` 添加本地化
 8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
 9. 执行自检清单
 10. **Git 提交** → `git add` 所有新增/修改的文件
@@ -664,12 +682,12 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 ### 7.3 完整的遗物创建流程
 
 1. 询问/提取：类名、稀有度、效果描述、图片路径、遗物池
-2. 创建 C# 文件 `PersonalModCode/Relics/<ClassName>.cs`
-3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+2. 创建 C# 文件 `{{MODID}}Code/Relics/<ClassName>.cs`
+3. **更新 `.csproj`** → 确认 `{{MODID}}.csproj` 包含新建文件的索引（§4.5）
 4. 如有图片 → 调用 `sts2-image-resizer` 处理 `relic` + `relic_outline` + `relic_big`
 5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
 6. 调度 `sts2-relic-skill` 生成遗物代码
-7. 在 `PersonalMod/localization/eng/relics.json` 添加本地化
+7. 在 `{{MODID}}/localization/eng/relics.json` 添加本地化
 8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
 9. 执行自检清单
 10. **Git 提交** → `git add` 所有新增/修改的文件
@@ -678,12 +696,12 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 ### 7.4 完整的药水创建流程
 
 1. 询问/提取：类名、稀有度、使用时机(CombatOnly/AnyTime/Automatic)、目标类型、效果描述、图片路径
-2. 创建 C# 文件 `PersonalModCode/Potions/<ClassName>.cs`
-3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+2. 创建 C# 文件 `{{MODID}}Code/Potions/<ClassName>.cs`
+3. **更新 `.csproj`** → 确认 `{{MODID}}.csproj` 包含新建文件的索引（§4.5）
 4. 如有图片 → 调用 `sts2-image-resizer` 处理 `potion` + `potion_outline`
 5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
 6. 调度 `sts2-potion-skill` 生成药水代码
-7. 在 `PersonalMod/localization/eng/potions.json` 添加本地化
+7. 在 `{{MODID}}/localization/eng/potions.json` 添加本地化
 8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
 9. 执行自检清单
 10. **Git 提交** → `git add` 所有新增/修改的文件
@@ -692,12 +710,12 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 ### 7.5 完整的事件创建流程
 
 1. 询问/提取：类名、所属幕、事件描述、选项列表、图片路径、出现条件
-2. 创建 C# 文件 `PersonalModCode/Events/<ClassName>.cs`
-3. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
+2. 创建 C# 文件 `{{MODID}}Code/Events/<ClassName>.cs`
+3. **更新 `.csproj`** → 确认 `{{MODID}}.csproj` 包含新建文件的索引（§4.5）
 4. 如有图片 → PNG 放置到 `images/events/<ClassName>.png`（事件插图不经过 image-resizer）
 5. 处理图片后→ 检查 `.import` 文件（§4.4），告知用户需在 Godot 编辑器中打开
 6. 调度 `sts2-event-skill` 生成事件代码
-7. 在 `PersonalMod/localization/eng/events.json` 添加本地化
+7. 在 `{{MODID}}/localization/eng/events.json` 添加本地化
 8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
 9. 执行自检清单
 10. **Git 提交** → `git add` 所有新增/修改的文件
@@ -706,10 +724,10 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 ### 7.6 完整的怪物创建流程
 
 1. 询问/提取：类名、HP范围、AI行为描述、所属幕、视觉参考
-2. 创建 C# 文件 `PersonalModCode/Monsters/<ClassName>.cs`
-3. 创建遭遇文件 `PersonalModCode/Encounters/<Encounter>.cs`
-4. **更新 `.csproj`** → 确认 `PersonalMod.csproj` 包含新建文件的索引（§4.5）
-5. 创建视觉场景 `PersonalMod/scenes/monsters/<ClassName>.tscn`
+2. 创建 C# 文件 `{{MODID}}Code/Monsters/<ClassName>.cs`
+3. 创建遭遇文件 `{{MODID}}Code/Encounters/<Encounter>.cs`
+4. **更新 `.csproj`** → 确认 `{{MODID}}.csproj` 包含新建文件的索引（§4.5）
+5. 创建视觉场景 `{{MODID}}/scenes/monsters/<ClassName>.tscn`
 6. 调度 `sts2-monster-skill` 生成怪物代码
 7. 在本地化文件中添加 monsters.json + encounters.json 条目
 8. **编译验证** → 执行 `read_lints` 或 `dotnet build` 检查语法错误
@@ -776,7 +794,7 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
 <{{MODID_UPPER}}>_<CATEGORY>_<TYPENAME>
 ```
 
-其中 `{{MODID_UPPER}} = PERSONALMOD`，`TYPENAME` 为类名转 UPPER_SNAKE_CASE。
+其中 `{{MODID_UPPER}}` 为 Mod ID 大写，`TYPENAME` 为类名转 UPPER_SNAKE_CASE。
 
 | 内容类型 | CATEGORY | ModelId.Entry 示例 |
 |---------|----------|-------------------|
@@ -821,7 +839,7 @@ dotnet build D:\杀戮尖塔2Mod\PersonalMod\PersonalMod\PersonalMod.csproj
           ✅ 无错误 → 继续
   Step 8: 执行本 Skill 的通用自检清单
   Step 9: Git 纳入 → git add Cards/FireSlash.cs localization/eng/cards.json
-  Step 10: 报告完成，给出 card PERSONALMOD_CARD_FIRE_SLASH 调试指令
+  Step 10: 报告完成，给出 card {{MODID_UPPER}}_CARD_FIRE_SLASH 调试指令
 ```
 
 ### 示例 2: 快捷命令创建能力（带小工具功能）

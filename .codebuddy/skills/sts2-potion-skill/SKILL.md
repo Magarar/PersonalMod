@@ -44,15 +44,15 @@ RitsuLib 注册的药水 ID 格式：
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
 | `TestPotion` | `{{MODID_UPPER}}_POTION_TEST_POTION` |
-| `StrengthPotion` | `PERSONALMOD_POTION_STRENGTH_POTION` |
-| `HealingPotion` | `PERSONALMOD_POTION_HEALING_POTION` |
+| `StrengthPotion` | `{{MODID_UPPER}}_POTION_STRENGTH_POTION` |
+| `HealingPotion` | `{{MODID_UPPER}}_POTION_HEALING_POTION` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_POTION_TEST_POTION.title": "测试药水",
-  "PERSONALMOD_POTION_TEST_POTION.description": "获得[blue]{Block}[/blue]点[gold]格挡[/gold]。"
+  "{{MODID_UPPER}}_POTION_TEST_POTION.title": "测试药水",
+  "{{MODID_UPPER}}_POTION_TEST_POTION.description": "获得[blue]{Block}[/blue]点[gold]格挡[/gold]。"
 }
 ```
 
@@ -223,8 +223,8 @@ protected override IEnumerable<IHoverTip> ExtraHoverTips =>
 
 ```csharp
 public override PotionAssetProfile AssetProfile => new(
-    ImagePath: "res://PersonalMod/images/potions/test_potion.png",   // 药水本体图片
-    OutlinePath: "res://PersonalMod/images/potions/test_potion.png"  // 药水轮廓图片
+    ImagePath: "res://{{MODID}}/images/potions/test_potion.png",   // 药水本体图片
+    OutlinePath: "res://{{MODID}}/images/potions/test_potion.png"  // 药水轮廓图片
 );
 ```
 
@@ -341,16 +341,16 @@ protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature?
 ### 9.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/potions.json
-PersonalMod/PersonalMod/localization/zhs/potions.json
+{{MODID}}/{{MODID}}/localization/eng/potions.json
+{{MODID}}/{{MODID}}/localization/zhs/potions.json
 ```
 
 ### 9.2 格式
 
 ```json
 {
-    "PERSONALMOD_POTION_TEST_POTION.title": "测试药水",
-    "PERSONALMOD_POTION_TEST_POTION.description": "获得[blue]{Block}[/blue]点[gold]格挡[/gold]。"
+    "{{MODID_UPPER}}_POTION_TEST_POTION.title": "测试药水",
+    "{{MODID_UPPER}}_POTION_TEST_POTION.description": "获得[blue]{Block}[/blue]点[gold]格挡[/gold]。"
 }
 ```
 
@@ -618,7 +618,7 @@ public class SoulPotion : ModPotionTemplate
 
 ```csharp
 [RegisterPotion(typeof(SharedPotionPool))]
-public abstract class PersonalModPotionModel : ModPotionTemplate
+public abstract class {{MODID}}PotionModel : ModPotionTemplate
 {
     public override PotionAssetProfile AssetProfile => new(
         ImagePath: $"res://{{MODID}}/images/potions/{GetType().Name}.png",
@@ -628,7 +628,7 @@ public abstract class PersonalModPotionModel : ModPotionTemplate
 
 // 子类只需关注逻辑
 [RegisterPotion(typeof(SharedPotionPool))]
-public class MyHealPotion : PersonalModPotionModel
+public class MyHealPotion : {{MODID}}PotionModel
 {
     public override PotionRarity Rarity => PotionRarity.Common;
     public override PotionUsage Usage => PotionUsage.AnyTime;
@@ -727,7 +727,7 @@ public override async Task AfterPreventingDeath(Creature creature)
 在游戏中按 `~` 打开控制台：
 
 ```
-potion PERSONALMOD_POTION_TEST_POTION
+potion {{MODID_UPPER}}_POTION_TEST_POTION
 ```
 
 快速检查药水是否注册成功：在控制台尝试获取该药水（输入 `potion` 加药水 ID）。
@@ -738,7 +738,7 @@ potion PERSONALMOD_POTION_TEST_POTION
 
 ```
 {{MODID}}/{{MODID}}Code/Potions/
-├── PersonalModPotionModel.cs        # 抽象基类（可选）
+├── {{MODID}}PotionModel.cs           # 抽象基类（可选）
 ├── BlockPotion.cs                   # 格挡药水
 ├── HealingPotion.cs                 # 治疗药水
 └── StrengthPotion.cs                # 力量药水
@@ -781,7 +781,7 @@ potion PERSONALMOD_POTION_TEST_POTION
 | 衍生物池 | `PotionPools/` | `TokenPotionPool` |
 | 事件药水池 | `PotionPools/` | `EventPotionPool` |
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Potions\` (约 45 个药水文件)
+源码位置: `{{STS2_SOURCE_ROOT}}\Models\Potions\` (约 45 个药水文件)
 
 ---
 
@@ -830,7 +830,7 @@ potion PERSONALMOD_POTION_TEST_POTION
 - [ ] 是否重写了 `Usage` 属性？
 - [ ] 是否重写了 `TargetType` 属性？
 - [ ] 是否添加了 `[RegisterPotion(typeof(XxxPool))]` 属性？
-- [ ] 命名空间是否正确？（`PersonalMod.PersonalModCode.Potions`）
+- [ ] 命名空间是否正确？（`{{MODID}}.{{MODID}}Code.Potions`）
 
 ### 18.2 数值检查
 

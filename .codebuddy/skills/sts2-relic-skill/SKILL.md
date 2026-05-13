@@ -489,9 +489,9 @@ int totalHeal = DynamicVars.Heal.IntValue * StackCount;
 
 ```csharp
 public override RelicAssetProfile AssetProfile => new(
-    IconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png",           // 小图标（原版 85x85）
-    IconOutlinePath: $"res://PersonalMod/images/relics/{GetType().Name}.png",    // 轮廓图标（原版 85x85）
-    BigIconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png"         // 大图标（原版 256x256）
+    IconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",           // 小图标（原版 85x85）
+    IconOutlinePath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",    // 轮廓图标（原版 85x85）
+    BigIconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png"         // 大图标（原版 256x256）
 );
 ```
 
@@ -506,7 +506,7 @@ public override RelicAssetProfile AssetProfile => new(
 ### 12.3 图片文件位置
 
 ```
-PersonalMod/PersonalMod/images/relics/
+{{MODID}}/{{MODID}}/images/relics/
 ├── TestRelic.png              # 图标（可复用为三种图标）
 ├── TestRelic_outline.png      # 轮廓（推荐分开）
 └── big/
@@ -587,17 +587,17 @@ public class MyRelic : ModRelicTemplate { ... }
 ### 14.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/relics.json
-PersonalMod/PersonalMod/localization/zhs/relics.json
+{{MODID}}/{{MODID}}/localization/eng/relics.json
+{{MODID}}/{{MODID}}/localization/zhs/relics.json
 ```
 
 ### 14.2 格式
 
 ```json
 {
-    "PERSONALMOD_RELIC_TEST_RELIC.title": "测试遗物",
-    "PERSONALMOD_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。",
-    "PERSONALMOD_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
+    "{{MODID_UPPER}}_RELIC_TEST_RELIC.title": "测试遗物",
+    "{{MODID_UPPER}}_RELIC_TEST_RELIC.description": "每回合开始时，抽[blue]{Cards}[/blue]张牌。",
+    "{{MODID_UPPER}}_RELIC_TEST_RELIC.flavor": "觉得很眼熟？"
 }
 ```
 
@@ -658,9 +658,9 @@ public class DrawEachTurnRelic : ModRelicTemplate
     ];
 
     public override RelicAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png",
-        IconOutlinePath: $"res://PersonalMod/images/relics/{GetType().Name}.png",
-        BigIconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png"
+        IconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
+        IconOutlinePath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
+        BigIconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png"
     );
 
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
@@ -684,9 +684,9 @@ public class HealAfterCombatRelic : ModRelicTemplate
     ];
 
     public override RelicAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png",
-        IconOutlinePath: $"res://PersonalMod/images/relics/{GetType().Name}.png",
-        BigIconPath: $"res://PersonalMod/images/relics/{GetType().Name}.png"
+        IconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
+        IconOutlinePath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
+        BigIconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png"
     );
 
     public override Task AfterCombatVictory(CombatRoom room)
@@ -793,7 +793,7 @@ public class NoGoldRelic : ModRelicTemplate
 
 ```csharp
 [RegisterRelic(typeof(SharedRelicPool), Inherit = true)]
-public abstract class PersonalModRelicModel : ModRelicTemplate
+public abstract class {{MODID}}RelicModel : ModRelicTemplate
 {
     public override RelicAssetProfile AssetProfile => new(
     IconPath: $"res://{{MODID}}/images/relics/{GetType().Name}.png",
@@ -803,7 +803,7 @@ public abstract class PersonalModRelicModel : ModRelicTemplate
 }
 
 // 子类只需关注逻辑
-public class MyDrawRelic : PersonalModRelicModel
+public class MyDrawRelic : {{MODID}}RelicModel
 {
     public override RelicRarity Rarity => RelicRarity.Common;
 
@@ -912,7 +912,7 @@ public override async Task AfterObtained()
 
 ```
 {{MODID}}/{{MODID}}Code/Relics/
-├── PersonalModRelicModel.cs       # 抽象基类（可选）
+├── {{MODID}}RelicModel.cs          # 抽象基类（可选）
 ├── DrawEachTurnRelic.cs           # 回合抽牌遗物
 ├── HealAfterCombatRelic.cs        # 战后回血遗物
 └── OnCardPlayRelic.cs             # 卡牌打出遗物
@@ -952,14 +952,14 @@ public override async Task AfterObtained()
 | 计数器 | `Models/Relics/` | `PenNib`, `QuestionCard` |
 | 阻止行为 | `Models/Relics/` | `Ectoplasm`, `Ostalith` |
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Relics\`
+源码位置: `{{STS2_SOURCE_ROOT}}\Models\Relics\`
 
 ---
 
 ## 19. 调试
 
 - 战斗中按 `~` 打开控制台
-- 输入 `relic PERSONALMOD_RELIC_TEST_RELIC` 获取指定遗物
+- 输入 `relic {{MODID_UPPER}}_RELIC_TEST_RELIC` 获取指定遗物
 - 检查遗物是否正确注册：在控制台查看 `relic list` 或类似命令
 - 遗物描述显示为原始键名是本地化文件缺失的信号
 

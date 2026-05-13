@@ -1,3 +1,9 @@
 {
-  
+  "DEBU999_PERSONAL_MOD_POWER_CHANT_DAMAGE_POWER.title": "吟唱打击",
+  "DEBU999_PERSONAL_MOD_POWER_CHANT_DAMAGE_POWER.description": "[gold]吟唱{Amount}[/gold]。对所有敌人造成10点伤害。",
+  "DEBU999_PERSONAL_MOD_POWER_CHANT_DAMAGE_POWER.smartDescription": "[gold]吟唱{Amount}[/gold]。对所有敌人造成[blue]{Damage}[/blue]点伤害。",
+
+  "DEBU999_PERSONAL_MOD_POWER_CHANT_EXPLOSION_POWER.title": "吟唱爆破",
+  "DEBU999_PERSONAL_MOD_POWER_CHANT_EXPLOSION_POWER.description": "[gold]吟唱{Amount}[/gold]。[gold]谢幕曲[/gold]，对所有敌人造成20点伤害。",
+  "DEBU999_PERSONAL_MOD_POWER_CHANT_EXPLOSION_POWER.smartDescription": "[gold]吟唱{Amount}[/gold]。[gold]谢幕曲[/gold]，对所有敌人造成[blue]20[/blue]点伤害。"
 }

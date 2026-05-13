@@ -4,7 +4,7 @@ description: >-
   该 Skill 提供杀戮尖塔2 (Slay the Spire 2) 反编译源码 (Core 模块) 的导航与参考能力。
   当编写 STS2 Mod 时需要查阅游戏底层 API、基类定义、Hook 回调、枚举值、
   资源路径约定或已有游戏内容的实现方式时，使用此 Skill。
-  源码位于 D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\。
+  源码位于 `{{STS2_SOURCE_ROOT}}`。
 ---
 
 # STS2 Core 源码参考
@@ -13,7 +13,7 @@ description: >-
 
 杀戮尖塔2 游戏引擎反编译源码，基于 Godot + C# 开发。命名空间 `MegaCrit.Sts2.Core`。
 
-**源码根目录**: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\`
+**源码根目录**: `{{STS2_SOURCE_ROOT}}`
 
 查阅详细的参考文件以获取完整的 API 信息：
 - `references/base-classes.md` — 所有模型基类及其可 override 成员

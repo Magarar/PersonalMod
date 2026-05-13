@@ -394,8 +394,8 @@ public class RitualPower : ModPowerTemplate
 
 ```csharp
 public override PowerAssetProfile AssetProfile => new(
-    IconPath: "res://PersonalMod/images/powers/test_power.png",     // 小图标
-    BigIconPath: "res://PersonalMod/images/powers/test_power.png"   // 大图标
+    IconPath: "res://{{MODID}}/images/powers/test_power.png",     // 小图标
+    BigIconPath: "res://{{MODID}}/images/powers/test_power.png"   // 大图标
 );
 ```
 
@@ -411,7 +411,7 @@ public override PowerAssetProfile AssetProfile => new(
 ### 12.3 图片文件位置
 
 ```
-PersonalMod/PersonalMod/images/powers/
+{{MODID}}/{{MODID}}/images/powers/
 ├── test_power.png              # 图标（可复用为两种图标）
 ├── big/
 │   └── test_power.png          # 大图标（推荐分开）
@@ -435,17 +435,17 @@ PersonalMod/PersonalMod/images/powers/
 ### 13.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/powers.json
-PersonalMod/PersonalMod/localization/zhs/powers.json
+{{MODID}}/{{MODID}}/localization/eng/powers.json
+{{MODID}}/{{MODID}}/localization/zhs/powers.json
 ```
 
 ### 13.2 格式
 
 ```json
 {
-    "PERSONALMOD_POWER_TEST_POWER.title": "邪火",
-    "PERSONALMOD_POWER_TEST_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
-    "PERSONALMOD_POWER_TEST_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。"
+    "{{MODID_UPPER}}_POWER_TEST_POWER.title": "邪火",
+    "{{MODID_UPPER}}_POWER_TEST_POWER.description": "每次抽牌时，获得一点[gold]力量[/gold]。",
+    "{{MODID_UPPER}}_POWER_TEST_POWER.smartDescription": "每次抽牌时，获得[blue]{Amount}[/blue]点[gold]力量[/gold]。"
 }
 ```
 
@@ -496,8 +496,8 @@ public class EndOfTurnPower : ModPowerTemplate
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://PersonalMod/images/powers/end_of_turn_power.png",
-        BigIconPath: "res://PersonalMod/images/powers/end_of_turn_power.png"
+        IconPath: "res://{{MODID}}/images/powers/end_of_turn_power.png",
+        BigIconPath: "res://{{MODID}}/images/powers/end_of_turn_power.png"
     );
 
     public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
@@ -529,8 +529,8 @@ public class TestPower : ModPowerTemplate
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://PersonalMod/images/powers/test_power.png",
-        BigIconPath: "res://PersonalMod/images/powers/test_power.png"
+        IconPath: "res://{{MODID}}/images/powers/test_power.png",
+        BigIconPath: "res://{{MODID}}/images/powers/test_power.png"
     );
 
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
@@ -561,8 +561,8 @@ public class CustomStrengthPower : ModPowerTemplate
     public override bool AllowNegative => true;
 
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: "res://PersonalMod/images/powers/custom_strength.png",
-        BigIconPath: "res://PersonalMod/images/powers/custom_strength.png"
+        IconPath: "res://{{MODID}}/images/powers/custom_strength.png",
+        BigIconPath: "res://{{MODID}}/images/powers/custom_strength.png"
     );
 
     public override decimal ModifyDamageAdditive(
@@ -633,7 +633,7 @@ public class BufferPower : ModPowerTemplate
 
 ```csharp
 [RegisterPower]
-public abstract class PersonalModPowerModel : ModPowerTemplate
+public abstract class {{MODID}}PowerModel : ModPowerTemplate
 {
     public override PowerAssetProfile AssetProfile => new(
     IconPath: $"res://{{MODID}}/images/powers/{GetType().Name}.png",
@@ -643,7 +643,7 @@ public abstract class PersonalModPowerModel : ModPowerTemplate
 
 // 子类只需关注逻辑
 [RegisterPower]
-public class DrawStrengthPower : PersonalModPowerModel
+public class DrawStrengthPower : {{MODID}}PowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -721,12 +721,12 @@ public override decimal ModifyDamageAdditive(...)
 在游戏中按 `~` 打开控制台：
 
 ```
-power PERSONALMOD_POWER_TEST_POWER 5 0
+power {{MODID_UPPER}}_POWER_TEST_POWER 5 0
 ```
 
 参数说明：
 - `power <能力ID> <层数> <目标>` — 给予玩家指定能力
-- `<能力ID>` 为完整的 ModelId.Entry（如 `PERSONALMOD_POWER_TEST_POWER`）
+- `<能力ID>` 为完整的 ModelId.Entry（如 `{{MODID_UPPER}}_POWER_TEST_POWER`）
 - `<层数>` 为能力层数（如 `5`）
 - `<目标>` 为 0（玩家）/ 1（第一个敌人）等
 
@@ -738,7 +738,7 @@ power PERSONALMOD_POWER_TEST_POWER 5 0
 
 ```
 {{MODID}}/{{MODID}}Code/Powers/
-├── PersonalModPowerModel.cs        # 抽象基类（可选）
+├── {{MODID}}PowerModel.cs           # 抽象基类（可选）
 ├── TestPower.cs                    # 抽牌触发力量
 ├── EndOfTurnPower.cs               # 回合结束格挡
 └── CustomStrengthPower.cs          # 自定义力量
@@ -766,7 +766,7 @@ power PERSONALMOD_POWER_TEST_POWER 5 0
 
 | 需求 | 搜索路径 | 关键词 |
 |------|---------|--------|
-| 力量加成 | `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Powers\` | `StrengthPower` |
+| 力量加成 | `{{STS2_SOURCE_ROOT}}\Models\Powers\` | `StrengthPower` |
 | 敏捷加成 | 同上 | `DexterityPower` |
 | 易伤 | 同上 | `VulnerablePower` |
 | 虚弱 | 同上 | `WeakPower` |
@@ -779,7 +779,7 @@ power PERSONALMOD_POWER_TEST_POWER 5 0
 | 残影(Blur) | 同上 | `BlurPower` |
 | 人工制品 | 同上 | `ArtifactPower` |
 
-**源码位置**: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Powers\` (约 260 个能力文件)
+**源码位置**: `{{STS2_SOURCE_ROOT}}\Models\Powers\` (约 260 个能力文件)
 
 ---
 
@@ -808,7 +808,7 @@ power PERSONALMOD_POWER_TEST_POWER 5 0
 - [ ] 是否重写了 `Type` 属性（Buff / Debuff）？
 - [ ] 是否重写了 `StackType` 属性（Counter / Intensity / Duration）？
 - [ ] 是否添加了 `[RegisterPower]` 属性？
-- [ ] 命名空间是否正确？（`PersonalMod.PersonalModCode.Powers`）
+- [ ] 命名空间是否正确？（`{{MODID}}.{{MODID}}Code.Powers`）
 
 ### 20.2 数值检查
 

@@ -200,17 +200,17 @@ def main():
         # 向上4级: scripts -> sts2-image-resizer -> skills -> .codebuddy -> 仓库根目录
         script_dir = os.path.dirname(os.path.abspath(__file__))
         repo_root = os.path.abspath(os.path.join(script_dir, "..", "..", "..", ".."))
-        # Godot 项目根目录: 仓库根目录/PersonalMod/
-        godot_root = os.path.join(repo_root, "PersonalMod")
-
+        # Godot 项目根目录: 仓库根目录/{{MODID}}/
+        godot_root = os.path.join(repo_root, "{{MODID}}")
+ 
         mod_id = detect_mod_id(godot_root)
         if mod_id:
             # Mod 资源根目录: Godot 项目根目录/{ModId}/
             output_root = os.path.join(godot_root, mod_id)
             print(f"自动检测 Mod ID: {mod_id}")
         else:
-            print("警告: 未能自动检测 Mod ID，回退到默认路径 PersonalMod/PersonalMod/")
-            output_root = os.path.join(godot_root, "PersonalMod")
+            print("警告: 未能自动检测 Mod ID，回退到默认路径 {{MODID}}/{{MODID}}/")
+            output_root = os.path.join(godot_root, "{{MODID}}")
 
     # 构建输出路径
     output_dir = os.path.join(output_root, rel_dir)

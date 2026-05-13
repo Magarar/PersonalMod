@@ -20,7 +20,6 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
 public class EmergencyAvoidance : ModCardTemplate
 {
     private const int EnergyCost = 1;

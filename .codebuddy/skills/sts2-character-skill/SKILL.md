@@ -134,12 +134,12 @@ public class MyCharacter : ModCharacterTemplate<MyCardPool, MyRelicPool, MyPotio
 ```csharp
 public override CharacterAssetProfile AssetProfile => new(
     Scenes: new(
-        VisualsPath: "res://PersonalMod/scenes/character/my_character.tscn",       // 战斗视觉场景
-        EnergyCounterPath: "res://PersonalMod/scenes/ui/energy/my_energy_counter.tscn" // 能量计数器
+        VisualsPath: "res://{{MODID}}/scenes/character/my_character.tscn",       // 战斗视觉场景
+        EnergyCounterPath: "res://{{MODID}}/scenes/ui/energy/my_energy_counter.tscn" // 能量计数器
     ),
     Ui: new(
-        IconTexturePath: "res://PersonalMod/images/ui/top_panel/character_icon.png",    // 顶部面板图标
-        MapMarkerPath: "res://PersonalMod/images/map/map_marker.png"                    // 地图标记
+        IconTexturePath: "res://{{MODID}}/images/ui/top_panel/character_icon.png",    // 顶部面板图标
+        MapMarkerPath: "res://{{MODID}}/images/map/map_marker.png"                    // 地图标记
     ),
     Audio: new(
         AttackSfx: "event:/sfx/characters/my_character/attack",          // 攻击音效
@@ -314,24 +314,24 @@ RitsuLibFramework.CreateContentPack("{{MODID}}")
 ### 10.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/characters.json
-PersonalMod/PersonalMod/localization/zhs/characters.json
+{{MODID}}/{{MODID}}/localization/eng/characters.json
+{{MODID}}/{{MODID}}/localization/zhs/characters.json
 ```
 
 ### 10.2 格式
 
 ```json
 {
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.title": "戈多",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.titleObject": "戈多",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.description": "一个等待者。",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.pronounSubject": "他",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.pronounObject": "他",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.pronounPossessive": "他的",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.possessiveAdjective": "他的",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.cardsModifierTitle": "戈多的卡牌",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.cardsModifierDescription": "属于戈多的卡牌。",
-  "PERSONAL_MOD_CHARACTER_MY_CHARACTER.eventDeathPrevention": "...拒绝..."
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.title": "戈多",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.titleObject": "戈多",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.description": "一个等待者。",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.pronounSubject": "他",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.pronounObject": "他",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.pronounPossessive": "他的",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.possessiveAdjective": "他的",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.cardsModifierTitle": "戈多的卡牌",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.cardsModifierDescription": "属于戈多的卡牌。",
+  "{{MODID_UPPER}}_CHARACTER_MY_CHARACTER.eventDeathPrevention": "...拒绝..."
 }
 ```
 
@@ -513,7 +513,7 @@ public class MyCharacter : ModCharacterTemplate<MyCardPool, MyRelicPool, MyPotio
 | `Necrobinder` | 灵魂机制、紫色配色 |
 | `Regent` | 粉色配色、独特机制 |
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Characters\`
+源码位置: `{{STS2_SOURCE_ROOT}}Models\Characters\`
 
 ---
 

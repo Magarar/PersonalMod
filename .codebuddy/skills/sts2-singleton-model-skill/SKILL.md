@@ -147,7 +147,7 @@ ModTypeDiscoveryHub.RegisterModAssembly(Assembly.GetExecutingAssembly());
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
 | `MySingleton` | `{{MODID_UPPER}}_SINGLETON_MY_SINGLETON` |
-| `MultiplayerScalingModel` | `PERSONAL_MOD_SINGLETON_MULTIPLAYER_SCALING_MODEL` |
+| `MultiplayerScalingModel` | `{{MODID_UPPER}}_SINGLETON_MULTIPLAYER_SCALING_MODEL` |
 
 ---
 

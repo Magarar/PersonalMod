@@ -48,16 +48,16 @@ RitsuLib 注册的 Orb ID 格式：
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
 | `TestOrb` | `{{MODID_UPPER}}_ORB_TEST_ORB` |
-| `LightningOrb` | `PERSONALMOD_ORB_LIGHTNING_ORB` |
-| `DrawOrb` | `PERSONALMOD_ORB_DRAW_ORB` |
+| `LightningOrb` | `{{MODID_UPPER}}_ORB_LIGHTNING_ORB` |
+| `DrawOrb` | `{{MODID_UPPER}}_ORB_DRAW_ORB` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_ORB_TEST_ORB.title": "测试球",
-  "PERSONALMOD_ORB_TEST_ORB.description": "充能球：回合开始时抽牌。",
-  "PERSONALMOD_ORB_TEST_ORB.smartDescription": "[gold]被动：[/gold]回合开始时，抽[blue]{Passive}[/blue]张牌。\n[gold]激发：[/gold]抽[blue]{Evoke}[/blue]张牌。"
+  "{{MODID_UPPER}}_ORB_TEST_ORB.title": "测试球",
+  "{{MODID_UPPER}}_ORB_TEST_ORB.description": "充能球：回合开始时抽牌。",
+  "{{MODID_UPPER}}_ORB_TEST_ORB.smartDescription": "[gold]被动：[/gold]回合开始时，抽[blue]{Passive}[/blue]张牌。\n[gold]激发：[/gold]抽[blue]{Evoke}[/blue]张牌。"
 }
 ```
 
@@ -211,8 +211,8 @@ public override async Task Passive(PlayerChoiceContext choiceContext, Creature? 
 
 ```csharp
 public override OrbAssetProfile AssetProfile => new(
-    IconPath: "res://PersonalMod/images/orbs/test_orb.png",       // 提示文本小图标
-    VisualsScenePath: "res://PersonalMod/scenes/orbs/test_orb.tscn" // 球体视觉场景
+    IconPath: "res://{{MODID}}/images/orbs/test_orb.png",       // 提示文本小图标
+    VisualsScenePath: "res://{{MODID}}/scenes/orbs/test_orb.tscn" // 球体视觉场景
 );
 ```
 
@@ -253,7 +253,7 @@ protected override Node2D? TryCreateOrbSprite() =>
 ```gdscript
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Texture2D" path="res://PersonalMod/images/orbs/test_orb_visual.png" id="1"]
+[ext_resource type="Texture2D" path="res://{{MODID}}/images/orbs/test_orb_visual.png" id="1"]
 
 [node name="TestOrb" type="Node2D"]
 
@@ -266,7 +266,7 @@ texture = ExtResource("1")
 1. 在 Godot 编辑器中创建新场景
 2. 根节点选择 `Node2D`
 3. 添加 `Sprite2D` 子节点，设置纹理为球体图片
-4. 保存到 `PersonalMod/scenes/orbs/` 目录
+4. 保存到 `{{MODID}}/scenes/orbs/` 目录
 
 ---
 
@@ -360,17 +360,17 @@ await OrbCmd.Channel<TestOrb>(choiceContext, Owner);
 ### 12.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/orbs.json
-PersonalMod/PersonalMod/localization/zhs/orbs.json
+{{MODID}}/{{MODID}}/localization/eng/orbs.json
+{{MODID}}/{{MODID}}/localization/zhs/orbs.json
 ```
 
 ### 12.2 格式
 
 ```json
 {
-    "PERSONALMOD_ORB_TEST_ORB.title": "测试球",
-    "PERSONALMOD_ORB_TEST_ORB.description": "充能球：回合开始时抽牌。",
-    "PERSONALMOD_ORB_TEST_ORB.smartDescription": "[gold]被动：[/gold]回合开始时，抽[blue]{Passive}[/blue]张牌。\n[gold]激发：[/gold]抽[blue]{Evoke}[/blue]张牌。"
+    "{{MODID_UPPER}}_ORB_TEST_ORB.title": "测试球",
+    "{{MODID_UPPER}}_ORB_TEST_ORB.description": "充能球：回合开始时抽牌。",
+    "{{MODID_UPPER}}_ORB_TEST_ORB.smartDescription": "[gold]被动：[/gold]回合开始时，抽[blue]{Passive}[/blue]张牌。\n[gold]激发：[/gold]抽[blue]{Evoke}[/blue]张牌。"
 }
 ```
 
@@ -469,8 +469,8 @@ public class LightningOrb : ModOrbTemplate
     public override Color DarkenedColor => new("796606");
 
     public override OrbAssetProfile AssetProfile => new(
-        IconPath: "res://PersonalMod/images/orbs/lightning_orb.png",
-        VisualsScenePath: "res://PersonalMod/scenes/orbs/lightning_orb.tscn"
+        IconPath: "res://{{MODID}}/images/orbs/lightning_orb.png",
+        VisualsScenePath: "res://{{MODID}}/scenes/orbs/lightning_orb.tscn"
     );
 
     protected override Node2D? TryCreateOrbSprite() =>
@@ -514,8 +514,8 @@ public class FrostOrb : ModOrbTemplate
     public override Color DarkenedColor => new("7860a7");
 
     public override OrbAssetProfile AssetProfile => new(
-        IconPath: "res://PersonalMod/images/orbs/frost_orb.png",
-        VisualsScenePath: "res://PersonalMod/scenes/orbs/frost_orb.tscn"
+        IconPath: "res://{{MODID}}/images/orbs/frost_orb.png",
+        VisualsScenePath: "res://{{MODID}}/scenes/orbs/frost_orb.tscn"
     );
 
     protected override Node2D? TryCreateOrbSprite() =>
@@ -562,8 +562,8 @@ public class DarkOrb : ModOrbTemplate
     public override Color DarkenedColor => new("9001d3");
 
     public override OrbAssetProfile AssetProfile => new(
-        IconPath: "res://PersonalMod/images/orbs/dark_orb.png",
-        VisualsScenePath: "res://PersonalMod/scenes/orbs/dark_orb.tscn"
+        IconPath: "res://{{MODID}}/images/orbs/dark_orb.png",
+        VisualsScenePath: "res://{{MODID}}/scenes/orbs/dark_orb.tscn"
     );
 
     protected override Node2D? TryCreateOrbSprite() =>
@@ -592,11 +592,11 @@ public class DarkOrb : ModOrbTemplate
 
 ```csharp
 [RegisterOrb]
-public abstract class PersonalModOrbModel : ModOrbTemplate
+public abstract class {{MODID}}OrbModel : ModOrbTemplate
 {
     public override OrbAssetProfile AssetProfile => new(
-        IconPath: $"res://PersonalMod/images/orbs/{GetType().Name}.png",
-        VisualsScenePath: $"res://PersonalMod/scenes/orbs/{GetType().Name}.tscn"
+        IconPath: $"res://{{MODID}}/images/orbs/{GetType().Name}.png",
+        VisualsScenePath: $"res://{{MODID}}/scenes/orbs/{GetType().Name}.tscn"
     );
 
     protected override Node2D? TryCreateOrbSprite() =>
@@ -605,7 +605,7 @@ public abstract class PersonalModOrbModel : ModOrbTemplate
 
 // 子类只需关注逻辑
 [RegisterOrb]
-public class DrawOrb : PersonalModOrbModel
+public class DrawOrb : {{MODID}}OrbModel
 {
     public override decimal PassiveVal => ModifyOrbValue(1);
     public override decimal EvokeVal => ModifyOrbValue(3);
@@ -654,7 +654,7 @@ public class MyOrb : ModOrbTemplate
 
 ```
 {{MODID}}/{{MODID}}Code/Orbs/
-├── PersonalModOrbModel.cs           # 抽象基类（可选）
+├── {{MODID}}OrbModel.cs             # 抽象基类（可选）
 ├── TestOrb.cs                       # 抽牌球
 ├── LightningOrb.cs                  # 闪电球
 └── FrostOrb.cs                      # 冰霜球
@@ -682,7 +682,7 @@ public class MyOrb : ModOrbTemplate
 在游戏中按 `~` 打开控制台：
 
 ```
-orb PERSONALMOD_ORB_TEST_ORB
+orb {{MODID_UPPER}}_ORB_TEST_ORB
 ```
 
 快速检查 Orb 是否注册成功：在控制台尝试引导该 Orb。
@@ -701,7 +701,7 @@ orb PERSONALMOD_ORB_TEST_ORB
 | 回合结束触发 | `Models/Orbs/` | `FrostOrb`（BeforeTurnEndOrbTrigger） |
 | 回合开始触发 | `Models/Orbs/` | `LightningOrb`（AfterTurnStartOrbTrigger） |
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Orbs\` (5 个原版 Orb)
+源码位置: `{{STS2_SOURCE_ROOT}}\Models\Orbs\` (5 个原版 Orb)
 
 ---
 
@@ -746,7 +746,7 @@ orb PERSONALMOD_ORB_TEST_ORB
 - [ ] 是否重写了 `EvokeVal`（使用 `ModifyOrbValue()` 包装）？
 - [ ] 是否重写了 `DarkenedColor`？
 - [ ] 是否添加了 `[RegisterOrb]` 属性？
-- [ ] 命名空间是否正确？（`PersonalMod.PersonalModCode.Orbs`）
+- [ ] 命名空间是否正确？（`{{MODID}}.{{MODID}}Code.Orbs`）
 
 ### 19.2 逻辑检查
 

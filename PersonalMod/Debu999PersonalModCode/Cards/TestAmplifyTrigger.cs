@@ -15,7 +15,6 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
 public class TestAmplifyTrigger : ModCardTemplate
 {
     // 触发次数（可自由修改，方便重写）

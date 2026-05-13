@@ -27,5 +27,11 @@
   "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Accelerate[/gold] ({AccelCost}): Gain [blue]{AccelBlock}[/blue] Block (Skill).",
 
   "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.title": "Crystallize Strike",
-  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Crystallize[/gold] ({CrystallizeCost}): Gain [blue]{CrystallizeStrength}[/blue] Strength (Power)."
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Crystallize[/gold] ({CrystallizeCost}): Gain [blue]{CrystallizeStrength}[/blue] Strength (Power).",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.title": "Chant of Damage",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.description": "Gain Chant Damage. After {ChantCount:diff()} turns, deal 10 damage to all enemies.",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.title": "Chant of Explosion",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.description": "Gain Chant Explosion. Next turn, when removed, deal 20 damage to all enemies."
 }

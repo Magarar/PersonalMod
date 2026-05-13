@@ -1,3 +1,9 @@
 {
-  
+  "DEBU999PERSONALMOD_POWER_CHANT_DAMAGE_POWER.title": "Chant Damage",
+  "DEBU999PERSONALMOD_POWER_CHANT_DAMAGE_POWER.description": "At the start of your turn, reduce the chant count by 1. When the count reaches 0, deal 10 damage to all enemies and remove this power.",
+  "DEBU999PERSONALMOD_POWER_CHANT_DAMAGE_POWER.smartDescription": "At the start of your turn, reduce the chant count by 1. When the count reaches 0, deal 10 damage to all enemies and remove this power.",
+
+  "DEBU999PERSONALMOD_POWER_CHANT_EXPLOSION_POWER.title": "Chant Explosion",
+  "DEBU999PERSONALMOD_POWER_CHANT_EXPLOSION_POWER.description": "Chant 1. When this power is removed, deal 20 damage to all enemies.",
+  "DEBU999PERSONALMOD_POWER_CHANT_EXPLOSION_POWER.smartDescription": "Chant 1. When removed, deal [blue]20[/blue] damage to all enemies."
 }

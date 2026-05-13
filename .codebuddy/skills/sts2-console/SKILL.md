@@ -84,7 +84,7 @@ card StrikeIronclad draw
 card StrikeIronclad master_deck
 
 # 获取 Mod 卡牌
-card PERSONAL_MOD_CARD_MY_CARD hand
+card {{MODID_UPPER}}_CARD_MY_CARD hand
 ```
 
 ### 3.2 附魔示例
@@ -117,19 +117,19 @@ enchant Adroit 3 2
 relic BurningBlood
 
 # 获得 Mod 遗物
-relic PERSONAL_MOD_RELIC_MY_RELIC
+relic {{MODID_UPPER}}_RELIC_MY_RELIC
 
 # 移除遗物
-relic remove PERSONAL_MOD_RELIC_MY_RELIC
+relic remove {{MODID_UPPER}}_RELIC_MY_RELIC
 
 # 获得药水
-potion PERSONAL_MOD_POTION_TEST_POTION
+potion {{MODID_UPPER}}_POTION_TEST_POTION
 
 # 给自己施加 5 层力量
-power PERSONAL_MOD_POWER_STRENGTH_POWER 5 0
+power {{MODID_UPPER}}_POWER_STRENGTH_POWER 5 0
 
 # 给第一个敌人施加 2 层易伤
-power PERSONAL_MOD_POWER_VULNERABLE_POWER 2 1
+power {{MODID_UPPER}}_POWER_VULNERABLE_POWER 2 1
 
 # 加 100 金币
 gold 100
@@ -206,13 +206,13 @@ act 2
 room BOSS
 
 # 触发 Mod 事件
-event PERSONAL_MOD_EVENT_TEST_EVENT
+event {{MODID_UPPER}}_EVENT_TEST_EVENT
 
 # 触发 Mod Ancient，必定出现 Akabeko 遗物
-ancient PERSONAL_MOD_ANCIENT_TEST_ANCIENT Akabeko
+ancient {{MODID_UPPER}}_ANCIENT_TEST_ANCIENT Akabeko
 
 # 触发指定怪物遭遇
-fight PERSONAL_MOD_ENCOUNTER_TEST_ENCOUNTER
+fight {{MODID_UPPER}}_ENCOUNTER_TEST_ENCOUNTER
 
 # 切换地图传送模式
 travel

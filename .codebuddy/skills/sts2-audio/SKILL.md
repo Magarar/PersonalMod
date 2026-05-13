@@ -252,26 +252,26 @@ FMOD 只能加载**未被 Godot 处理过**的音频文件。有三种方式确�
 using STS2RitsuLib.Audio;
 
 // 在 Entry.Init() 中预加载
-FmodStudioStreamingFiles.TryPreloadAsSound("res://PersonalMod/audios/waveform.ogg");
+FmodStudioStreamingFiles.TryPreloadAsSound("res://{{MODID}}/audios/waveform.ogg");
 ```
 
 ### 5.3 播放音频文件
 
 ```csharp
 // 播放一次
-FmodStudioStreamingFiles.TryPlaySoundFile("res://PersonalMod/audios/waveform.ogg");
+FmodStudioStreamingFiles.TryPlaySoundFile("res://{{MODID}}/audios/waveform.ogg");
 ```
 
 ### 5.4 使用 GameAudioService 播放文件
 
 ```csharp
 GameAudioService.Shared.PlayOneShot(
-    AudioSource.SoundFile("res://PersonalMod/audios/effect.wav"),
+    AudioSource.SoundFile("res://{{MODID}}/audios/effect.wav"),
     new AudioPlaybackOptions { Volume = 0.7f });
 
 // 流式音乐
 GameAudioService.Shared.PlayMusic(
-    AudioSource.StreamingMusic("res://PersonalMod/audios/bgm.ogg"),
+    AudioSource.StreamingMusic("res://{{MODID}}/audios/bgm.ogg"),
     new AudioPlaybackOptions { Volume = 0.8f, Scope = AudioLifecycleScope.Room });
 ```
 
@@ -301,7 +301,7 @@ loop?.TryStop();
 
 ```csharp
 var music = GameAudioService.Shared.PlayMusic(
-    AudioSource.StreamingMusic("res://PersonalMod/audios/boss_battle.ogg"),
+    AudioSource.StreamingMusic("res://{{MODID}}/audios/boss_battle.ogg"),
     new AudioPlaybackOptions
     {
         Volume = 0.8f,
@@ -344,8 +344,8 @@ if (FmodPlaybackThrottle.TryEnter("my_power_proc", cooldownMs: 120))
 using STS2RitsuLib.Audio;
 
 // 在 Entry.Init() 中加载
-FmodStudioDeferredBankRegistration.RegisterBank("res://PersonalMod/audios/PersonalMod.bank");
-FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings("res://PersonalMod/audios/GUIDs.txt");
+FmodStudioDeferredBankRegistration.RegisterBank("res://{{MODID}}/audios/{{MODID}}.bank");
+FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings("res://{{MODID}}/audios/GUIDs.txt");
 ```
 
 ### 7.2 可选 Bank 的加载
@@ -353,7 +353,7 @@ FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings("res://PersonalMod
 ```csharp
 using STS2RitsuLib.Audio;
 
-if (!FmodStudioServer.TryLoadBank("res://PersonalMod/audios/optional.bank"))
+if (!FmodStudioServer.TryLoadBank("res://{{MODID}}/audios/optional.bank"))
 {
     // 处理加载失败（如使用回退音效）
 }
@@ -376,14 +376,14 @@ FmodStudioServer.TryWaitForAllLoads();
 #### 7.3.3 步骤
 
 1. **导入音频**：左侧 Assets 栏 → 右键 Import Assets 或拖入音频文件
-2. **重命名 Bank**：中间 Banks 栏 → 重命名为你的项目名（如 `PersonalMod`）
+2. **重命名 Bank**：中间 Banks 栏 → 重命名为你的项目名（如 `{{MODID}}`）
 3. **创建 Event**：Events 栏 → 右键新建文件夹 → 右键新建 Event → Assign To Bank 选择你的 Bank
 4. **配置 Routing**：Window → Mixer Routing → 创建 `master/sfx` 或 `master/music` routing
 5. **创建 Sheet**：在 Event 中右键 → 新建 Timeline Sheet → 将音频素材拖入轨道
 6. **构建导出**：
    - File → Build（构建 Bank）
    - File → Export GUIDs（导出 GUID 映射）
-7. **复制文件**：从构建输出目录复制 `Build/Desktop/PersonalMod.bank` 和 `GUIDs.txt` 到 Mod 项目中
+7. **复制文件**：从构建输出目录复制 `Build/Desktop/{{MODID}}.bank` 和 `GUIDs.txt` 到 Mod 项目中
 8. **导出设置**：确保 Godot 导出设置中包含 `.bank` 和 `.txt` 文件
 
 #### 7.3.4 音频总线布局

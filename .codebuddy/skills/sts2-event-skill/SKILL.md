@@ -48,15 +48,15 @@ RitsuLib 注册的事件 ID 格式：
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
 | `TestEvent` | `{{MODID_UPPER}}_EVENT_TEST_EVENT` |
-| `AbyssalBaths` | `PERSONALMOD_EVENT_ABYSSAL_BATHS` |
-| `MysteriousSpring` | `PERSONALMOD_EVENT_MYSTERIOUS_SPRING` |
+| `AbyssalBaths` | `{{MODID_UPPER}}_EVENT_ABYSSAL_BATHS` |
+| `MysteriousSpring` | `{{MODID_UPPER}}_EVENT_MYSTERIOUS_SPRING` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_EVENT_TEST_EVENT.title": "与戈多相遇",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.INITIAL.description": "描述文本..."
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.title": "与戈多相遇",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.INITIAL.description": "描述文本..."
 }
 ```
 
@@ -406,32 +406,32 @@ CardCreationOptions.ForNonCombatWithDefaultOdds([pool1, pool2])
 ### 12.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/events.json
-PersonalMod/PersonalMod/localization/zhs/events.json
+{{MODID}}/{{MODID}}/localization/eng/events.json
+{{MODID}}/{{MODID}}/localization/zhs/events.json
 ```
 
 ### 12.2 格式
 
 ```json
 {
-  "PERSONALMOD_EVENT_TEST_EVENT.title": "与戈多相遇",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.title": "与戈多相遇",
 
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.INITIAL.description": "岔路口的长椅……",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.INITIAL.description": "岔路口的长椅……",
 
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.INITIAL.options.TAKE_DAMAGE.title": "用疼痛记住这一刻",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.INITIAL.options.TAKE_DAMAGE.description": "受到[red]{Damage}[/red]点伤害。",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.INITIAL.options.TAKE_DAMAGE.title": "用疼痛记住这一刻",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.INITIAL.options.TAKE_DAMAGE.description": "受到[red]{Damage}[/red]点伤害。",
 
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.INITIAL.options.LOSE_GOLD.title": "留下过路费",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.INITIAL.options.LOSE_GOLD.description": "失去[gold]{Gold}[/gold]枚金币。",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.INITIAL.options.LOSE_GOLD.title": "留下过路费",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.INITIAL.options.LOSE_GOLD.description": "失去[gold]{Gold}[/gold]枚金币。",
 
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.description": "戈多从长椅底下摸出一个布包……",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_POTIONS.title": "接过一瓶药水",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_POTIONS.description": "领取药水奖励。",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_CARDS.title": "领张牌再走",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_CARDS.description": "领取卡牌奖励。",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.description": "戈多从长椅底下摸出一个布包……",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_POTIONS.title": "接过一瓶药水",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_POTIONS.description": "领取药水奖励。",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_CARDS.title": "领张牌再走",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.CHOOSE_TYPE.options.CHOOSE_CARDS.description": "领取卡牌奖励。",
 
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.POTIONS_CHOSEN.description": "液体在瓶里轻轻晃荡……",
-  "PERSONALMOD_EVENT_TEST_EVENT.pages.CARDS_CHOSEN.description": "纸牌边缘划过指缝……"
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.POTIONS_CHOSEN.description": "液体在瓶里轻轻晃荡……",
+  "{{MODID_UPPER}}_EVENT_TEST_EVENT.pages.CARDS_CHOSEN.description": "纸牌边缘划过指缝……"
 }
 ```
 
@@ -612,7 +612,7 @@ namespace {{MODID}}.{{MODID}}Code.Events;
 public sealed class SimpleEvent : ModEventTemplate
 {
     public override EventAssetProfile AssetProfile => new(
-        InitialPortraitPath: "res://PersonalMod/images/events/simple_event.png"
+        InitialPortraitPath: "res://{{MODID}}/images/events/simple_event.png"
     );
 
     public override bool IsAllowed(IRunState runState) =>
@@ -643,16 +643,16 @@ public sealed class SimpleEvent : ModEventTemplate
 
 ```csharp
 [RegisterActEvent(typeof(Glory))]
-public abstract class PersonalModEventModel : ModEventTemplate
+public abstract class {{MODID}}EventModel : ModEventTemplate
 {
     public override EventAssetProfile AssetProfile => new(
-        InitialPortraitPath: $"res://PersonalMod/images/events/{GetType().Name}.png"
+        InitialPortraitPath: $"res://{{MODID}}/images/events/{GetType().Name}.png"
     );
 }
 
 // 子类只需关注逻辑
 [RegisterActEvent(typeof(Glory))]
-public sealed class MyEvent : PersonalModEventModel
+public sealed class MyEvent : {{MODID}}EventModel
 {
     protected override IReadOnlyList<EventOption> GenerateInitialOptions() =>
     [
@@ -673,7 +673,7 @@ public sealed class MyEvent : PersonalModEventModel
 
 ```
 {{MODID}}/{{MODID}}Code/Events/
-├── PersonalModEventModel.cs           # 抽象基类（可选）
+├── {{MODID}}EventModel.cs           # 抽象基类（可选）
 ├── TestEvent.cs                       # 多阶段事件
 └── SimpleEvent.cs                     # 单阶段事件
 
@@ -704,7 +704,7 @@ public sealed class MyEvent : PersonalModEventModel
 | IsAllowed 条件 | `Models/Events/` | 搜索 `IsAllowed` |
 | BeforeEventStarted | `Models/Events/` | 搜索 `BeforeEventStarted` |
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Events\` (约 68 个事件文件)
+源码位置: `{{STS2_SOURCE_ROOT}}Models\Events\` (约 68 个事件文件)
 
 ---
 
@@ -715,7 +715,7 @@ public sealed class MyEvent : PersonalModEventModel
 在游戏中按 `~` 打开控制台：
 
 ```
-event PERSONALMOD_EVENT_TEST_EVENT
+event {{MODID_UPPER}}_EVENT_TEST_EVENT
 ```
 
 强制触发指定事件。

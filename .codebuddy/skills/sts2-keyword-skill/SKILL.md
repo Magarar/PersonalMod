@@ -77,9 +77,9 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 [RegisterOwnedCardKeyword(
     nameof(Unique),
-    IconPath = "res://PersonalMod/images/keywords/unique.svg",
+    IconPath = "res://{{MODID}}/images/keywords/unique.svg",
     CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.BeforeCardDescription)]
-// [RegisterOwnedCardKeyword(nameof(Unique2), IconPath = "res://icon.svg")] // 添加更多关键词
+// [RegisterOwnedCardKeyword(nameof(Unique2), IconPath = "res://{{MODID}}/icon.svg")] // 添加更多关键词
 public class MyKeywords
 {
     public static readonly string Unique = ModContentRegistry.GetQualifiedCardKeywordId(Entry.ModId, nameof(Unique));
@@ -109,8 +109,8 @@ public class MyKeywords
 
 ```json
 {
-    "PERSONALMOD_KEYWORD_UNIQUE.description": "卡组中只能有一张同名牌。",
-    "PERSONALMOD_KEYWORD_UNIQUE.title": "唯一"
+    "{{MODID_UPPER}}_KEYWORD_UNIQUE.description": "卡组中只能有一张同名牌。",
+    "{{MODID_UPPER}}_KEYWORD_UNIQUE.title": "唯一"
 }
 ```
 
@@ -291,8 +291,8 @@ public override void OnUpgrade()
 
 ```json
 {
-    "TEST_LEECH.description": "吸取等量生命。",
-    "TEST_LEECH.title": "汲取"
+    "{{MODID_UPPER}}_TEST_LEECH.description": "吸取等量生命。",
+    "{{MODID_UPPER}}_TEST_LEECH.title": "汲取"
 }
 ```
 
@@ -302,7 +302,7 @@ CardModel 的 Description 和 DynamicDescription 中可用：
 
 ```json
 {
-    "PERSONALMOD_CARD_TEST_CARD.description": "[gold]汲取[/gold]{Leech:diff()}。\n造成{Damage:diff()}点伤害。"
+    "{{MODID_UPPER}}_CARD_TEST_CARD.description": "[gold]汲取[/gold]{Leech:diff()}。\n造成{Damage:diff()}点伤害。"
 }
 ```
 
@@ -383,7 +383,7 @@ public class TestCard : ModCardTemplate(1, CardType.Attack, CardRarity.Common, T
 
 ```json
 {
-    "PERSONALMOD_CARD_TEST_CARD.description": "造成{Damage:diff()}点伤害。给予[gold]易伤[/gold]。"
+    "{{MODID_UPPER}}_CARD_TEST_CARD.description": "造成{Damage:diff()}点伤害。给予[gold]易伤[/gold]。"
 }
 ```
 
@@ -436,20 +436,20 @@ protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
 ### 7.1 关键词本地化
 
 ```
-PersonalMod/PersonalMod/localization/eng/card_keywords.json
+{{MODID}}/{{MODID}}/localization/eng/card_keywords.json
 ```
 
 ```json
 {
-    "PERSONALMOD_KEYWORD_UNIQUE.description": "Only one copy of this card can be in your deck.",
-    "PERSONALMOD_KEYWORD_UNIQUE.title": "Unique"
+    "{{MODID_UPPER}}_KEYWORD_UNIQUE.description": "Only one copy of this card can be in your deck.",
+    "{{MODID_UPPER}}_KEYWORD_UNIQUE.title": "Unique"
 }
 ```
 
 ### 7.2 动态变量提示文本本地化
 
 ```
-PersonalMod/PersonalMod/localization/eng/static_hover_tips.json
+{{MODID}}/{{MODID}}/localization/eng/static_hover_tips.json
 ```
 
 ```json
@@ -462,7 +462,7 @@ PersonalMod/PersonalMod/localization/eng/static_hover_tips.json
 ### 7.3 文件目录结构
 
 ```
-PersonalMod/PersonalMod/localization/
+{{MODID}}/{{MODID}}/localization/
 ├── eng/
 │   ├── cards.json                 # 卡牌标题与描述
 │   ├── card_keywords.json         # 卡牌关键词（title + description）
@@ -486,7 +486,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace {{MODID}}.{{MODID}}Code;
 
-[RegisterOwnedCardKeyword(nameof(Unique), IconPath = "res://PersonalMod/images/keywords/unique.svg")]
+[RegisterOwnedCardKeyword(nameof(Unique), IconPath = "res://{{MODID}}/images/keywords/unique.svg")]
 [RegisterOwnedCardKeyword(nameof(Brew), CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.BeforeCardDescription)]
 [RegisterOwnedCardTag(nameof(Heavy))]
 [RegisterOwnedCardTag(nameof(Piercing))]
@@ -635,8 +635,8 @@ public class AnotherCard : ModCardTemplate(2, CardType.Attack, CardRarity.Uncomm
 原版关键词在源码中定义，可通过搜索了解：
 
 ```
-D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\CardKeyword.cs
-D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\CardTag.cs
+{{STS2_SOURCE_ROOT}}\Models\CardKeyword.cs
+{{STS2_SOURCE_ROOT}}\Models\CardTag.cs
 ```
 
 ### 10.2 查找原版卡牌实现中的关键词/Tag
@@ -650,8 +650,8 @@ D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Cards\
 ### 10.3 本地化参考
 
 ```
-D:\杀戮尖塔2Mod\sts2\steam\localization\eng\card_keywords.json
-D:\杀戮尖塔2Mod\sts2\steam\localization\eng\static_hover_tips.json
+{{STS2_GAME_ROOT}}\localization\eng\card_keywords.json
+{{STS2_GAME_ROOT}}\localization\eng\static_hover_tips.json
 ```
 
 ---
@@ -773,7 +773,7 @@ public override bool ShouldPlay(CardModel card, AutoPlayType autoPlayType)
 - 输入 `keyword list` 查看已注册关键词
 - 输入 `tag list` 查看已注册 Tag
 - 输入 `card <CARD_ID>` 查看卡牌详细信息（包括关键词和 Tag）
-- 卡牌描述显示为原始键名（如 `PERSONALMOD_CARD_TEST_CARD.title`）是本地化文件缺失的信号
+- 卡牌描述显示为原始键名（如 `{{MODID_UPPER}}_CARD_TEST_CARD.title`）是本地化文件缺失的信号
 - 动态变量占位符显示为 `{VarName}` 表示未正确替换，检查 `CanonicalVars` 中是否定义了对应名称的变量
 
 ---

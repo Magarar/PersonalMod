@@ -16,7 +16,6 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
 public class TestRapidCard : ModCardTemplate, IRapidCard
 {
     private const int EnergyCost = 1;

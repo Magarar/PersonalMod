@@ -51,15 +51,15 @@ RitsuLib 注册的怪物 ID 格式：
 | C# 类型名 | ModelId.Entry |
 |-----------|---------------|
 | `TestMonster` | `{{MODID_UPPER}}_MONSTER_TEST_MONSTER` |
-| `Chomper` | `PERSONALMOD_MONSTER_CHOMPER` |
-| `StoneGolem` | `PERSONALMOD_MONSTER_STONE_GOLEM` |
+| `Chomper` | `{{MODID_UPPER}}_MONSTER_CHOMPER` |
+| `StoneGolem` | `{{MODID_UPPER}}_MONSTER_STONE_GOLEM` |
 
 本地化键必须使用此 ID：
 
 ```json
 {
-  "PERSONALMOD_MONSTER_TEST_MONSTER.name": "戈多",
-  "PERSONALMOD_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.title": "基础攻击"
+  "{{MODID_UPPER}}_MONSTER_TEST_MONSTER.name": "戈多",
+  "{{MODID_UPPER}}_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.title": "基础攻击"
 }
 ```
 
@@ -321,7 +321,7 @@ await DamageCmd.Attack(HeavyDamage)
 
 ```csharp
 TalkCmd.Play(
-    L10NMonsterLookup("PERSONALMOD_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.banter"),
+    L10NMonsterLookup("{{MODID_UPPER}}_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.banter"),
     Creature,
     VfxColor.Blue
 );
@@ -339,7 +339,7 @@ public override MonsterAssetProfile AssetProfile => new(
 );
 
 // 或者使用 CustomVisualPath（替代 AssetProfile）
-public override string? CustomVisualPath => "res://PersonalMod/scenes/monsters/test_monster.tscn";
+public override string? CustomVisualPath => "res://{{MODID}}/scenes/monsters/test_monster.tscn";
 ```
 
 ### 8.2 怪物视觉场景要求
@@ -366,7 +366,7 @@ TestMonster (NCreatureVisuals)
 ```gdscript
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Texture2D" path="res://PersonalMod/images/monsters/test_monster.png" id="1"]
+[ext_resource type="Texture2D" path="res://{{MODID}}/images/monsters/test_monster.png" id="1"]
 
 [node name="TestCharacter" type="Node2D"]
 
@@ -475,7 +475,7 @@ public class TestMultiEncounter : ModEncounterTemplate
     public override bool IsWeak => false;
 
     public override EncounterAssetProfile AssetProfile => new(
-        EncounterScenePath: "res://PersonalMod/scenes/encounters/test_multi_encounter.tscn"
+        EncounterScenePath: "res://{{MODID}}/scenes/encounters/test_multi_encounter.tscn"
     );
 
     public override IReadOnlyList<string> Slots => [
@@ -546,10 +546,10 @@ RoomType.RestSite      // 休息点
 
 ```json
 {
-  "PERSONALMOD_MONSTER_TEST_MONSTER.name": "戈多",
-  "PERSONALMOD_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.title": "基础攻击",
-  "PERSONALMOD_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.banter": "[jitter]接下这招！[/jitter]",
-  "PERSONALMOD_MONSTER_TEST_MONSTER.moves.HEAVY_ATTACK.title": "重击"
+  "{{MODID_UPPER}}_MONSTER_TEST_MONSTER.name": "戈多",
+  "{{MODID_UPPER}}_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.title": "基础攻击",
+  "{{MODID_UPPER}}_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.banter": "[jitter]接下这招！[/jitter]",
+  "{{MODID_UPPER}}_MONSTER_TEST_MONSTER.moves.HEAVY_ATTACK.title": "重击"
 }
 ```
 
@@ -666,7 +666,7 @@ public class TestMonster : ModMonsterTemplate
     private async Task BasicAttackMove(IReadOnlyList<Creature> targets)
     {
         TalkCmd.Play(
-            L10NMonsterLookup("PERSONALMOD_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.banter"),
+            L10NMonsterLookup("{{MODID_UPPER}}_MONSTER_TEST_MONSTER.moves.BASIC_ATTACK.banter"),
             Creature,
             VfxColor.Blue
         );
@@ -693,7 +693,7 @@ public class RandomMonster : ModMonsterTemplate
     public override int MaxInitialHp => 40;
 
     public override MonsterAssetProfile AssetProfile => new(
-        VisualsScenePath: "res://PersonalMod/scenes/monsters/random_monster.tscn"
+        VisualsScenePath: "res://{{MODID}}/scenes/monsters/random_monster.tscn"
     );
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -786,7 +786,7 @@ public class TestMultiEncounter : ModEncounterTemplate
     public override bool IsWeak => false;
 
     public override EncounterAssetProfile AssetProfile => new(
-        EncounterScenePath: "res://PersonalMod/scenes/encounters/test_multi_encounter.tscn"
+        EncounterScenePath: "res://{{MODID}}/scenes/encounters/test_multi_encounter.tscn"
     );
 
     public override IReadOnlyList<string> Slots => [
@@ -854,10 +854,10 @@ public class TestMultiEncounter : ModEncounterTemplate
 | 遭遇配置 | `Models/Encounters/` | 各类 Encounter 文件 |
 
 源码位置:
-- 怪物基类: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\MonsterModel.cs`
-- 怪物实现: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Monsters\`
-- 意图系统: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\MonsterMoves\Intents\`
-- 状态机: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\MonsterMoves\MonsterMoveStateMachine\`
+- 怪物基类: `{{STS2_SOURCE_ROOT}}\Models\MonsterModel.cs`
+- 怪物实现: `{{STS2_SOURCE_ROOT}}\Models\Monsters\`
+- 意图系统: `{{STS2_SOURCE_ROOT}}\MonsterMoves\Intents\`
+- 状态机: `{{STS2_SOURCE_ROOT}}\MonsterMoves\MonsterMoveStateMachine\`
 
 ---
 
@@ -868,7 +868,7 @@ public class TestMultiEncounter : ModEncounterTemplate
 在游戏中按 `~` 打开控制台：
 
 ```
-spawn PERSONALMOD_MONSTER_TEST_MONSTER
+spawn {{MODID_UPPER}}_MONSTER_TEST_MONSTER
 ```
 
 ### 15.2 常见检查步骤

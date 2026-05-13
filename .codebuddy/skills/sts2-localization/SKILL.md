@@ -607,15 +607,15 @@ Add a 0{energyPrefix:energyIcons(1)} copy of this card.
 
 | 文件 | 路径 |
 |------|------|
-| 卡牌 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\cards.json` |
-| 能力 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\powers.json` |
-| 遗物 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\relics.json` |
-| 药水 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\potions.json` |
-| 事件 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\events.json` |
-| 关键词 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\card_keywords.json` |
-| 悬停提示 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\static_hover_tips.json` |
-| 先古对话 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\ancients.json` |
-| 怪物 | `D:\杀戮尖塔2Mod\sts2\steam\localization\eng\monsters.json` |
+| 卡牌 | `{{STS2_GAME_ROOT}}\localization\eng\cards.json` |
+| 能力 | `{{STS2_GAME_ROOT}}\localization\eng\powers.json` |
+| 遗物 | `{{STS2_GAME_ROOT}}\localization\eng\relics.json` |
+| 药水 | `{{STS2_GAME_ROOT}}\localization\eng\potions.json` |
+| 事件 | `{{STS2_GAME_ROOT}}\localization\eng\events.json` |
+| 关键词 | `{{STS2_GAME_ROOT}}\localization\eng\card_keywords.json` |
+| 悬停提示 | `{{STS2_GAME_ROOT}}\localization\eng\static_hover_tips.json` |
+| 先古对话 | `{{STS2_GAME_ROOT}}\localization\eng\ancients.json` |
+| 怪物 | `{{STS2_GAME_ROOT}}\localization\eng\monsters.json` |
 
 ### 13.2 外部文档
 

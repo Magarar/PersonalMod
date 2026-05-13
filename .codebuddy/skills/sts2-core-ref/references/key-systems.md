@@ -1,6 +1,6 @@
 # STS2 Core 关键系统参考
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\`
+源码位置: `{{STS2_SOURCE_ROOT}}`
 
 ---
 

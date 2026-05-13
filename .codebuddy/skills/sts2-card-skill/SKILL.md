@@ -289,7 +289,7 @@ public override CardAssetProfile AssetProfile => new(
 ```
 
 - 卡图任意尺寸，官方尺寸: 普通卡 250x190，先古卡 250x351
-- 路径中 `res://PersonalMod/` 对应项目的 modid 资源文件夹
+- 路径中 `res://{{MODID}}/` 对应项目的 modid 资源文件夹
 
 ### 7.2 完整配置
 
@@ -305,8 +305,8 @@ public override CardAssetProfile AssetProfile => new(
 ### 7.3 卡图文件位置
 
 ```
-PersonalMod/PersonalMod/images/card_portraits/
-├── TestCard.png          # 对应 res://PersonalMod/images/card_portraits/TestCard.png
+{{MODID}}/{{MODID}}/images/card_portraits/
+├── TestCard.png          # 对应 res://{{MODID}}/images/card_portraits/TestCard.png
 └── colorless/            # 可按卡池分子目录
     └── MyColorlessCard.png
 ```
@@ -380,16 +380,16 @@ new CardRegistrationEntry<MyCardPool, MyCard>()
 ### 9.1 文件位置
 
 ```
-PersonalMod/PersonalMod/localization/eng/cards.json
-PersonalMod/PersonalMod/localization/zhs/cards.json
+{{MODID}}/{{MODID}}/localization/eng/cards.json
+{{MODID}}/{{MODID}}/localization/zhs/cards.json
 ```
 
 ### 9.2 格式
 
 ```json
 {
-    "PERSONALMOD_CARD_TEST_CARD.title": "Test Card",
-    "PERSONALMOD_CARD_TEST_CARD.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} cards.\nGain {Block:diff()} Block."
+    "{{MODID_UPPER}}_CARD_TEST_CARD.title": "Test Card",
+    "{{MODID_UPPER}}_CARD_TEST_CARD.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} cards.\nGain {Block:diff()} Block."
 }
 ```
 
@@ -642,7 +642,7 @@ public class MyCard : PersonalModCardModel
 
 ```
 {{MODID}}/{{MODID}}Code/Cards/
-├── PersonalModCardModel.cs       # 抽象基类（可选）
+├── {{MODID}}ModCardModel.cs       # 抽象基类（可选）
 ├── MyAttackCard.cs               # 攻击卡
 ├── MyDefendCard.cs               # 防御卡
 └── MyPowerCard.cs                # 能力卡
@@ -676,14 +676,14 @@ public class MyCard : PersonalModCardModel
 | 能力牌 | `Models/Cards/` | `DemonForm`, `Barricade` |
 | 多段攻击 | `Models/Cards/` | `SwordBoomerang`, `RiddleWithHoles` |
 
-源码位置: `D:\杀戮尖塔2Mod\st2代码\sts2\MegaCrit\sts2\Core\Models\Cards\`
+源码位置: `{{STS2_SOURCE_ROOT}}\Models\Cards\`
 
 ---
 
 ## 13. 调试
 
 - 战斗中按 `~` 打开控制台
-- 输入 `card PERSONALMOD_CARD_TEST_CARD` 获取指定卡牌
+- 输入 `card {{MODID_UPPER}}_CARD_TEST_CARD` 获取指定卡牌
 - 只能在战斗中使用命令获得卡牌
 - 图鉴中显示 `???` 是正常的，需要先在游戏中遇到该卡
 

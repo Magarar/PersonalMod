@@ -14,7 +14,6 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(DefectCardPool))]
 public class ChaosOrb : ModCardTemplate
 {
     private const int EnergyCost = 0;
