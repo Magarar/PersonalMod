@@ -15,6 +15,19 @@ description: >-
 
 **源码根目录**: `{{STS2_SOURCE_ROOT}}`
 
+> ⚠️ **注意**：`{{STS2_GAME_ROOT}}` 下的 `.cs` 是 1B 空占位，不要使用。
+> **只有** `{{STS2_SOURCE_ROOT}}` 下的文件才是真实的反编译源码。
+
+### 🚫 重要规则：禁止使用终端命令搜索源码
+
+查阅 STS2 源码时，**绝对禁止**使用 `execute_command` 工具执行 `grep`、`findstr`、`dir`、`powershell` 等终端命令去搜索/匹配代码。
+
+**允许的搜索方式**（只使用以下工具）：
+- `read_file` — 直接读取已知路径的源文件
+- `search_content` — 在工作区内搜索代码模式（目录参数使用上面的真实源码根目录）
+- `search_file` — 按文件名模式查找文件
+- `list_files` — 查看目录结构
+
 查阅详细的参考文件以获取完整的 API 信息：
 - `references/base-classes.md` — 所有模型基类及其可 override 成员
 - `references/hooks-reference.md` — 完整 Hook 回调列表
