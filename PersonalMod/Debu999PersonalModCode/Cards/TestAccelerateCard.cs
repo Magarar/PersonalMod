@@ -17,6 +17,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
+[RegisterCard(typeof(ColorlessCardPool))]
 public class TestAccelerateCard : ModCardTemplate, IAccelerateCard
 {
     // ===== 激奏配置 =====
@@ -28,7 +29,7 @@ public class TestAccelerateCard : ModCardTemplate, IAccelerateCard
     private const int CardDamage = 19;
     private const int AccelBlockAmount = 9;
     private const CardType CardTypeValue = CardType.Attack;
-    private const CardRarity Rarity = CardRarity.Uncommon;
+    private const CardRarity Rarity = CardRarity.Token;
     private const TargetType Target = TargetType.AnyEnemy;
 
     /// <summary>
@@ -56,10 +57,12 @@ public class TestAccelerateCard : ModCardTemplate, IAccelerateCard
         new DynamicVar("AccelBlock", AccelBlockAmount),
         new DynamicVar("AccelCost", AccelCost)
     ];
+    
+    
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (IsAccelerateMode)
+        if (IsAccelerateMode&&!cardPlay.IsAutoPlay)
         {
             // 激奏模式：获得格挡（当作技能牌效果）
             IsAccelerateMode = false;
@@ -76,6 +79,8 @@ public class TestAccelerateCard : ModCardTemplate, IAccelerateCard
                 .Execute(choiceContext);
         }
     }
+    
+    
 
     protected override void OnUpgrade()
     {

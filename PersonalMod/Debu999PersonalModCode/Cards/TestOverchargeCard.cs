@@ -17,6 +17,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
+[RegisterCard(typeof(ColorlessCardPool))]
 public class TestOverchargeCard : ModCardTemplate, IOverchargeCard
 {
     // ===== 爆能配置 =====
@@ -31,7 +32,7 @@ public class TestOverchargeCard : ModCardTemplate, IOverchargeCard
     private const int EnergyCost = 1;
     private const int CardDamage = 9;
     private const CardType Type = CardType.Attack;
-    private const CardRarity Rarity = CardRarity.Uncommon;
+    private const CardRarity Rarity = CardRarity.Token;
     private const TargetType Target = TargetType.AnyEnemy;
 
     public TestOverchargeCard()

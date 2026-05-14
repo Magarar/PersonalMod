@@ -18,6 +18,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
+[RegisterCard(typeof(ColorlessCardPool))]
 public class TestCrystallizeCard : ModCardTemplate, ICrystallizeCard
 {
     // ===== 结晶配置 =====
@@ -29,7 +30,7 @@ public class TestCrystallizeCard : ModCardTemplate, ICrystallizeCard
     private const int CardDamage = 9;
     private const int CrystallizeStrengthAmount = 3;
     private const CardType CardTypeValue = CardType.Attack;
-    private const CardRarity Rarity = CardRarity.Uncommon;
+    private const CardRarity Rarity = CardRarity.Token;
     private const TargetType Target = TargetType.AnyEnemy;
     
     public override TargetType TargetType => IsCrystallizeMode ? TargetType.Self : Target;

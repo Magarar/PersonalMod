@@ -22,6 +22,7 @@ public partial class MainFile : Node
         // 自动注册内容
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 
+        EnergyChangeHelper.EnsurePatched();
         // 初始化连携 (Combo) 追踪系统
         ComboTracker.Initialize();
         // 初始化连击 (Rapid) 追踪系统

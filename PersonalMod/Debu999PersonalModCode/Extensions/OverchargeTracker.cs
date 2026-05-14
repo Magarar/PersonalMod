@@ -62,7 +62,6 @@ public class OverchargeDamageVar : DamageVar
         CardModel card, CardPreviewMode previewMode,
         Creature? target, bool runGlobalHooks)
     {
-        // 先让基类计算基础伤害（含力量、易伤等全局修正）
         base.UpdateCardPreview(card, previewMode, target, runGlobalHooks);
 
         if (!card.DynamicVars.ContainsKey("PlusedDamage") ||
@@ -76,13 +75,11 @@ public class OverchargeDamageVar : DamageVar
         int plusedCost = (int)card.DynamicVars["PlusedCost"].BaseValue;
         if (player.PlayerCombatState.Energy >= plusedCost)
         {
-            // 此时 PreviewValue = 基础伤害(9) + 力量加成 + Hook修正
-            // 改为：爆能伤害(21) + 相同的力拉/Hook加成
-            decimal baseDamage = BaseValue;                          // 9
-            decimal basePreview = PreviewValue;                      // 9 + Strength + hooks
-            decimal bonusFromHooks = basePreview - baseDamage;        // Strength贡献
+            decimal baseDamage = BaseValue;
+            decimal basePreview = PreviewValue;
+            decimal bonusFromHooks = basePreview - baseDamage;
             int plusedDamage = (int)card.DynamicVars["PlusedDamage"].BaseValue;
-            PreviewValue = plusedDamage + bonusFromHooks;            // 21 + Strength
+            PreviewValue = plusedDamage + bonusFromHooks;
         }
     }
 }
@@ -98,27 +95,25 @@ public static class OverchargeTracker
     {
         if (_initialized) return;
         _initialized = true;
+        
 
+        // 回合开始时的刷新兜底
         RitsuLibFramework.SubscribeLifecycle<SideTurnStartedEvent>(evt =>
         {
             if (evt.Side == CombatSide.Player)
                 RefreshCosts(evt.CombatState);
         });
-
-        RitsuLibFramework.SubscribeLifecycle<CardPlayedEvent>(evt =>
-        {
-            RefreshCosts(evt.CombatState);
-        });
     }
 
-    private static void RefreshCosts(ICombatState? combatState)
+    /// <summary>
+    /// 刷新所有爆能卡的费用和状态。
+    /// </summary>
+    internal static void RefreshCosts(ICombatState? combatState, CardModel? skipCard = null)
     {
         var player = combatState?.Players?.FirstOrDefault();
         if (player == null) return;
 
-        // 遍历所有牌堆（手牌 + 抽牌堆 + 弃牌堆），
-        // 以便在牌堆预览时也能看到正确的爆能费用
-        var piles = new[] { PileType.Hand, PileType.Draw, PileType.Discard ,PileType.Exhaust,PileType.Deck,PileType.Play};
+        var piles = new[] { PileType.Hand, PileType.Draw, PileType.Discard, PileType.Exhaust, PileType.Deck, PileType.Play };
         foreach (var pileType in piles)
         {
             var pile = pileType.GetPile(player);
@@ -126,6 +121,7 @@ public static class OverchargeTracker
 
             foreach (var card in pile.Cards.ToList())
             {
+                if (card == skipCard) continue;
                 if (card is IOverchargeCard oc)
                 {
                     int currentEnergy = player.PlayerCombatState.Energy;

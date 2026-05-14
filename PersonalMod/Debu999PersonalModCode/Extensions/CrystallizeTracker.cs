@@ -26,20 +26,17 @@ public static class CrystallizeTracker
     {
         if (_initialized) return;
         _initialized = true;
+        
 
+        // 回合开始时的刷新兜底
         RitsuLibFramework.SubscribeLifecycle<SideTurnStartedEvent>(evt =>
         {
             if (evt.Side == CombatSide.Player)
                 RefreshAllCosts(evt.CombatState);
         });
-
-        RitsuLibFramework.SubscribeLifecycle<CardPlayedEvent>(evt =>
-        {
-            RefreshAllCosts(evt.CombatState);
-        });
     }
 
-    private static void RefreshAllCosts(ICombatState? combatState)
+    internal static void RefreshAllCosts(ICombatState? combatState, CardModel? skipCard = null)
     {
         var player = combatState?.Players?.FirstOrDefault();
         if (player == null) return;
@@ -53,6 +50,7 @@ public static class CrystallizeTracker
 
             foreach (var card in pile.Cards.ToList())
             {
+                if (card == skipCard) continue;
                 if (card is ICrystallizeCard cry)
                 {
                     int currentEnergy = player.PlayerCombatState.Energy;

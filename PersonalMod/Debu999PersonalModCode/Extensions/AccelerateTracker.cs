@@ -5,6 +5,9 @@
 // 使用方式：
 // 1. 卡牌实现 IAccelerateCard 接口
 // 2. OnPlay 中判断 IsAccelerateMode 执行不同效果
+//
+// 能量变更检测：通过 EnergyChangeHelper 统一 Harmony 补丁，
+// 覆盖所有能量变化场景（回合重置、打牌扣费、遗物/能力/药水加费等）。
 
 using System.Linq;
 using MegaCrit.Sts2.Core.Combat;
@@ -27,7 +30,7 @@ public interface IAccelerateCard
     int BaseCost { get; }
 
     /// <summary>
-    /// 激奏费用（如 1）。能量 ≥ BaseCost 时正常打出，≤ AccelCost 时触发激奏。
+    /// 激奏费用（如 1）。能量 &ge; BaseCost 时正常打出，能量 &lt; BaseCost 时触发激奏。
     /// </summary>
     int AccelCost { get; }
 
@@ -49,26 +52,25 @@ public static class AccelerateTracker
         if (_initialized) return;
         _initialized = true;
 
+        // 回合开始时的刷新兜底
         RitsuLibFramework.SubscribeLifecycle<SideTurnStartedEvent>(evt =>
         {
             if (evt.Side == CombatSide.Player)
                 RefreshAllCosts(evt.CombatState);
         });
-
-        RitsuLibFramework.SubscribeLifecycle<CardPlayedEvent>(evt =>
-        {
-            RefreshAllCosts(evt.CombatState);
-        });
     }
 
-    private static void RefreshAllCosts(ICombatState? combatState)
+    /// <summary>
+    /// 刷新所有激奏卡的费用和状态。
+    /// </summary>
+    /// <param name="skipCard">可指定跳过某张卡（避免打出途中篡改其模式）</param>
+    internal static void RefreshAllCosts(ICombatState? combatState, CardModel? skipCard = null)
     {
         var player = combatState?.Players?.FirstOrDefault();
         if (player == null) return;
-        
-        var piles = new[] { PileType.Hand, PileType.Draw, PileType.Discard ,PileType.Exhaust,PileType.Deck,PileType.Play};
 
-        // 遍历所有牌堆，更新激奏卡的费用和状态
+        var piles = new[] { PileType.Hand, PileType.Draw, PileType.Discard, PileType.Exhaust, PileType.Deck, PileType.Play };
+
         foreach (var pileType in piles)
         {
             var pile = pileType.GetPile(player);
@@ -76,15 +78,13 @@ public static class AccelerateTracker
 
             foreach (var card in pile.Cards.ToList())
             {
+                if (card == skipCard) continue;  // 跳过打出中的卡
                 if (card is IAccelerateCard accel)
                 {
                     int currentEnergy = player.PlayerCombatState.Energy;
-                    // 能量 ≥ 基础费用 → 正常模式（显示基础费用）
-                    // 能量 < 基础费用 且 ≥ 激奏费用 → 激奏模式（显示激奏费用）
                     bool canAccel = currentEnergy < accel.BaseCost;
 
                     accel.IsAccelerateMode = canAccel;
-                    // 激奏时显示激奏费用，否则显示基础费用
                     int displayCost = canAccel ? accel.AccelCost : accel.BaseCost;
                     card.EnergyCost.SetUntilPlayed(displayCost);
                 }
