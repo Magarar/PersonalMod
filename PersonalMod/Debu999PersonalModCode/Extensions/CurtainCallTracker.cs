@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using PersonalMod.PersonalModCode;
 using STS2RitsuLib;
 
 namespace PersonalMod.Debu999PersonalModCode.Extensions;
@@ -22,11 +23,6 @@ namespace PersonalMod.Debu999PersonalModCode.Extensions;
 /// </summary>
 public interface IRemovablePower
 {
-    /// <summary>
-    /// 能力被移除前保存的最后一个 PlayerChoiceContext。
-    /// </summary>
-    PlayerChoiceContext? LastRemovalContext { get; }
-
     /// <summary>
     /// 能力被移除时调用。
     /// </summary>
@@ -64,7 +60,7 @@ public static class CurtainCallTracker
             if (combatState == null)
                 return;
 
-            foreach (var creature in combatState.Creatures)
+            foreach (var creature in combatState.PlayerCreatures)
             {
                 TrySubscribe(creature);
             }
@@ -76,6 +72,7 @@ public static class CurtainCallTracker
         if (!_subscribed.Add(creature))
             return;
 
+        MainFile.Logger.Info($"Subscribed to {creature}");
         creature.PowerRemoved += OnPowerRemoved;
     }
 
@@ -84,6 +81,9 @@ public static class CurtainCallTracker
         if (power is not IRemovablePower removable)
             return;
 
+        MainFile.Logger.Warn($"{power} removed");
         _ = removable.OnRemoved();
+        
+        
     }
 }

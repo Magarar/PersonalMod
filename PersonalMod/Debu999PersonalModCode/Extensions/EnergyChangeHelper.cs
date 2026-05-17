@@ -7,11 +7,14 @@
 // 刷新时跳过正在打出的卡（AfterEnergySpent），避免中途篡改模式。
 
 using System.Reflection;
+using GodotPlugins.Game;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Cards;
+using PersonalMod.PersonalModCode;
 
 namespace PersonalMod.Debu999PersonalModCode.Extensions;
 
@@ -87,6 +90,7 @@ internal static class EnergyChangeHelper
         private static void DoRefresh(ICombatState? combatState, CardModel? skipCard = null)
         {
             if (combatState == null) return;
+            MainFile.Logger.Warn("EnergyChangeHelper.DoRefresh");
             AccelerateTracker.RefreshAllCosts(combatState, skipCard);
             OverchargeTracker.RefreshCosts(combatState, skipCard);
             CrystallizeTracker.RefreshAllCosts(combatState, skipCard);

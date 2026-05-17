@@ -17,12 +17,12 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
+//[RegisterCard(typeof(ColorlessCardPool))]
 public class ChantOfDamage : ModCardTemplate
 {
     private const int EnergyCost = 1;
     private const CardType Type = CardType.Power;
-    private const CardRarity Rarity = CardRarity.Common;
+    private const CardRarity Rarity = CardRarity.None;
     private const TargetType Target = TargetType.Self;
 
     protected override IEnumerable<string> RegisteredKeywordIds => [MyKeywords.Chant];

@@ -10,6 +10,7 @@
 // 5. 子类添加 [RegisterPower] 属性实现自动注册
 
 using System.Threading.Tasks;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -35,26 +36,10 @@ public abstract class ChantPower : ModPowerTemplate
     public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
 
     /// <summary>
-    /// 最后一次 AfterPlayerTurnStart 的上下文。
-    /// 用于 IRemovablePower 移除回调。
-    /// </summary>
-    protected PlayerChoiceContext LastChantContext { get; private set; }
-
-
-
-    /// <summary>
-    /// 能力被移除时回调。默认无操作，子类可重写。
-    /// 注意：此时 LastChantContext 可用（前提是经过 AfterPlayerTurnStart 流程）。
-    /// </summary>
-    protected virtual Task OnChantRemoved() => Task.CompletedTask;
-
-    /// <summary>
     /// 玩家回合开始时：递减计数器 → 触发吟唱效果 → 归零时移除。
     /// </summary>
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        LastChantContext = choiceContext;
-
         if (Amount <= 0)
             return;
 
@@ -64,13 +49,24 @@ public abstract class ChantPower : ModPowerTemplate
     public async Task TriggerChant(PlayerChoiceContext choiceContext)
     {
         SetAmount(Amount - 1);
+        Flash();
+
+        // 全局吟唱计数器 +1
+        ChantStatTracker.TriggerCount++;
 
         await OnChantTrigger(choiceContext);
+        if (Owner.HasPower<ThunderPower>())
+            await Owner.GetPower<ThunderPower>().AfterChantTrigger(choiceContext);
+        
+        if (Owner.HasPower<PuppetPower>())
+            await Owner.GetPower<PuppetPower>().AfterChantTrigger(choiceContext);
+        
+        if (Owner.HasPower<LeaveSoundPower>())
+            await Owner.GetPower<LeaveSoundPower>().AfterChantTrigger(choiceContext);
+
 
         if (Amount <= 0)
-        {
-            RemoveInternal();
-        }
+            await PowerCmd.Remove(this);
     }
 
     /// <summary>

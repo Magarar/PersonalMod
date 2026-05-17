@@ -37,6 +37,8 @@ public partial class MainFile : Node
         CrystallizeTracker.Initialize();
         // 初始化能力移除 (Removal) 追踪系统
         CurtainCallTracker.Initialize();
+        // 初始化吟唱统计 (Chant) 计数器
+        ChantStatTracker.Initialize();
 
     }
 }

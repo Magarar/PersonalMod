@@ -29,9 +29,7 @@ public class ChantExplosionPower : ChantPower, IRemovablePower
         IconPath: "res://Debu999PersonalMod/images/powers/chant_explosion.png",
         BigIconPath: "res://Debu999PersonalMod/images/powers/chant_explosion.png"
     );
-
-    PlayerChoiceContext? IRemovablePower.LastRemovalContext => LastChantContext;
-
+    
     Task IRemovablePower.OnRemoved() => OnChantRemoved();
     
     /// <summary>
@@ -53,13 +51,13 @@ public class ChantExplosionPower : ChantPower, IRemovablePower
     /// 能力被移除时，对所有敌人造成伤害。
     /// （由 CurtainCallTracker 在监听到 Creature.PowerRemoved 事件后调用）
     /// </summary>
-    protected override async Task OnChantRemoved()
+    protected async Task OnChantRemoved()
     {
         if (_triggered)
             return;
         _triggered = true;
 
-        var ctx = LastChantContext;
+        var ctx = new ThrowingPlayerChoiceContext();
         if (ctx == null)
             return;
 

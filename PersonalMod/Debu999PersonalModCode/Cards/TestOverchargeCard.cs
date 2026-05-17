@@ -17,7 +17,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
+//[RegisterCard(typeof(ColorlessCardPool))]
 public class TestOverchargeCard : ModCardTemplate, IOverchargeCard
 {
     // ===== 爆能配置 =====

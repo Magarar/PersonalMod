@@ -33,9 +33,6 @@
       <Content Include="Debu999PersonalMod.json" />
       <Content Include="Debu999PersonalMod/**" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Debu999PersonalModCode\Powers\" />
-    </ItemGroup>
 
     <!-- 自动复制dll和json -->
     <Target Name="Copy Mod" AfterTargets="PostBuildEvent">

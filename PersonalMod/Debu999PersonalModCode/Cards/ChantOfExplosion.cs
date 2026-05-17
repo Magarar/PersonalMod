@@ -16,12 +16,12 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
+//[RegisterCard(typeof(ColorlessCardPool))]
 public class ChantOfExplosion : ModCardTemplate
 {
     private const int EnergyCost = 1;
     private const CardType Type = CardType.Power;
-    private const CardRarity Rarity = CardRarity.Common;
+    private const CardRarity Rarity = CardRarity.Token;
     private const TargetType Target = TargetType.Self;
     
     public ChantOfExplosion()

@@ -18,10 +18,11 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
+//[RegisterCard(typeof(ColorlessCardPool))]
 public class TestCrystallizeCard : ModCardTemplate, ICrystallizeCard
 {
     // ===== 结晶配置 =====
+    public CardType originalType => CardTypeValue;
     public int BaseCost => 1;
     public int CrystallizeCost => 0;
     public bool IsCrystallizeMode { get; set; }

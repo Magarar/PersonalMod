@@ -17,10 +17,11 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace PersonalMod.Debu999PersonalModCode.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
+//[RegisterCard(typeof(ColorlessCardPool))]
 public class TestAccelerateCard : ModCardTemplate, IAccelerateCard
 {
     // ===== 激奏配置 =====
+    public CardType originalType => CardTypeValue;
     public int BaseCost => 2;
     public int AccelCost => 1;
     public bool IsAccelerateMode { get; set; }  // AccelerateTracker 自动管理
@@ -29,7 +30,7 @@ public class TestAccelerateCard : ModCardTemplate, IAccelerateCard
     private const int CardDamage = 19;
     private const int AccelBlockAmount = 9;
     private const CardType CardTypeValue = CardType.Attack;
-    private const CardRarity Rarity = CardRarity.Token;
+    private const CardRarity Rarity = CardRarity.None;
     private const TargetType Target = TargetType.AnyEnemy;
 
     /// <summary>

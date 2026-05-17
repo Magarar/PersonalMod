@@ -24,7 +24,7 @@ public class EmergencyAvoidance : ModCardTemplate
 {
     private const int EnergyCost = 1;
     private const CardType Type = CardType.Skill;
-    private const CardRarity Rarity = CardRarity.Uncommon;
+    private const CardRarity Rarity = CardRarity.None;
     private const TargetType Target = TargetType.Self;
 
     // 静态生命周期订阅，确保战斗开始时注册钩子

@@ -18,7 +18,7 @@ public class ChaosOrb : ModCardTemplate
 {
     private const int EnergyCost = 0;
     private const CardType Type = CardType.Skill;
-    private const CardRarity Rarity = CardRarity.Uncommon;
+    private const CardRarity Rarity = CardRarity.None;
     private const TargetType Target = TargetType.Self;
 
     // 新充能球的初始数值（0 表示无额外叠加层数）

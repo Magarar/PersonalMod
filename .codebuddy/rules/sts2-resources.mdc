@@ -2,11 +2,13 @@
 description: 
 alwaysApply: true
 enabled: true
-updatedAt: 2026-05-12T02:21:42.475Z
+updatedAt: 2026-05-14T15:22:20.263Z
 provider: 
 ---
 
 # STS2 游戏工程资源指引
+
+**绝对禁止使用终端查找代码**
 
 ## 1. 概述
 

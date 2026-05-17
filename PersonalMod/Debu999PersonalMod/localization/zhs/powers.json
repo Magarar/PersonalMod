@@ -5,5 +5,17 @@
 
   "DEBU999_PERSONAL_MOD_POWER_CHANT_EXPLOSION_POWER.title": "吟唱爆破",
   "DEBU999_PERSONAL_MOD_POWER_CHANT_EXPLOSION_POWER.description": "[gold]吟唱{Amount}[/gold]。[gold]谢幕曲[/gold]，对所有敌人造成20点伤害。",
-  "DEBU999_PERSONAL_MOD_POWER_CHANT_EXPLOSION_POWER.smartDescription": "[gold]吟唱{Amount}[/gold]。[gold]谢幕曲[/gold]，对所有敌人造成[blue]20[/blue]点伤害。"
+  "DEBU999_PERSONAL_MOD_POWER_CHANT_EXPLOSION_POWER.smartDescription": "[gold]吟唱{Amount}[/gold]。[gold]谢幕曲[/gold]，对所有敌人造成[blue]20[/blue]点伤害。",
+
+  "DEBU999_PERSONAL_MOD_POWER_THUNDER_POWER.title": "雷鸣萨迦",
+  "DEBU999_PERSONAL_MOD_POWER_THUNDER_POWER.description": "本回合触发吟唱时，每触发一次对所有敌人造成{Amount}点伤害。",
+  "DEBU999_PERSONAL_MOD_POWER_THUNDER_POWER.smartDescription": "本回合触发吟唱时，每触发一次对所有敌人造成[blue]{Amount}[/blue]点伤害。",
+
+  "DEBU999_PERSONAL_MOD_POWER_PUPPET_POWER.title": "人偶装束",
+  "DEBU999_PERSONAL_MOD_POWER_PUPPET_POWER.description": "触发吟唱时，获得{Amount}点格挡。",
+  "DEBU999_PERSONAL_MOD_POWER_PUPPET_POWER.smartDescription": "触发吟唱时，获得[blue]{Amount}[/blue]点格挡。",
+
+  "DEBU999_PERSONAL_MOD_POWER_LEAVE_SOUND_POWER.title": "真夜留声",
+  "DEBU999_PERSONAL_MOD_POWER_LEAVE_SOUND_POWER.description": "触发吟唱时，抽{Amount}张牌。",
+  "DEBU999_PERSONAL_MOD_POWER_LEAVE_SOUND_POWER.smartDescription": "触发吟唱时，抽{Amount}张牌。"
 }
