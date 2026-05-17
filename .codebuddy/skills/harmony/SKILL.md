@@ -7,6 +7,8 @@ trigger_priority: 2
 
 # 0Harmony (HarmonyLib) 编码规范与审查规则
 
+> **ModId 约定**：本 Skill 中所有 `{{MODID}}` / `{{MODID_UPPER}}` 占位符由总调度 Skill (sts2-manager) 定义并注入上下文。
+
 ## 一、基础约定
 
 ### 1.1 命名空间与引用
@@ -23,7 +25,7 @@ using HarmonyLib;  // 0Harmony 的 C# 命名空间
 
 ```csharp
 // ✅ 推荐：每个 Mod 一个 Harmony 实例，缓存在静态字段
-private static readonly Harmony HarmonyInstance = new("PersonalMod");
+private static readonly Harmony HarmonyInstance = new("{{MODID}}");
 
 // ✅ 推荐：在入口方法中统一 Patch
 public static void Initialize()
@@ -34,7 +36,7 @@ public static void Initialize()
 // ❌ 禁止：多次创建 Harmony 实例
 public void SomeMethod()
 {
-    var harmony = new Harmony("PersonalMod");  // 不要重复创建
+    var harmony = new Harmony("{{MODID}}");  // 不要重复创建
 }
 ```
 
@@ -73,7 +75,7 @@ public static class MyPatch { }  // 难以辨识 patch 目标
 
 | 元素 | 命名规则 | 示例 |
 |------|---------|------|
-| Harmony 实例 ID | 与 ModId 一致 | `"PersonalMod"` |
+| Harmony 实例 ID | 与 ModId 一致 | `"{{MODID}}"` |
 | Patch 类名 | `TargetClass_MethodName_Patch` | `PlayerController_TakeDamage_Patch` |
 | Prefix 方法 | `Prefix` 或 `[HarmonyPrefix]` + 自定义名 | `Prefix` |
 | Postfix 方法 | `Postfix` 或 `[HarmonyPostfix]` + 自定义名 | `Postfix` |
@@ -454,7 +456,7 @@ public static class Patch
 ```csharp
 using HarmonyLib;
 
-namespace PersonalMod.PersonalModCode.Patches;
+namespace {{MODID}}.{{MODID}}Code.Patches;
 
 /// <summary>
 /// 补丁 <see cref="TargetClass.TargetMethod"/> 以实现 XXX 功能。
@@ -480,7 +482,7 @@ public static class TargetClass_TargetMethod_Patch
 using System.Diagnostics;
 using HarmonyLib;
 
-namespace PersonalMod.PersonalModCode.Patches;
+namespace {{MODID}}.{{MODID}}Code.Patches;
 
 [HarmonyPatch(typeof(BattleManager), nameof(BattleManager.ProcessTurn))]
 public static class BattleManager_ProcessTurn_Patch
@@ -506,7 +508,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 
-namespace PersonalMod.PersonalModCode.Patches;
+namespace {{MODID}}.{{MODID}}Code.Patches;
 
 [HarmonyPatch(typeof(CombatResolver), nameof(CombatResolver.ResolveDamage))]
 public static class CombatResolver_ResolveDamage_Patch
@@ -546,7 +548,7 @@ public static class CombatResolver_ResolveDamage_Patch
 ```csharp
 using HarmonyLib;
 
-namespace PersonalMod.PersonalModCode.Patches;
+namespace {{MODID}}.{{MODID}}Code.Patches;
 
 [HarmonyPatch(typeof(DataLoader), nameof(DataLoader.LoadSaveFile))]
 public static class DataLoader_LoadSaveFile_Patch

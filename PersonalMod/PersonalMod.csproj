@@ -7,6 +7,8 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
+        <AssemblyName>Debu999PersonalMod</AssemblyName>
+
         <!-- 改成你的杀戮尖塔2目录 -->
         <Sts2Dir>F:\SteamLibrary\steamapps\common\Slay the Spire 2</Sts2Dir>
         <Sts2DataDir>$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
@@ -26,44 +28,17 @@
       </Reference>
     </ItemGroup>
 
+    <!-- 自动包含所有 Mod 资源（图片/本地化/配置等） -->
     <ItemGroup>
-      <Folder Include="PersonalModCode\Cards\" />
-      <Folder Include="PersonalModCode\Extensions\" />
-      <Folder Include="PersonalModCode\Powers\" />
-      <Folder Include="PersonalModCode\Relics\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="PersonalMod.json" />
-      <Content Include="PersonalMod\images\card_portraits\big\card.png" />
-      <Content Include="PersonalMod\images\card_portraits\big\card.png.import" />
-      <Content Include="PersonalMod\images\card_portraits\card.png" />
-      <Content Include="PersonalMod\images\card_portraits\card.png.import" />
-      <Content Include="PersonalMod\images\powers\big\power.png" />
-      <Content Include="PersonalMod\images\powers\big\power.png.import" />
-      <Content Include="PersonalMod\images\powers\power.png" />
-      <Content Include="PersonalMod\images\powers\power.png.import" />
-      <Content Include="PersonalMod\images\relics\big\relic.png" />
-      <Content Include="PersonalMod\images\relics\big\relic.png.import" />
-      <Content Include="PersonalMod\images\relics\relic.png" />
-      <Content Include="PersonalMod\images\relics\relic.png.import" />
-      <Content Include="PersonalMod\images\relics\relic_outline.png" />
-      <Content Include="PersonalMod\images\relics\relic_outline.png.import" />
-      <Content Include="PersonalMod\localization\eng\ancients.json" />
-      <Content Include="PersonalMod\localization\eng\cards.json" />
-      <Content Include="PersonalMod\localization\eng\card_keywords.json" />
-      <Content Include="PersonalMod\localization\eng\powers.json" />
-      <Content Include="PersonalMod\localization\eng\relics.json" />
-      <Content Include="PersonalMod\localization\eng\static_hover_tips.json" />
-      <Content Include="PersonalMod\mod_image.png" />
-      <Content Include="PersonalMod\mod_image.png.import" />
+      <Content Include="Debu999PersonalMod.json" />
+      <Content Include="Debu999PersonalMod/**" />
     </ItemGroup>
 
     <!-- 自动复制dll和json -->
     <Target Name="Copy Mod" AfterTargets="PostBuildEvent">
         <Message Text="Copying mod to Slay the Spire 2 mods folder..." Importance="high" />
         <MakeDir Directories="$(Sts2Dir)\mods\" />
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Sts2Dir)\mods\$(MSBuildProjectName)\" />
-        <Copy SourceFiles="$(MSBuildProjectName).json" DestinationFolder="$(Sts2Dir)/mods/$(MSBuildProjectName)/" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Sts2Dir)\mods\Debu999PersonalMod\" />
+        <Copy SourceFiles="Debu999PersonalMod.json" DestinationFolder="$(Sts2Dir)/mods/Debu999PersonalMod/" />
     </Target>
 </Project>

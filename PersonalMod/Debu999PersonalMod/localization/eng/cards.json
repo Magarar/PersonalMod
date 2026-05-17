@@ -1,0 +1,37 @@
+{
+  "PERSONAL_MOD_CARD_TEST_CARD.title": "Test Card",
+  "PERSONAL_MOD_CARD_TEST_CARD.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} card.\nGain {Block:diff()} Block.",
+
+  "DEBU999PERSONALMOD_CARD_CHAOS_ORB.title": "Chaos Orb",
+  "DEBU999PERSONALMOD_CARD_CHAOS_ORB.description": "Randomize all of your Orbs.",
+
+  "DEBU999PERSONALMOD_CARD_EMERGENCY_AVOIDANCE.title": "Emergency Avoidance",
+  "DEBU999PERSONALMOD_CARD_EMERGENCY_AVOIDANCE.description": "Gain {Block:diff()} Block.\nAt turn start, if any enemy is attacking and this is not Exhausted, return it to your hand.",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_COMBO_CARD.title": "Combo Strike",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_COMBO_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Combo[/gold] ({ComboProgress}/{ComboThreshold}): Deal [blue]{ComboBonus}[/blue] additional damage.",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_RAPID_CARD.title": "Rapid Strike",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_RAPID_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Rapid[/gold] ({RapidProgress}): +1 damage per card played this turn.",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_CARD.title": "Amplify Strike",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Amplify[/gold] [b]({AmplifyStacks})[/b]: +{AmplifyDamage} damage per Amplify stack, consumed on play.",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_TRIGGER.title": "Arcane Echo",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_TRIGGER.description": "Trigger [blue]{AmplifyCount}[/blue] Amplify stacks on all Amplify cards in your hand.\nDraw 1 card.",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_OVERCHARGE_CARD.title": "Overcharge Strike",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_OVERCHARGE_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Overcharge[/gold] ({PlusedCost}): Instead deal [blue]{PlusedDamage}[/blue] damage.",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.title": "Accelerate Blow",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Accelerate[/gold] ({AccelCost}): Gain [blue]{AccelBlock}[/blue] Block (Skill).",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.title": "Crystallize Strike",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.description": "Deal {Damage:diff()} damage.\n[gold]Crystallize[/gold] ({CrystallizeCost}): Gain [blue]{CrystallizeStrength}[/blue] Strength (Power).",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.title": "Chant of Damage",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.description": "Gain Chant Damage. After {ChantCount:diff()} turns, deal 10 damage to all enemies.",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.title": "Chant of Explosion",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.description": "Gain Chant Explosion. Next turn, when removed, deal 20 damage to all enemies."
+}

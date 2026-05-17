@@ -1,0 +1,37 @@
+{
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CARD.title": "Test Card",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CARD.description": "造成{Damage:diff()}点伤害。\n抽{Cards:diff()}张牌。\n获得{Block:diff()}点格挡。",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHAOS_ORB.title": "混沌之球",
+  "DEBU999_PERSONAL_MOD_CARD_CHAOS_ORB.description": "随机化你所有的充能球。",
+
+  "DEBU999_PERSONAL_MOD_CARD_EMERGENCY_AVOIDANCE.title": "紧急回避",
+  "DEBU999_PERSONAL_MOD_CARD_EMERGENCY_AVOIDANCE.description": "获得{Block:diff()}点格挡。\n回合开始时，若有怪物处于攻击意图且此牌不在消耗堆中，将其移回手牌。",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_COMBO_CARD.title": "连携打击",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_COMBO_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]连携[/gold] ({ComboProgress}/{ComboThreshold})：额外造成[blue]{ComboBonus}[/blue]点伤害。",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_RAPID_CARD.title": "连击打击",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_RAPID_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]连击{RapidProgress}[/gold] :额外造成[blue]{RapidProgress}[/blue]点伤害。",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_CARD.title": "增幅打击",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]魔力增幅[/gold] [b]({AmplifyStacks})[/b]：每层+{AmplifyDamage}伤害，打出后归零。",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_TRIGGER.title": "秘法回响",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_AMPLIFY_TRIGGER.description": "对手牌中所有增幅卡牌触发[blue]{AmplifyCount}[/blue]次[gold]魔力增幅[/gold] 。\n抽{Cards:diff()}张牌。",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_OVERCHARGE_CARD.title": "爆能打击",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_OVERCHARGE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]爆能强化{PlusedCost}[/gold]:改为造成[blue]{PlusedDamage}[/blue]点伤害。",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.title": "激奏重击",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_ACCELERATE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]激奏{AccelCost}[/gold] :改为获得[blue]{AccelBlock}[/blue]点格挡（当作技能牌）。",
+
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.title": "结晶打击",
+  "DEBU999_PERSONAL_MOD_CARD_TEST_CRYSTALLIZE_CARD.description": "造成{Damage:diff()}点伤害。\n[gold]结晶{CrystallizeCost}[/gold] :改为获得[blue]{CrystallizeStrength}[/blue]点力量（当作能力牌）。",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.title": "吟唱打击",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_DAMAGE.description": "[gold]吟唱{ChantCount:diff()}[/gold]:\n对所有敌人造成{ChantDamage:diff()}点伤害。",
+
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.title": "吟唱爆破",
+  "DEBU999_PERSONAL_MOD_CARD_CHANT_OF_EXPLOSION.description": "[gold]吟唱1[/gold]。\n[gold]谢幕曲[/gold]:对所有敌人造成20点伤害。"
+}
