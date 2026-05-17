@@ -16,6 +16,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using PersonalMod.PersonalModCode;
 using STS2RitsuLib;
 
 namespace PersonalMod.Debu999PersonalModCode.Extensions;
@@ -125,10 +126,12 @@ public static class OverchargeTracker
                 if (card is IOverchargeCard oc)
                 {
                     int currentEnergy = player.PlayerCombatState.Energy;
-                    bool canOvercharge = currentEnergy >= oc.PlusedCost;
+                    bool canOvercharge = currentEnergy >= oc.BaseCost;
 
                     oc.IsOverchargedMode = canOvercharge;
-                    card.EnergyCost.SetUntilPlayed(canOvercharge ? oc.PlusedCost : oc.BaseCost);
+                    card.EnergyCost.SetThisTurn(canOvercharge ? oc.PlusedCost : card.EnergyCost.GetWithModifiers(CostModifiers.Global));
+                    MainFile.Logger.Warn($"Player energy:{currentEnergy}:Card {card.Id} :{card.EnergyCost.GetResolved()},{oc.IsOverchargedMode}");
+
                 }
             }
         }

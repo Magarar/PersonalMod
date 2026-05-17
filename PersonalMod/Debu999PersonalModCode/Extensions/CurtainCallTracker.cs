@@ -26,7 +26,7 @@ public interface IRemovablePower
     /// <summary>
     /// 能力被移除时调用。
     /// </summary>
-    System.Threading.Tasks.Task OnRemoved();
+   public abstract Task OnRemoved();
 }
 
 /// <summary>
@@ -36,7 +36,16 @@ public interface IRemovablePower
 public static class CurtainCallTracker
 {
     private static bool _initialized;
-    private static readonly HashSet<Creature> _subscribed = new();
+
+    /// <summary>
+    /// 已订阅的 Creature 及其事件引用，用于战斗结束时取消订阅。
+    /// </summary>
+    private static readonly Dictionary<Creature, Action<PowerModel>> _subscriptions = new();
+
+    /// <summary>
+    /// 已触发过的 PowerModel，防止同一能力因多次订阅导致重复触发。
+    /// </summary>
+    private static readonly HashSet<PowerModel> _notified = new();
 
     public static void Initialize()
     {
@@ -44,10 +53,10 @@ public static class CurtainCallTracker
             return;
         _initialized = true;
 
-        // 战斗开始时清理订阅记录
+        // 战斗开始时清理所有订阅
         RitsuLibFramework.SubscribeLifecycle<CombatStartingEvent>(_ =>
         {
-            _subscribed.Clear();
+            UnsubscribeAll();
         });
 
         // 每次玩家回合开始时，检查是否有新 Creature 需要订阅
@@ -60,6 +69,8 @@ public static class CurtainCallTracker
             if (combatState == null)
                 return;
 
+            _notified.Clear();
+
             foreach (var creature in combatState.PlayerCreatures)
             {
                 TrySubscribe(creature);
@@ -67,13 +78,34 @@ public static class CurtainCallTracker
         });
     }
 
+    private static void UnsubscribeAll()
+    {
+        foreach (var kvp in _subscriptions)
+        {
+            try
+            {
+                kvp.Key.PowerRemoved -= kvp.Value;
+            }
+            catch
+            {
+                // 忽略已释放的 Godot 对象
+            }
+        }
+        _subscriptions.Clear();
+        _notified.Clear();
+    }
+
     private static void TrySubscribe(Creature creature)
     {
-        if (!_subscribed.Add(creature))
+        if (_subscriptions.ContainsKey(creature))
             return;
 
+        void Handler(PowerModel power) => OnPowerRemoved(power);
+
+        _subscriptions[creature] = Handler;
+        creature.PowerRemoved += Handler;
+
         MainFile.Logger.Info($"Subscribed to {creature}");
-        creature.PowerRemoved += OnPowerRemoved;
     }
 
     private static void OnPowerRemoved(PowerModel power)
@@ -81,9 +113,11 @@ public static class CurtainCallTracker
         if (power is not IRemovablePower removable)
             return;
 
+        // 幂等检查：同一 PowerModel 只触发一次
+        if (!_notified.Add(power))
+            return;
+
         MainFile.Logger.Warn($"{power} removed");
         _ = removable.OnRemoved();
-        
-        
     }
 }

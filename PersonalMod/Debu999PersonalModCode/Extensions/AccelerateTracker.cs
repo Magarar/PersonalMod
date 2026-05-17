@@ -15,6 +15,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
+using PersonalMod.PersonalModCode;
 using STS2RitsuLib;
 
 namespace PersonalMod.Debu999PersonalModCode.Extensions;
@@ -86,11 +87,13 @@ public static class AccelerateTracker
                     bool canAccel = currentEnergy < accel.BaseCost;
 
                     accel.IsAccelerateMode = canAccel;
-                    int displayCost = canAccel ? accel.AccelCost : accel.BaseCost;
-                    card.EnergyCost.SetUntilPlayed(displayCost);
+                    int displayCost = canAccel ? accel.AccelCost : card.EnergyCost.GetWithModifiers(CostModifiers.Global);
+                    card.EnergyCost.SetThisTurn(displayCost);
                     var ncard = NCard.FindOnTable(card);
                     if (ncard != null)
                     {
+                        MainFile.Logger.Warn($"Player energy:{currentEnergy}:Card {card.Id} :{card.EnergyCost.GetResolved()},{accel.IsAccelerateMode}");
+
                         ncard.Call("Reload");
                     }
                 }

@@ -62,6 +62,18 @@ internal static class EnergyChangeHelper
 
                 harmony.Patch(target, postfix: new HarmonyMethod(postfix));
             }
+
+            // ── 战斗开始/结束 Hook（参数顺序不同，单独处理）──
+            foreach (var combatHook in new[] { "BeforeCombatStart", "AfterCombatEnd" })
+            {
+                var method = hookType.GetMethod(combatHook, BindingFlags.Public | BindingFlags.Static);
+                if (method == null) continue;
+            
+                var postfix = typeof(HookPatch).GetMethod(
+                    nameof(HookPatch.OnCombatBoundary),
+                    BindingFlags.Static | BindingFlags.NonPublic)!;
+                harmony.Patch(method, postfix: new HarmonyMethod(postfix));
+            }
         }
         catch
         {
@@ -86,8 +98,13 @@ internal static class EnergyChangeHelper
         {
             DoRefresh(combatState, card);
         }
+        
+        internal static void OnCombatBoundary(ICombatState combatState)
+        {
+            DoRefresh(combatState);
+        }
 
-        private static void DoRefresh(ICombatState? combatState, CardModel? skipCard = null)
+        private static void DoRefresh(ICombatState? combatState,CardModel? skipCard = null)
         {
             if (combatState == null) return;
             MainFile.Logger.Warn("EnergyChangeHelper.DoRefresh");

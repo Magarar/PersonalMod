@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
+using PersonalMod.PersonalModCode;
 using STS2RitsuLib;
 
 namespace PersonalMod.Debu999PersonalModCode.Extensions;
@@ -58,11 +59,12 @@ public static class CrystallizeTracker
                     bool canCrystallize = currentEnergy < cry.BaseCost;
 
                     cry.IsCrystallizeMode = canCrystallize;
-                    int displayCost = canCrystallize ? cry.CrystallizeCost : cry.BaseCost;
-                    card.EnergyCost.SetUntilPlayed(displayCost);
+                    int displayCost = canCrystallize ? cry.CrystallizeCost : card.EnergyCost.GetWithModifiers(CostModifiers.Global);
+                    card.EnergyCost.SetThisTurn(displayCost);
                     var ncard = NCard.FindOnTable(card);
                     if (ncard != null)
                     {
+                        MainFile.Logger.Warn($"Player energy:{currentEnergy}:Card {card.Id} :{card.EnergyCost.GetWithModifiers(CostModifiers.Global)},{cry.IsCrystallizeMode}");
                         ncard.Call("Reload");
                     }
 
