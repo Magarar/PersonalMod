@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="abaa7d79-f15d-43df-b5a6-dfcb2dc28235" name="更改" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JSON File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Magarar&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Magarar/PersonalMod.git&quot;,
+    &quot;accountId&quot;: &quot;00f1bebb-ccbf-436b-b178-79e27f7b3e11&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1c378f459c054fecaf4484a0fa6d44c055a800/d0/97965776/GodotObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2434ab97353e49e28cc6728b9ffa380a319a00/0a/e11450c0/ModCardTemplate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5ff3d41c21df41fabdc263e4481c2b4930e000/0e/cacb10af/ModCardTemplate.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5ff3d41c21df41fabdc263e4481c2b4930e000/e6/506acfbe/ModTypeDiscoveryHub.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/2c/8825d5fa/DefendIronclad.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/2d/0ae645eb/DynamicVarSet.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/30/392e7652/PlayerChoiceContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/40/54d9071f/DefendSilent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/4f/a802e5ce/CardPlay.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/53/4ae783b7/ICombatState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/56/307bc8c3/Creature.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/5a/c29c53ab/TargetType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/67/eceee77d/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/8a/fe416855/AbstractModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/95/347836ec/CardType.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/9a/b5b76276/PommelStrike.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/af/7eb9cc3c/PowerModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/b2/cb374fbd/BurningPact.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/b3/3ee1ed8c/ThrowingPlayerChoiceContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/d5/7697ee62/IterationPower.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/dc/42b27bf0/PillarOfCreation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/e5/1fc691f5/CardPileCmd.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/ee/fdd18d31/CardModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/f8/06a460ea/Iteration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/fd/c3d1c965/PillarOfCreationPower.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6053258f503c4af38eb3fd641134a5388cdc00/ff/0ed6596c/NCard.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1322bf6b3c7ca67e64d0d324d1e856da20c6a658a9ae39f6ef2b764fb3f61e5/ModPowerTemplate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/cc3af0e67b95a4624b6d9b798b4fd4272a2750ab7bdbfc8c7ffcd98360cc0a4/CombatLifecycleContracts.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/杀戮尖塔2Mod/PersonalMod/PersonalMod/Debu999PersonalModCode/Extensions/AccelerateTracker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/PersonalMod/PersonalModCode/MainFile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../st2代码/sts2/GodotPlugins/Game/Main.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../st2代码/sts2/MegaCrit/sts2/Core/Bindings/MegaSpine/MegaSkeleton.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../st2代码/sts2/MegaCrit/sts2/Core/Models/Cards/DefendIronclad.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../sts2/steam/src/Core/AutoSlay/AutoSlayLog.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="SWEA" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="3DZyy4VrgIMqQheGbely4SfnoZ7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected=".NET 可执行文件.Player">
+    <configuration name="Player GDScript" type="GDSCRIPT_DEBUG_RUN_CONFIGURATION" factoryName="GdScriptRunFactory" show_console_on_std_err="false" show_console_on_std_out="false" port="6006">
+      <option name="address" value="127.0.0.1" />
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Editor" type="RunExe" factoryName=".NET Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Godot_v4.5.1-stable_mono_win64/MegaDot_v4.5.1-stable_mono_win64.exe" />
+      <option name="PROGRAM_PARAMETERS" value="--path &quot;PersonalMod&quot; --editor" />
+      <option name="WORKING_DIRECTORY" value="D:\杀戮尖塔2Mod\PersonalMod" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="RUNTIME_TYPE" value="coreclr" />
+      <method v="2">
+        <option name="Build Solution" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Player" type="RunExe" factoryName=".NET Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Godot_v4.5.1-stable_mono_win64/MegaDot_v4.5.1-stable_mono_win64.exe" />
+      <option name="PROGRAM_PARAMETERS" value="--path &quot;PersonalMod&quot;" />
+      <option name="WORKING_DIRECTORY" value="D:\杀戮尖塔2Mod\PersonalMod" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="RUNTIME_TYPE" value="coreclr" />
+      <method v="2">
+        <option name="Build Solution" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="abaa7d79-f15d-43df-b5a6-dfcb2dc28235" name="更改" comment="" />
+      <created>1778504137886</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778504137886</updated>
+      <workItem from="1778504139381" duration="1028000" />
+      <workItem from="1778505186285" duration="2600000" />
+      <workItem from="1778507860515" duration="145000" />
+      <workItem from="1778508021176" duration="8897000" />
+      <workItem from="1778550199128" duration="3057000" />
+      <workItem from="1778553414611" duration="2070000" />
+      <workItem from="1778555595859" duration="1740000" />
+      <workItem from="1778557421407" duration="1123000" />
+      <workItem from="1778558608260" duration="963000" />
+      <workItem from="1778559622500" duration="5028000" />
+      <workItem from="1778564999655" duration="10123000" />
+      <workItem from="1778575532384" duration="5405000" />
+      <workItem from="1778583045933" duration="131000" />
+      <workItem from="1778583197876" duration="6765000" />
+      <workItem from="1778590799780" duration="965000" />
+      <workItem from="1778591787988" duration="7959000" />
+      <workItem from="1778646917652" duration="155000" />
+      <workItem from="1778647082230" duration="78000" />
+      <workItem from="1778647177253" duration="11166000" />
+      <workItem from="1778664849318" duration="35000" />
+      <workItem from="1778664910268" duration="33968000" />
+      <workItem from="1778771943224" duration="277000" />
+      <workItem from="1778810041072" duration="26718000" />
+      <workItem from="1778858450090" duration="3456000" />
+      <workItem from="1778892549473" duration="35996000" />
+    </task>
+    <task id="LOCAL-00001" summary="第一次提交">
+      <option name="closed" value="true" />
+      <created>1778511163815</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1778511163815</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat:skills">
+      <option name="closed" value="true" />
+      <created>1778566953236</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1778566953236</updated>
+    </task>
+    <task id="LOCAL-00003" summary="卡牌属性&amp;测试卡牌">
+      <option name="closed" value="true" />
+      <created>1778599502816</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1778599502816</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat:能力">
+      <option name="closed" value="true" />
+      <created>1778672178663</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1778672178663</updated>
+    </task>
+    <task id="LOCAL-00005" summary="1">
+      <option name="closed" value="true" />
+      <created>1778677378029</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1778677378029</updated>
+    </task>
+    <task id="LOCAL-00006" summary="重写下激奏等实现">
+      <option name="closed" value="true" />
+      <created>1778739471075</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1778739471075</updated>
+    </task>
+    <task id="LOCAL-00007" summary="123">
+      <option name="closed" value="true" />
+      <created>1778990565271</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1778990565271</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="第一次提交" />
+    <MESSAGE value="feat:skills" />
+    <MESSAGE value="卡牌属性&amp;测试卡牌" />
+    <MESSAGE value="feat:能力" />
+    <MESSAGE value="1" />
+    <MESSAGE value="重写下激奏等实现" />
+    <MESSAGE value="123" />
+    <option name="LAST_COMMIT_MESSAGE" value="123" />
+  </component>
+</project>
